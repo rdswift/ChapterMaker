@@ -1,5 +1,4 @@
-# ChapterMaker
-Create and edit video chapter files.
+ChapterMaker - Create and edit video chapter files.
 Copyright © 2016 Bob Swift
 
 This program is free software: you can redistribute it and/or modify
