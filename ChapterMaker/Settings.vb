@@ -10,13 +10,17 @@
 ' the Free Software Foundation, either version 3 of the License, or
 ' (at your option) any later version.
 '
-' Foobar is distributed in the hope that it will be useful,
+' ChapterMaker is distributed in the hope that it will be useful,
 ' but WITHOUT ANY WARRANTY; without even the implied warranty of
 ' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ' GNU General Public License for more details.
 '
 ' You should have received a copy of the GNU General Public License
-' along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+' along with ChapterMaker.  If not, see <http://www.gnu.org/licenses/>.
+'
+' -----------------------------------------------------------------------
+'
+' Prepared using SharpDevelop <https://sourceforge.net/projects/sharpdevelop/>
 '
 ' -----------------------------------------------------------------------
 
@@ -31,6 +35,8 @@ Public Partial Class Settings
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Sets initial values on the form
 	
 	Sub SettingsLoad(sender As Object, e As EventArgs)
 		'Me.AllowDrop=True
@@ -53,6 +59,8 @@ Public Partial Class Settings
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Dialog box to get the default output directory
 	
 	Private Sub GetDefaultDirectory()
 		Dim s1 As String
@@ -70,24 +78,32 @@ Public Partial Class Settings
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launches the default output directory dialog
 	
 	Sub TbOutputDirDoubleClick(sender As Object, e As EventArgs)
 		GetDefaultDirectory()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launches the default output directory dialog
 	
 	Sub BDirectoryLookupClick(sender As Object, e As EventArgs)
 		GetDefaultDirectory()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Close the window without saving changes
 	
 	Sub BCancelClick(sender As Object, e As EventArgs)
 		Me.Close
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Save the settings and close the window
 	
 	Sub BSaveClick(sender As Object, e As EventArgs)
 		AppConfig.OutputType = Defaults.cmOutputType.XML
@@ -115,4 +131,7 @@ Public Partial Class Settings
 		AppConfig.Write
 		Me.Close
 	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	
 End Class

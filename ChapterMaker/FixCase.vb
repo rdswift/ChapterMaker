@@ -10,13 +10,17 @@
 ' the Free Software Foundation, either version 3 of the License, or
 ' (at your option) any later version.
 '
-' Foobar is distributed in the hope that it will be useful,
+' ChapterMaker is distributed in the hope that it will be useful,
 ' but WITHOUT ANY WARRANTY; without even the implied warranty of
 ' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ' GNU General Public License for more details.
 '
 ' You should have received a copy of the GNU General Public License
-' along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+' along with ChapterMaker.  If not, see <http://www.gnu.org/licenses/>.
+'
+' -----------------------------------------------------------------------
+'
+' Prepared using SharpDevelop <https://sourceforge.net/projects/sharpdevelop/>
 '
 ' -----------------------------------------------------------------------
 
@@ -31,8 +35,11 @@ Public Class FixCase
 	
 	Private FCFileName As String = "tWordCase.xml"
 	Private FCFilePath As String
-	Private StartValues() As String = { "a", "an", "and", "as", "at", "for", "I", "in", "is", "of", "on", "or", "the", "to", "CIA", "FBI", "KGB", "NASA", "NSA", "HQ", "L.A" } 
+	Private StartValues() As String = { "a", "an", "and", "as", "at", "for", "I", "in", "is", "of", "on", "or", "the", "to", _
+		"A.", "B.", "C.", "D.", "E.", "F.", "G.", "H.", "I", "J.", "K.", "L.", "M.", "N.", "O.", "P.", "Q.", "R.", "S.", "T.", "U.", "V.", "W.", "X.", "Y.", "Z.", _
+		"CIA", "FBI", "KGB", "NASA", "NSA", "HQ" }
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	Public Sub New()
 		FCFilePath = Me.GetFileName()
@@ -41,6 +48,8 @@ Public Class FixCase
 		End If
 		Read()
 	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 '	Public Property DS() As DataSet
 '		Get
@@ -56,6 +65,10 @@ Public Class FixCase
 			Return FCFilePath
 		End Get
 	End Property
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Checks standard locations for words list file and creates file if none exists
 	
 	Private Function GetFileName() As String
 		Dim s1, s2, s3, sFilePath As String
@@ -113,6 +126,9 @@ Public Class FixCase
 		Return sFilePath
 	End Function
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Reads the contents of the words list file
 	
 	Public Sub Read()
 		If FCFilePath.Trim.Length > 0 Then
@@ -128,15 +144,12 @@ Public Class FixCase
 					WordCaseDS.Tables(0).Rows.Add(myRow)
 				Next
 			End Try
-'			For Each myRow As DataRow In WordCaseDS.Tables(0).Select("tAlways < 1", "tWord")
-'				Debug.Print("[" & myRow("tAlways").ToString & "] " & myRow("tWord").ToString) 
-'			Next
-'			For Each myRow As DataRow In WordCaseDS.Tables(0).Select("tAlways > 0", "tWord")
-'				Debug.Print("[" & myRow("tAlways").ToString & "] " & myRow("tWord").ToString) 
-'			Next
 		End If
 	End Sub
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Writes the updated words list file
 	
 	Public Sub Write()
 		If FCFilePath.Trim.Length > 0 Then
@@ -148,6 +161,9 @@ Public Class FixCase
 		End If
 	End Sub
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Converts the supplied string to proper title case
 	
 	Public Function MakeProper(ByVal TitleToFix As String) As String
 		Dim LB, UB, AC, iStart, iEnd, iTest As Integer
@@ -317,6 +333,9 @@ Public Class FixCase
 		End If
 	End Function
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Tests if supplied character is a letter
 	
 	Private Function TestChar(ByVal CharToTest As String) As Boolean
 		Dim myChar As string
@@ -330,5 +349,7 @@ Public Class FixCase
 		If (myChar >= "a") And (myChar <= "z") Then TestChar = True
 		
 	End Function
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 End Class

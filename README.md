@@ -21,3 +21,6 @@ Contact:    Bob Swift
             Canada
             
             Email: bswift@rsds.ca
+
+ChapterMaker had been developed and compiled using SharpDevelop
+<https://sourceforge.net/projects/sharpdevelop/>.

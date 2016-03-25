@@ -10,13 +10,17 @@
 ' the Free Software Foundation, either version 3 of the License, or
 ' (at your option) any later version.
 '
-' Foobar is distributed in the hope that it will be useful,
+' ChapterMaker is distributed in the hope that it will be useful,
 ' but WITHOUT ANY WARRANTY; without even the implied warranty of
 ' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ' GNU General Public License for more details.
 '
 ' You should have received a copy of the GNU General Public License
-' along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+' along with ChapterMaker.  If not, see <http://www.gnu.org/licenses/>.
+'
+' -----------------------------------------------------------------------
+'
+' Prepared using SharpDevelop <https://sourceforge.net/projects/sharpdevelop/>
 '
 ' -----------------------------------------------------------------------
 
@@ -44,10 +48,11 @@ Public Class Defaults
 	Private myConfirmModify As Boolean
 	Private myNoTitle As Integer
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	Public Sub New()
 		myOutputType = cmOutputType.XML
 		myFrameRate = 23.976
-'		myOutFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
 		myOutFilePath = ""
 		myLanguage = "und"
 		myAddNumbers = False
@@ -61,6 +66,8 @@ Public Class Defaults
 		End If
 		Read()
 	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	Public Property OutputType() As Integer
 		Get
@@ -145,6 +152,9 @@ Public Class Defaults
 		End Set
 	End Property
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Read the settings from the configuration file
 	
 	Public Sub Read()
 		Dim s1, s2, s3, s4 As String
@@ -218,6 +228,9 @@ Public Class Defaults
 		End If
 	End Sub
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Save the settings to the configuration file
 	
 	Public Sub Write()
 		Try
@@ -227,7 +240,9 @@ Public Class Defaults
 		End Try
 	End Sub
 	
-	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Searches standard locations for configuration file and creats one if none exists
 	
 	Private Function GetFileName() As String
 		Dim s1, s2, s3, sFilePath As String
@@ -278,6 +293,9 @@ Public Class Defaults
 		Return sFilePath
 	End Function
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Make string contents of settings output file to save
 	
 	Private Function MakeFileContents() As String
 		Dim oFT As String = "XML"
@@ -331,9 +349,9 @@ Public Class Defaults
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "Language=" & dLan & Environment.NewLine _
 			& "FrameRate=" & dFR & Environment.NewLine
-		'Debug.Print(filecontents)
 		Return filecontents
 	End Function
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 End Class

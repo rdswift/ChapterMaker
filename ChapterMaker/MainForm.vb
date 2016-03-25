@@ -10,13 +10,17 @@
 ' the Free Software Foundation, either version 3 of the License, or
 ' (at your option) any later version.
 '
-' Foobar is distributed in the hope that it will be useful,
+' ChapterMaker is distributed in the hope that it will be useful,
 ' but WITHOUT ANY WARRANTY; without even the implied warranty of
 ' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ' GNU General Public License for more details.
 '
 ' You should have received a copy of the GNU General Public License
-' along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+' along with ChapterMaker.  If not, see <http://www.gnu.org/licenses/>.
+'
+' -----------------------------------------------------------------------
+'
+' Prepared using SharpDevelop <https://sourceforge.net/projects/sharpdevelop/>
 '
 ' -----------------------------------------------------------------------
 
@@ -42,6 +46,8 @@ Public Partial Class MainForm
 	Dim cTimesType, cTitlesType, cOutputType As Integer
 	Dim ChaptersDS As DataSet
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	Public Sub New()
 		' The Me.InitializeComponent call is required for Windows Forms designer support.
 		Me.InitializeComponent()
@@ -51,35 +57,16 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Standard error messagebox
 	
 	Private Sub ErrorBox(ByVal ErrorMessage As String, optional byval ErrorTitle As String = "Error")
-		MsgBox(ErrorMessage, MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
+		MsgBox(ErrorMessage, MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, ErrorTitle)
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	Sub TextBox1DragDrop(sender As Object, e As DragEventArgs)
-		Dim myJunk As String
-		Dim theFiles() As String = CType(e.Data.GetData("FileDrop", True), String())
-		myjunk=theFiles(0).ToString.Trim
-		Try
-			If System.IO.Directory.Exists(myJunk) Then
-				myJunk=""
-			End If
-		Catch
-			myJunk=""
-		End Try
-		If Len(myJunk.Trim) > 0 Then
-			Me.tbFileTitles.Text = myJunk
-		Else
-			ErrorBox("Not a valid file.")
-		End If
-'		For Each theFile As String In theFiles
-'            MsgBox(theFile)
-'        Next
-	End Sub
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Initialize the form
 	
 	Sub MainFormLoad(sender As Object, e As EventArgs)
 		Me.Text = appName & " (v" & AppVersion() & ")"
@@ -104,12 +91,26 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle drag 'n' drop events for chapter titles input file
 	
-'	Sub MainFormDragEnter(sender As Object, e As DragEventArgs)
-'    If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-'        e.Effect = DragDropEffects.Copy
-'    End If
-'	End Sub
+	Sub TextBox1DragDrop(sender As Object, e As DragEventArgs)
+		Dim myJunk As String
+		Dim theFiles() As String = CType(e.Data.GetData("FileDrop", True), String())
+		myjunk=theFiles(0).ToString.Trim
+		Try
+			If System.IO.Directory.Exists(myJunk) Then
+				myJunk=""
+			End If
+		Catch
+			myJunk=""
+		End Try
+		If Len(myJunk.Trim) > 0 Then
+			Me.tbFileTitles.Text = myJunk
+		Else
+			ErrorBox("Not a valid file.")
+		End If
+	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -120,6 +121,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle drag 'n' drop events for chapter timles input file
 	
 	Sub TextBox2DragDrop(sender As Object, e As DragEventArgs)
 		Dim myJunk As String
@@ -148,6 +151,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle drag 'n' drop events for the output file
 	
 	Sub TextBox3DragDrop(sender As Object, e As DragEventArgs)
 		Dim myJunk As String
@@ -176,12 +181,16 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle double click to launch file dialog for chapter titles input file
 	
 	Sub TextBox1DoubleClick(sender As Object, e As EventArgs)
 		SelectTitlesFile()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch file dialog for input files
 	
 	Private Function InputFileDialog(myStart As String) As String
 		Dim myFile As String
@@ -201,11 +210,15 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch file dialog for outnput file
 	
 	Private Function OutputFileDialog() As Boolean
 		Dim s1, s2, s3, s4, myJunk As String
 		s1 = ""
 		s2 = ""
+		
+		' Set file type and associated filter
 		s3 = "xml"
 		s4 = "XML Files|*.xml|All Files|*.*"
 		If Me.cOutputType = FileType.OGM Then
@@ -213,6 +226,7 @@ Public Partial Class MainForm
 			s4 = "OGM Files|*.ogm|All Files|*.*"
 		End If
 		
+		' Get output file name from existing entry if possible or set to default
 		Try
 			s1 = System.IO.Path.GetFileName(Me.tbFileOutput.Text.Trim)
 		Catch
@@ -220,21 +234,27 @@ Public Partial Class MainForm
 		End Try
 		If s1.Trim.Length < 1 Then s1 = GetOutputFileName()
 		
+		' Check validity of output file directory from existing entry
 		Try
 			s2 = System.IO.Path.GetDirectoryName(Me.tbFileOutput.Text.Trim)
 		Catch
 			s2 = ""
 		End Try
+		
+		' If existing entry directory entry is invalid, set to default
 		If s2.Trim.Length < 1 Then s2 = AppConfig.OutFilePath
 		
+		' Check validity of selected starting directory
 		Try
 			If Not System.IO.Directory.Exists(s2) Then s2 = ""
 		Catch
 			s2 = ""
 		End Try
 		
+		' If default directory is invalid, set to known valid directory (C:\)
 		If s2.Trim.Length < 1 Then s2 = "C:\"
 		
+		' Fire up the dialog box
         Me.SaveFileDialog1.AddExtension = True
         Me.SaveFileDialog1.CheckPathExists = True
         Me.SaveFileDialog1.Filter = s4
@@ -250,18 +270,24 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle double click to launch file dialog for chapter times input file
 	
 	Sub TextBox2DoubleClick(sender As Object, e As EventArgs)
 		SelectTimesFile()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle double click to launch file dialog for output file
 	
 	Sub TextBox3DoubleClick(sender As Object, e As EventArgs)
 		OutputFileDialog()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Set desired end time and scale all previoous times
 	
 	Private Sub ScaleTimes()
 		Dim fromTime As Double = HMStoSEC(FormatTimes(Me.tbScaleFrom.Text.Trim))
@@ -287,6 +313,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Shift selected time and all following chapter times by specified amount
 	
 	Private Sub ShiftTimes()
 		If Me.cTimes.Length < 1 Then Exit Sub
@@ -324,6 +352,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Adjust all chapter times to try to match frame boundary for specified frame rate
 	
 	Private Sub MatchFrameRate()
 		If Me.cTimes.Length < 1 Then Exit Sub
@@ -355,6 +385,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Add block of chapter times at specified interval
 	
 	Private Sub AddIntervalTimes()
 		Dim IntervalSec As Double = HMStoSEC(Me.maskedTextBox3.Text.Trim)
@@ -364,7 +396,7 @@ Public Partial Class MainForm
 			Exit Sub
 		End If
 		If AppConfig.ConfirmInsert And Not MsgBoxResult.Yes = MsgBox("This will create chapter times every " & _
-			Me.maskedTextBox3.Text.Trim & "(specified interval) from 00:00:00.00000 to " & Me.maskedTextBox4.Text.Trim & _
+			Me.maskedTextBox3.Text.Trim & " (specified interval) from 00:00:00.00000 to " & Me.maskedTextBox4.Text.Trim & _
 			" (specified end time).  Do you want to proceed?", _
 			MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Confirm Changes") Then Exit Sub
 		Dim seconds As Double = 0
@@ -378,6 +410,9 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Write the output chapter file in the specified format
+	'
 	
 	Sub WriteChapterFile()
 		Dim s1, s2 As String
@@ -398,6 +433,7 @@ Public Partial Class MainForm
 			AppendArray(outlines, "    <EditionFlagDefault>0</EditionFlagDefault>")
 		End If
 		
+		' Write one entry for each valid chapter time.  Any additional titles will be ignored.
 		Dim chaptercount As Integer = 0
 		For Each s1 In Me.cTimes
 			chaptercount += 1
@@ -449,6 +485,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Convert time entry (e.g. "01:23:45.67890") to total seconds
 	
 	Private Function HMStoSEC(tm As String) As Double
 		Dim RetVal As Double = 0
@@ -458,10 +496,7 @@ Public Partial Class MainForm
 		For I As Integer = UBound(digits) To LBound(digits) Step - 1
 			J += 1
 			If (J < 4) Then
-				'Debug.Print(" - digits(" & I & ") = " & digits(I))
-				'Debug.Print(" - Convert = " & Convert.ToDouble(digits(I)))
 				RetVal += (Convert.ToDouble(digits(I)) * multiplier)
-				'Debug.Print(" - RetVal = " & RetVal)
 				multiplier *= 60
 			End If
 		Next
@@ -469,6 +504,8 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Convert hour, minute and second strings to total seconds
 	
 	Private Function GetSeconds(byval hh As String, byval mm As String, byval ss As String) As Double
 		Dim RetVal As Double = 0
@@ -484,6 +521,8 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Format partial or invalid time strings to standard format of "hh:mm:ss.sssss"
 	
 	Private Function FormatTimes(tm As String) As String
 		tm = Strings.Replace(tm, " ", "0")
@@ -494,23 +533,8 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-'	Private Function FixTimes(tm As String, Optional ratio As Double = 1) As String
-'		If (Not Me.cbMatchFrameRate.Checked) And (Not Me.cbScaleChapterTimes.Checked) And (Not Me.cbOffsetChapterTimes.Checked) Then Return tm
-'		Dim digits() As String = Split(tm, ":")
-'		If UBound(digits) <> 2 Then Return tm
-'		Dim seconds As Double = GetSeconds(digits(0), digits(1), digits(2)) * ratio
-'		Dim fps As Double = Convert.ToDouble(Me.tbFrameRate.Text.Trim)
-'		If fps < 10 Then fps = 24000 / 1001
-'		If Me.cbMatchFrameRate.Checked Then
-'			Dim myJunk As Long
-'			myJunk = Convert.ToInt32((seconds * fps) + 0.5)
-'			seconds = Convert.ToDouble(myJunk) / fps
-'		End If
-'		Return SECtoHMS(seconds)
-'	End Function
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Convert total seconds to time string in standard format of "hh:mm:ss.sssss"
 	
 	Private Function SECtoHMS(ByVal seconds As Double) As String
 		Dim hh As Integer = 0
@@ -527,6 +551,8 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Append string value to specified array
 	
 	Private Function AppendArray(ByRef arrayname() as string, linetoadd As String) As Boolean
 		Array.Resize(arrayname, arrayname.Length + 1)
@@ -535,6 +561,8 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Reinitialize, clearing all fields and resetting to default values
 	
 	Private Sub ResetAll
 		Dim s1 As String
@@ -564,14 +592,13 @@ Public Partial Class MainForm
 			If Not s1.EndsWith("\") Then s1 &= "\"
 			s1 &= GetOutputFileName()
 		End If
-		'If s1.Length < 1 Then s1 = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments).Trim
-		'If Not s1.EndsWith("\") Then s1 &= "\"
-		's1 &= "ChapterMakerChapters.xml"
 		Me.tbFileOutput.Text = s1.Trim
 		ShowList()
 	End Sub
 		
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Develop output file name based on selected file type
 	
 	Function GetOutputFileName() As String
 		Dim s1 As String = AppFileRoot & "Chapters."
@@ -581,24 +608,32 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-		
+	'
+	'	Handle button to launch file dialog for chapter titles input file
+	
 	Sub Button3Click(sender As Object, e As EventArgs)
 		SelectTitlesFile()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle button to launch file dialog for chapter times input file
 	
 	Sub Button4Click(sender As Object, e As EventArgs)
 		SelectTimesFile()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle button to launch file dialog for chapters output file
 	
 	Sub Button5Click(sender As Object, e As EventArgs)
 		OutputFileDialog()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Read an input file and determine the file type (i.e. XML, OGM, TXT, other)
 	
 	Private Function GetFileType(ByVal FilePath As String) As Integer
 		Dim s1, a1() As String
@@ -615,6 +650,8 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Return the file type string
 	
 	Private Function GetFileTypeString(ByVal myFileType As Integer) As String
 		If myFileType = FileType.XML Then Return "XML"
@@ -624,12 +661,16 @@ Public Partial Class MainForm
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Exit the application via the toolstrip
 	
 	Sub ExitToolStripMenuItem1Click(sender As Object, e As EventArgs)
 		Application.Exit
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the words list editor
 	
 	Sub WordsListToolStripMenuItemClick(sender As Object, e As EventArgs)
 		Dim A As New WordsList()
@@ -637,6 +678,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Load chapter times from the specified input file (clears all exising times)
 	
 	Sub LoadTimes()
 		Dim s1 As String = ""
@@ -676,12 +719,13 @@ Public Partial Class MainForm
 			ErrorBox("There was a problem loading the chapter times file.")
 			Me.cTimes = {}
 		End Try
-'		If (Me.cTimes.Length > 0) And (Me.cTimesType = FileType.TXT) Then Me.cTimes(UBound(Me.cTimes)) = FormatTimes(SECtoHMS(0))
 		If (Me.cTimes.Length > 0) And (Me.cTimesType = FileType.TXT) Then AppendArray(Me.cTimes, FormatTimes(SECtoHMS(0)))
 		ShowList()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Load chapter titles from the specified input file (clears all exising titles)
 	
 	Sub LoadTitles()
 		Dim s1 As String = ""
@@ -728,13 +772,15 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update the DataGridView with any changes from the time and title arrays
 	
 	Sub ShowList()
 		Dim cntTimes As Integer = Me.cTimes.Length
 		Dim cntTitles As Integer = Me.cTitles.Length
 		Dim cntList As Integer = cntTimes
 		If cntTitles > cntTimes Then cntList = cntTitles
-		Array.Sort(Me.cTimes)
+		Array.Sort(Me.cTimes)	'Ensure times are properly sorted
 		ChaptersDS.Tables(0).Rows.Clear
 		Dim DR As DataRow
 		For I As Integer = 1 To cntList Step 1
@@ -756,6 +802,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Validate new times input file and load the times
 	
 	Sub TbFileTimesTextChanged(sender As Object, e As EventArgs)
 		Dim myJunk As String = ""
@@ -782,6 +830,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Validate new titles input file and load the titles
 	
 	Sub TbFileTitlesTextChanged(sender As Object, e As EventArgs)
 		Dim myJunk As String = ""
@@ -808,24 +858,32 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle button to (re)load chapter times input file
 	
 	Sub Button7Click(sender As Object, e As EventArgs)
 		LoadTimes()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle button to (re)load chapter titles input file
 	
 	Sub Button6Click(sender As Object, e As EventArgs)
 		LoadTitles()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update editing textboxes to capture changes made directly in the DataGridView
 	
 	Sub DataGridView1SelectionChanged(sender As Object, e As EventArgs)
 		dgvLineInfo()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update editing textboxes from current DataGridView row
 	
 	Private Sub dgvLineInfo()
 		Try
@@ -844,6 +902,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update time and title arrays from the DataGridView
 	
 	Private Sub UpdateFromDatagrid()
 		Me.cTimes = {}
@@ -855,10 +915,11 @@ Public Partial Class MainForm
 			If Not tTime.Equals("n/a") Then AppendArray(Me.cTimes, tTime)
 			If Not tTitle.Equals("n/a") Then AppendArray(Me.cTitles, tTitle)
 		Next
-'		ShowList()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Force array and editing textboxes update after changes made in the DataGridView
 	
 	Sub DataGridView1CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
 		UpdateFromDatagrid()
@@ -866,6 +927,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Add new chapter time and force updates
 	
 	Sub BTimeAddClick(sender As Object, e As EventArgs)
 		AppendArray(Me.cTimes, FormatTimes(Me.maskedTextBox1.Text.Trim))
@@ -874,6 +937,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Toggle output file type selection
 	
 	Sub Button8Click(sender As Object, e As EventArgs)
 		Dim s1, s2, s3 As String
@@ -898,45 +963,50 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Force fixing of masked textbox value
 	
 	Sub MaskedTextBox1Leave(sender As Object, e As EventArgs)
 		Me.maskedTextBox1.Text = FixMaskedText(Me.maskedTextBox1.Text)
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Force fixing of masked textbox value
 	
 	Sub MaskedTextBox2Leave(sender As Object, e As EventArgs)
 		Me.maskedTextBox2.Text = FixMaskedText(Me.maskedTextBox2.Text)
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Force fixing of masked textbox value
 	
 	Sub MaskedTextBox3Leave(sender As Object, e As EventArgs)
 		Me.maskedTextBox3.Text = FixMaskedText(Me.maskedTextBox3.Text)
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Force fixing of masked textbox value
 	
 	Sub MaskedTextBox4Leave(sender As Object, e As EventArgs)
 		Me.maskedTextBox4.Text = FixMaskedText(Me.maskedTextBox4.Text)
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Fix masked textbox value to replace spaces with zeros (bug in VB Net?)
 	
 	Private Function FixMaskedText(ByVal TextToFix As String) As String
 		Dim s1 As String = TextToFix.PadRight(14, CChar("0"))
 		Dim s2 As String = Strings.Replace(s1, " ", "0")
 		Return s2
-'		Dim s1 As String = Me.maskedTextBox3.Text.PadRight(14, CChar("0"))
-'		Dim s2 As String = Strings.Replace(s1, " ", "0")
-'		Dim s3 As String = Strings.Replace(s2, ":", "")
-'		s3 = Strings.Replace(s3, ".", "")
-'		Me.maskedTextBox2.Text = s2
-'		Dim s4 As String = Me.maskedTextBox2.Text
-'		'MsgBox("s1 = '" & s1 & "'" & Environment.NewLine & "s2 = '" & s2 & "'" & Environment.NewLine & "s3 = '" & s3 & "'" & Environment.NewLine & "s4 = '" & s4 & "'")
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update selected chapter time
 	
 	Sub BTimeUpdateClick(sender As Object, e As EventArgs)
 		Dim idx As Integer
@@ -956,6 +1026,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Delete selected chapter time from the list
 	
 	Sub BTimeRemoveClick(sender As Object, e As EventArgs)
 		Dim idx As Integer
@@ -983,6 +1055,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Insert new chapter title
 	
 	Sub BTitleInsertClick(sender As Object, e As EventArgs)
 		Dim idx As Integer
@@ -1014,6 +1088,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update selected chapter title
 	
 	Sub BTitleUpdateClick(sender As Object, e As EventArgs)
 		Dim idx As Integer
@@ -1037,6 +1113,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Delete selected chapter title from the list
 	
 	Sub BTitleRemoveClick(sender As Object, e As EventArgs)
 		Dim idx As Integer
@@ -1064,6 +1142,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Delete selected line (chapter time and title) from the list
 	
 	Sub BDeleteLineClick(sender As Object, e As EventArgs)
 		Dim idx As Integer
@@ -1092,6 +1172,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Adjust the case of all titles based on user-defined words list
 	
 	Sub BFixTitleCaseClick(sender As Object, e As EventArgs)
 		If Me.dataGridView1.Rows.Count < 1 Then Exit Sub
@@ -1104,54 +1186,72 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the time scaling routine
 	
 	Sub BScaleTimesClick(sender As Object, e As EventArgs)
 		ScaleTimes()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the time shifting routine
 	
 	Sub BShiftTimesClick(sender As Object, e As EventArgs)
 		ShiftTimes()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the time framerate matching routine
 	
 	Sub BFrameRateTimesClick(sender As Object, e As EventArgs)
 		MatchFrameRate()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the interval time block adding routine
 	
 	Sub BAddIntervalsClick(sender As Object, e As EventArgs)
 		AddIntervalTimes()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the wite output file routine
 	
 	Sub BOutputClick(sender As Object, e As EventArgs)
 		WriteChapterFile()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the reset routine
 	
 	Sub BResetClick(sender As Object, e As EventArgs)
 		ResetAll()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch file dialog for chapter times input file
 	
 	Sub TimesToolStripMenuItemClick(sender As Object, e As EventArgs)
 		SelectTimesFile()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch file dialog for chapter titles input file
 	
 	Sub TitlesToolStripMenuItemClick(sender As Object, e As EventArgs)
 		SelectTitlesFile()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch file dialog for chapter times input file
 	
 	Private Sub SelectTimesFile()
 		Dim myJunk As String
@@ -1162,6 +1262,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch file dialog for chapter titles input file
 	
 	Private Sub SelectTitlesFile()
 		Dim myJunk As String
@@ -1172,6 +1274,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the settings window
 	
 	Sub SettingsToolStripMenuItemClick(sender As Object, e As EventArgs)
 		Dim A As New Settings()
@@ -1179,18 +1283,24 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the reset routine
 	
 	Sub NewToolStripMenuItemClick(sender As Object, e As EventArgs)
 		ResetAll()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the write chapters output file routine
 	
 	Sub SaveToolStripMenuItemClick(sender As Object, e As EventArgs)
 		WriteChapterFile()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the output file selection dialog routine
 	
 	Sub SaveAsToolStripMenuItemClick(sender As Object, e As EventArgs)
 		OutputFileDialog()
@@ -1198,6 +1308,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launch the "About ChapterMaker" window
 	
 	Sub AboutToolStripMenuItemClick(sender As Object, e As EventArgs)
 		Dim A As New AboutBox()
@@ -1205,40 +1317,60 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Exit the program
 	
 	Sub BExitClick(sender As Object, e As EventArgs)
 		Me.Close
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	'
+	
 	'Examples of help calls:
-	'
+	
 	'Help.ShowHelp(ParentForm, "HelpFile.chm", HelpNavigator.TableofContents, Nothing)
 	'Help.ShowHelp(ParentForm, "HelpFile.chm", HelpNavigator.Index, Nothing)
 	'Help.ShowHelp(ParentForm, "HelpFile.chm", HelpNavigator.Topic, "Page.html")
 	'Help.ShowHelp(ParentForm, "HelpFile.chm", HelpNavigator.TopicId, 123)
 	'Help.ShowHelp(ParentForm, "HelpFile.chm", HelpNavigator.Keyword, "Keyword")	
-	'
+	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Verify that the help file exists
+	
+	Private Function HelpFileExists() As Boolean
+		If System.IO.File.Exists(AppHelp) Then Return True
+		ErrorBox("Unable to locate the help file """ & AppHelp & """ in the program directory.")
+		Return False
+	End Function
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Open the help file Table of Contents tab
 	
 	Sub ContentsToolStripMenuItemClick(sender As Object, e As EventArgs)
-		System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.TableOfContents, Nothing)
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.TableOfContents, Nothing)
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Open the help file index tab
 	
 	Sub IndexToolStripMenuItemClick(sender As Object, e As EventArgs)
-		System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.Index, Nothing)
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.Index, Nothing)
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Open the help file Search tab
 	
 	Sub SearchToolStripMenuItemClick(sender As Object, e As EventArgs)
-		System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.Find, "")
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.Find, "")
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle drag 'n' drop rearranging of chapter titles
 	
 	Sub DataGridView1DragDrop(sender As Object, e As DragEventArgs)
 		Dim p As Point = DataGridView1.PointToClient(New Point(e.X, e.Y))
@@ -1254,12 +1386,12 @@ Public Partial Class MainForm
 			Next
 			cTitles = tempTitles
 			ShowList()
-'			DataGridView1.Rows.RemoveAt(fromIndex)
-'			DataGridView1.Rows.Insert(dragIndex, dragRow)
 		End If
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle drag 'n' drop rearranging of chapter titles
 	
 	Sub DataGridView1DragOver(sender As Object, e As DragEventArgs)
 		Dim p As Point = DataGridView1.PointToClient(New Point(e.X, e.Y))
@@ -1271,6 +1403,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle drag 'n' drop rearranging of chapter titles
 	
 	Sub DataGridView1MouseDown(sender As Object, e As MouseEventArgs)
 		fromIndex = DataGridView1.HitTest(e.X, e.Y).RowIndex
@@ -1284,6 +1418,8 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle drag 'n' drop rearranging of chapter titles
 	
 	Sub DataGridView1MouseMove(sender As Object, e As MouseEventArgs)
 		If (e.Button And MouseButtons.Left) = MouseButtons.Left Then
@@ -1295,59 +1431,5 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	Sub Button9Click(sender As Object, e As EventArgs)
-		Dim s1 As String = Me.maskedTextBox1.Text.PadRight(14, CChar("0"))
-		Dim s2 As String = ""
-		For I As Integer = 1 To s1.Length Step 1
-			s2 &= "'" & Mid(s1, I, 1) & "'  (" & Convert.ToString(Convert.ToInt32(Convert.ToChar(Mid(s1, I, 1)))) & ")" & Environment.NewLine
-		Next
-		s1 = s1.Replace(CChar(" "), CChar("0"))
-		MsgBox("Value stored is '" & s1 & "'." & Environment.NewLine & Environment.NewLine & s2, MsgBoxStyle.ApplicationModal, "Test")
-	End Sub
-	
-	
-	
-	
-	Sub Button12Click(sender As Object, e As EventArgs)
-'		MsgBox("Language = '" & cbLanguage.SelectedText.Trim & "'")
-		MsgBox("Language = '" & cbLanguage.SelectedItem.ToString.Trim & "'")
-	End Sub
-	
-	
-	
-	
-	
 	
 End Class

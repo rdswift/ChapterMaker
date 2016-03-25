@@ -10,17 +10,37 @@
 ' the Free Software Foundation, either version 3 of the License, or
 ' (at your option) any later version.
 '
-' Foobar is distributed in the hope that it will be useful,
+' ChapterMaker is distributed in the hope that it will be useful,
 ' but WITHOUT ANY WARRANTY; without even the implied warranty of
 ' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ' GNU General Public License for more details.
 '
 ' You should have received a copy of the GNU General Public License
-' along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+' along with ChapterMaker.  If not, see <http://www.gnu.org/licenses/>.
+'
+' -----------------------------------------------------------------------
+'
+' Prepared using SharpDevelop <https://sourceforge.net/projects/sharpdevelop/>
 '
 ' -----------------------------------------------------------------------
 
 Module ModINI
+' -----------------------------------------------------------------------
+'	
+' Routines for reading and writing an INI type file
+'
+' Example file format:
+'
+'	[Section1]
+'	Parameter1=Value1
+'	Parameter2=Value2
+'	Parameter3=Value3
+'
+'	[Section2]
+'	Parameter4=Value4
+'	Parameter5=Value5
+'
+' -----------------------------------------------------------------------
     Private Declare Unicode Function WritePrivateProfileString Lib "kernel32" _
     Alias "WritePrivateProfileStringW" (ByVal lpApplicationName As String, _
     ByVal lpKeyName As String, ByVal lpString As String, _

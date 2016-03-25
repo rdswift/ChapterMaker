@@ -10,13 +10,17 @@
 ' the Free Software Foundation, either version 3 of the License, or
 ' (at your option) any later version.
 '
-' Foobar is distributed in the hope that it will be useful,
+' ChapterMaker is distributed in the hope that it will be useful,
 ' but WITHOUT ANY WARRANTY; without even the implied warranty of
 ' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ' GNU General Public License for more details.
 '
 ' You should have received a copy of the GNU General Public License
-' along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+' along with ChapterMaker.  If not, see <http://www.gnu.org/licenses/>.
+'
+' -----------------------------------------------------------------------
+'
+' Prepared using SharpDevelop <https://sourceforge.net/projects/sharpdevelop/>
 '
 ' -----------------------------------------------------------------------
 
@@ -31,10 +35,12 @@ Public Partial Class AboutBox
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Load information for display
 	
 	Sub AboutBoxLoad(sender As Object, e As EventArgs)
 		Me.Text = String.Format("About {0}", AppName)
-		Dim s1 As String = AppName & " - " & appDescription & "." & Environment.NewLine _
+		Dim s1 As String = AppName & " - " & appDescription & Environment.NewLine _
 			& AppCopyright & " " & appCompany & " <"
 		Dim a1 As Integer = s1.Length
 		s1 &= AppEmail & ">" & Environment.NewLine & Environment.NewLine _
@@ -54,13 +60,23 @@ Public Partial Class AboutBox
 		Me.lBuild.Text = "Build: " & AppVersion(True)
 	End Sub
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Close the window
+	
 	Sub Button1Click(sender As Object, e As EventArgs)
 		Me.Close
 	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Process hyperlinks
 	
 	Sub RichTextBox1LinkClicked(sender As Object, e As LinkClickedEventArgs)
 		Process.Start(e.LinkText.Trim)
 		Me.button1.Focus
 	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 End Class
