@@ -14,9 +14,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Contact:    Bob Swift
-            5708 - 47 Street
-            Stony Plain, AB  T7Z 1C6
-            Canada
-            
-            Email: bswift@rsds.ca
+    Bob Swift
+    5708 - 47 Street
+    Stony Plain, AB  T7Z 1C6
+    Canada
+
+    Email: bswift@rsds.ca
+
+ChapterMaker has been developed and compiled using SharpDevelop
+<https://sourceforge.net/projects/sharpdevelop/>.

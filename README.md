@@ -22,5 +22,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Email: bswift@rsds.ca
 
-ChapterMaker had been developed and compiled using SharpDevelop
+ChapterMaker has been developed and compiled using SharpDevelop
 <https://sourceforge.net/projects/sharpdevelop/>.
