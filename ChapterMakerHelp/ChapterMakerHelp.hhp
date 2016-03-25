@@ -1,0 +1,42 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=ChapterMakerHelp.chm
+Contents file=ChapterMakerHelpTOC.hhc
+Default topic=ChapterMakerHelp01.htm
+Display compile progress=Yes
+Full-text search=Yes
+Index file=ChapterMakerHelpIDX.hhk
+Language=0x1009 English (Canada)
+Title=ChapterMaker
+
+[FILES]
+ChapterMakerHelp01.htm
+ChapterMakerHelp02.htm
+ChapterMakerHelp03.htm
+ChapterMakerHelp03AA.htm
+ChapterMakerHelp03AB.htm
+ChapterMakerHelp04.htm
+ChapterMakerHelp04AA.htm
+ChapterMakerHelp04AB.htm
+ChapterMakerHelp04AC.htm
+ChapterMakerHelp04AD.htm
+ChapterMakerHelp04AE.htm
+ChapterMakerHelp05.htm
+ChapterMakerHelp05AA.htm
+ChapterMakerHelp05AB.htm
+ChapterMakerHelp05AC.htm
+ChapterMakerHelp06.htm
+ChapterMakerHelp06AA.htm
+ChapterMakerHelp06AB.htm
+ChapterMakerHelp07.htm
+ChapterMakerHelp08.htm
+
+
+[ALIAS]
+
+
+[MAP]
+
+
+[INFOTYPES]
+

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="Window Styles" value="0x800025">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="About ChapterMaker">
+		<param name="Local" value="ChapterMakerHelp01.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Overview / Getting Started">
+		<param name="Local" value="ChapterMakerHelp02.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Inputs and Outputs">
+		<param name="Local" value="ChapterMakerHelp03.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Input Files">
+			<param name="Local" value="ChapterMakerHelp03AA.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Output Files">
+			<param name="Local" value="ChapterMakerHelp03AB.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Chapter Times">
+		<param name="Local" value="ChapterMakerHelp04.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Reading Times From a File">
+			<param name="Local" value="ChapterMakerHelp04AA.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Adding Interval Times">
+			<param name="Local" value="ChapterMakerHelp04AB.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Manual Time Entry / Editing">
+			<param name="Local" value="ChapterMakerHelp04AC.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Scaling Times">
+			<param name="Local" value="ChapterMakerHelp04AD.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Shifting Times">
+			<param name="Local" value="ChapterMakerHelp04AE.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Chapter Titles">
+		<param name="Local" value="ChapterMakerHelp05.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Reading Titles From a File">
+			<param name="Local" value="ChapterMakerHelp05AA.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Manual Title Entry / Editing">
+			<param name="Local" value="ChapterMakerHelp05AB.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Rearranging Titles">
+			<param name="Local" value="ChapterMakerHelp05AC.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Title Case Utility">
+		<param name="Local" value="ChapterMakerHelp06.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="How Title Case Works">
+			<param name="Local" value="ChapterMakerHelp06AA.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Words List Editor">
+			<param name="Local" value="ChapterMakerHelp06AB.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Preferences & Default Settings">
+		<param name="Local" value="ChapterMakerHelp07.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="When Things Go Wrong">
+		<param name="Local" value="ChapterMakerHelp08.htm">
+		</OBJECT>
+</UL>
+</BODY></HTML>
+
