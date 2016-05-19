@@ -35,6 +35,7 @@ Public Class Defaults
 	Public Enum cmNoTitle
 		ChapterNum = 1
 		NA = 2
+		ChapterTime = 3
 	End Enum
 	
 	Private myCfgFileName As String
@@ -47,6 +48,9 @@ Public Class Defaults
 	Private myConfirmInsert As Boolean
 	Private myConfirmModify As Boolean
 	Private myNoTitle As Integer
+	Private myOGMExt As String
+	Private myUpdateCheck As Boolean
+	Private myLoadAppend As Boolean
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -59,7 +63,10 @@ Public Class Defaults
 		myConfirmDelete = True
 		myConfirmInsert = True
 		myConfirmModify = True
+		myUpdateCheck = True
+		myLoadAppend = True
 		myNoTitle = cmNoTitle.ChapterNum
+		myOGMExt = ".chapters.txt"
 		myCfgFileName = GetFileName()
 		If myCfgFileName.Trim.Length < 1 Then
 			MsgBox("Error accessing the application configuration file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
@@ -133,6 +140,24 @@ Public Class Defaults
 		End Set
 	End Property
 	
+	Public Property UpdateCheck() As Boolean
+		Get
+			Return myUpdateCheck
+		End Get
+		Set(ByVal value As Boolean)
+			myUpdateCheck = value
+		End Set
+	End Property
+	
+	Public Property LoadAppend() As Boolean
+		Get
+			Return myLoadAppend
+		End Get
+		Set(ByVal value As Boolean)
+			myLoadAppend = value
+		End Set
+	End Property
+	
 	Public Property Language() As String
 		Get
 			Return myLanguage.Trim.ToLower
@@ -152,6 +177,32 @@ Public Class Defaults
 		End Set
 	End Property
 	
+	Public Property OGMExt() As String
+		Get
+			Return myOGMExt.Trim
+		End Get
+		Set(ByVal value As String)
+			myOGMExt = FixOGMExt(value)
+		End Set
+	End Property
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Validate and repair OGM File Extension
+	
+	Public Function FixOGMExt(ByVal value As String) As String
+		value = value.Trim
+		Do While (value.Trim.Length > 0 ) And (value.Trim.EndsWith("."))
+			value = value.Trim.Substring(0,value.Trim.Length - 1)
+		Loop
+		Do While (value.Trim.Length > 0 ) And (value.Trim.StartsWith("."))
+			value = value.Trim.Substring(1,value.Trim.Length - 1)
+		Loop
+		If value.Trim.Length < 1 Then value = "chapters.txt"
+'		If Not value.Trim.StartsWith(".") Then value = "." & value.Trim
+		Return value.Trim
+	End Function
+	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
 	'	Read the settings from the configuration file
@@ -162,8 +213,16 @@ Public Class Defaults
 		
 		If myCfgFileName.Trim.Length > 0 Then
 			
-            'Output File Type
+			'Configuration File Name
 			s1 = myCfgFileName
+			
+			'Append Input Files
+            s2 = "Input"
+            s3 = "AppendLoad"
+            s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
+            If s4 <> "" Then myLoadAppend = s4.Trim.ToUpper.StartsWith("Y")
+			
+            'Output File Type
             s2 = "Output"
             s3 = "FileType"
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
@@ -178,6 +237,11 @@ Public Class Defaults
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
             myOutFilePath = s4
             
+            'OGM Output File extension
+            s3 = "OGMExtension"
+            s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
+            myOGMExt = FixOGMExt(s4)
+            
             'Add Chapter Numbers
             s3 = "ChapterNumbers"
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
@@ -186,11 +250,11 @@ Public Class Defaults
             'Missing Chapter Titles
             s3 = "MissingTitle"
             s4 = ReadIni(s1, s2, s3, "").Trim
+            myNoTitle = cmNoTitle.ChapterNum
             If s4 <> "" Then
             	If s4.Equals("ChapterNum", StringComparison.OrdinalIgnoreCase) Then myNoTitle = cmNoTitle.ChapterNum
             	If s4.Equals("NA", StringComparison.OrdinalIgnoreCase) Then myNoTitle = cmNoTitle.NA
-            Else
-            	myNoTitle = cmNoTitle.ChapterNum
+            	If s4.Equals("ChapterTime", StringComparison.OrdinalIgnoreCase) Then myNoTitle = cmNoTitle.ChapterTime
             End If
             
             'Confirm Delete
@@ -208,6 +272,11 @@ Public Class Defaults
             s3 = "ConfirmModify"
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
             If s4 <> "" Then myConfirmModify = s4.Trim.ToUpper.StartsWith("Y")
+            
+            'Check for Updates
+            s3 = "UpdateCheck"
+            s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
+            If s4 <> "" Then myUpdateCheck = s4.Trim.ToUpper.StartsWith("Y")
             
             'Language Code
             s2 = "Defaults"
@@ -304,6 +373,7 @@ Public Class Defaults
 		Dim oFP As String = myOutFilePath.Trim
 		Dim sMT As String = ""
 		If (myNoTitle = cmNoTitle.ChapterNum) Then sMT = "ChapterNum"
+		If (myNoTitle = cmNoTitle.ChapterTime) Then sMT = "ChapterTime"
 		If (myNoTitle = cmNoTitle.NA) Then sMT = "NA"
 		Dim sCD As String = "Yes"
 		If Not myConfirmDelete Then sCD = "No"
@@ -311,6 +381,10 @@ Public Class Defaults
 		If Not myConfirmInsert Then sCI = "No"
 		Dim sCM As String = "Yes"
 		If Not myConfirmModify Then sCM = "No"
+		Dim sUC As String = "Yes"
+		If Not myUpdateCheck Then sUC = "No"
+		Dim sAL As String = "Yes"
+		If Not myLoadAppend Then sAL = "No"
 		Dim dLan As String = myLanguage.Trim.ToLower
 		If dLan.Trim.Length <> 3 Then dLan = "und"
 		Dim dFR As String = myFrameRate.ToString.Trim
@@ -322,12 +396,18 @@ Public Class Defaults
 			& "; Local Configuration Information for ChapterMaker Application" & Environment.NewLine _
 			& ";" & Environment.NewLine _
 			& ";=================================================================" & Environment.NewLine _
+			& Environment.NewLine & Environment.NewLine & "[Input]" & Environment.NewLine _
+			& ";-----------------------------------------------------------------" & Environment.NewLine _
+			& "; AppendLoad:  Loading times or titles will append to existing list (Yes|No)" & Environment.NewLine _
+			& ";-----------------------------------------------------------------" & Environment.NewLine _
+			& "AppendLoad=" & sAL & Environment.NewLine _
 			& Environment.NewLine & Environment.NewLine & "[Output]" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "; FileType:  Type of output file to generate (XML|OGM)" & Environment.NewLine _
+			& "; OGMExtension:  Default extension for OGM output files" & Environment.NewLine _
 			& "; Directory: Default directory to write output file" & Environment.NewLine _
 			& "; ChapterNumbers: Include chapter numbers in titles (Yes|No)" & Environment.NewLine _
-			& "; MissingTitle:  How to deal with missing titles (ChapterNum|NA)" & Environment.NewLine _
+			& "; MissingTitle:  How to deal with missing titles (ChapterNum|ChapterTime|NA)" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "FileType=" & oFT & Environment.NewLine _
 			& "Directory=" & oFP & Environment.NewLine _
@@ -338,10 +418,12 @@ Public Class Defaults
 			& "; ConfirmInsert: Confirm before inserting times or titles (Yes|No)" & Environment.NewLine _
 			& "; ConfirmModify: Confirm before modifying times or titles (Yes|No)" & Environment.NewLine _
 			& "; ConfirmDelete: Confirm before deleting times or titles (Yes|No)" & Environment.NewLine _
+			& "; UpdateCheck: Check for program updates at start-up (Yes|No)" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "ConfirmInsert=" & sCI & Environment.NewLine _
 			& "ConfirmModify=" & sCM & Environment.NewLine _
 			& "ConfirmDelete=" & sCD & Environment.NewLine _
+			& "UpdateCheck=" & sUC & Environment.NewLine _
 			& Environment.NewLine & Environment.NewLine & "[Defaults]" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "; Language: Three character language code (Default is 'und')" & Environment.NewLine _

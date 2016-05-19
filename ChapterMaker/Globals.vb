@@ -31,6 +31,13 @@ Public Module Globals
 	'Public Const AppBeta = "β1"
 	Public Const AppBeta = ""
 	
+	Public Const VersionURL = "http://rdswift.github.io/ChapterMaker/version.txt"
+	
+	Public vMajor As Integer = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major
+	Public vMinor As Integer = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor
+	Public vBuild As Integer = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build
+	Public vRevision As Integer = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision
+	
 	' -----------------------------------------------------------
 	' Most constants are now read from the AssemblyInfo.vb file
 	' to ensure consistency with information displayed under the
@@ -283,15 +290,7 @@ Public Module Globals
 
 	Public Function AppVersion(Optional ByVal ShowBuild As Boolean = False) As String
 		Dim s1 As String = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString.Trim
-		If Not ShowBuild Then
-			Dim Idx As Integer = 0
-			Dim Cnt As Integer = 0
-			Do Until (Idx > s1.Length) Or (Cnt > 1)
-				Idx += 1
-				If Mid(s1, Idx, 1) = "." Then Cnt += 1
-			Loop
-			s1 = Left(s1, Idx - 1)
-		End If
+		If Not ShowBuild Then s1 = String.Format("{0}.{1}", vMajor, vMinor)
 		Return s1 & AppBeta
 	End Function
 

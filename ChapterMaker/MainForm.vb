@@ -69,7 +69,7 @@ Public Partial Class MainForm
 	'	Initialize the form
 	
 	Sub MainFormLoad(sender As Object, e As EventArgs)
-		Me.Text = appName & " (v" & AppVersion() & ")"
+		Me.Text = appName & " v" & String.Format("{0}.{1:00}", vMajor, vMinor)
 		Me.AllowDrop=True
 		Me.cbLanguage.Items.Clear
 		Me.cbLanguage.Items.AddRange(Languages)
@@ -88,6 +88,15 @@ Public Partial Class MainForm
 		ResetAll
 		AppFixCase = New FixCase
 		AppFixCase.Read()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Once form is displayed, initiate check for updates
+	
+	Sub MainFormShown(sender As Object, e As EventArgs)
+        Application.DoEvents()
+        If AppConfig.UpdateCheck Then CheckForUpdates()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -122,7 +131,7 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Handle drag 'n' drop events for chapter timles input file
+	'	Handle drag 'n' drop events for chapter times input file
 	
 	Sub TextBox2DragDrop(sender As Object, e As DragEventArgs)
 		Dim myJunk As String
@@ -287,7 +296,7 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Set desired end time and scale all previoous times
+	'	Set desired end time and scale all previous times
 	
 	Private Sub ScaleTimes()
 		Dim fromTime As Double = HMStoSEC(FormatTimes(Me.tbScaleFrom.Text.Trim))
@@ -417,8 +426,10 @@ Public Partial Class MainForm
 	Sub WriteChapterFile()
 		Dim s1, s2 As String
 		Dim eStr As String = ""
-		If (eStr.Trim.Length < 1) And ((Me.cTimes.Length < 1) Or (Me.cTitles.Length < 1)) Then _
+		If (eStr.Trim.Length < 1) And (Me.cTimes.Length < 1) Then _
 			eStr = "No chapter times identified."
+'		If (eStr.Trim.Length < 1) And (Me.cTitles.Length < 1) Then _
+'			eStr = "No chapter titles identified."
 		If (eStr.Trim.Length < 1) And (Me.tbFileOutput.Text.Trim.Length < 1) Then _
 			eStr = "No chapters output file identified."
 		
@@ -441,7 +452,8 @@ Public Partial Class MainForm
 			If Me.cbAddChapterNumbers.Checked Then s2 = chaptercount.ToString.Trim & ". "
 			If chaptercount > (UBound(Me.cTitles) + 1) Then
 				Dim s2s As String = "Unknown Chapter Title"
-				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then s2s = "Chapter " & chaptercount.ToString.Trim 
+				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then s2s = "Chapter " & chaptercount.ToString.Trim
+				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime Then s2s = s1
 				If AppConfig.NoTitle = Defaults.cmNoTitle.NA Then s2s = "n/a"
 				s2 &= s2s
 			Else
@@ -602,7 +614,7 @@ Public Partial Class MainForm
 	
 	Function GetOutputFileName() As String
 		Dim s1 As String = AppFileRoot & "Chapters."
-		If Me.cOutputType = FileType.OGM Then s1 &= "ogm"
+		If Me.cOutputType = FileType.OGM Then s1 &= AppConfig.OGMExt
 		If Me.cOutputType = FileType.XML Then s1 &= "xml"
 		Return s1
 	End Function
@@ -683,7 +695,7 @@ Public Partial Class MainForm
 	
 	Sub LoadTimes()
 		Dim s1 As String = ""
-		Me.cTimes = {}
+		If Not AppConfig.LoadAppend Then Me.cTimes = {}
 		If Me.tbFileTimes.Text.Trim.Length < 1 Then
 			If (Me.cTitlesType = FileType.OGM) Or (Me.cTitlesType = FileType.XML) Or (Me.cTitlesType = FileType.TXT) Then
 				If MsgBoxResult.Yes = MsgBox("No source file specified.  Use the chapter titles source file?", MsgBoxStyle.ApplicationModal _
@@ -730,7 +742,7 @@ Public Partial Class MainForm
 	Sub LoadTitles()
 		Dim s1 As String = ""
 		Dim s2 As String = ""
-		Me.cTitles = {}
+		If Not AppConfig.LoadAppend Then Me.cTitles = {}
 		If Me.tbFileTitles.Text.Trim.Length < 1 Then
 			If (Me.cTimesType = FileType.OGM) Or (Me.cTimesType = FileType.XML) Or (Me.cTimesType = FileType.TXT) Then
 				If MsgBoxResult.Yes = MsgBox("No source file specified.  Use the chapter times source file?", MsgBoxStyle.ApplicationModal _
@@ -825,7 +837,7 @@ Public Partial Class MainForm
 			LoadTimes()
 		Else
 			Me.cTimes = {}
-			ShowList()
+'			ShowList()
 		End If
 	End Sub
 	
@@ -852,7 +864,7 @@ Public Partial Class MainForm
 			End If
 			LoadTitles()
 		Else
-			Me.cTitles = {}
+'			Me.cTitles = {}
 			ShowList()
 		End If
 	End Sub
@@ -893,10 +905,12 @@ Public Partial Class MainForm
 			End If
 			Me.maskedTextBox1.Text = myTemp
 			Me.tbScaleFrom.Text = myTemp
+			Me.maskedTextBox2.Text = myTemp
 			Me.tbChapterTitle.Text = dataGridView1.CurrentRow.Cells("dgTitle").Value.ToString.Trim
 		Catch
 			Me.maskedTextBox1.Text = BLANKTIME
 			Me.tbScaleFrom.Text = BLANKTIME
+			Me.maskedTextBox2.Text = BLANKTIME
 			Me.tbChapterTitle.Text = ""
 		End Try
 	End Sub
@@ -942,21 +956,24 @@ Public Partial Class MainForm
 	
 	Sub Button8Click(sender As Object, e As EventArgs)
 		Dim s1, s2, s3 As String
+		Dim n1 As Integer
 		If Me.cOutputType = FileType.XML Then
+			n1 = 3
 			Me.cOutputType = FileType.OGM
 			Me.tbOutputType.Text = "OGM"
-			s1 = "ogm"
+			s1 = AppConfig.OGMExt.Trim
 			s2 = "xml"
 		Else
+			n1 = AppConfig.OGMExt.Trim.Length
 			Me.cOutputType = FileType.XML
 			Me.tbOutputType.Text = "XML"
 			s1 = "xml"
-			s2 = "ogm"
+			s2 = AppConfig.OGMExt.Trim
 		End If
 		s3 = Me.tbFileOutput.Text.Trim
 		If s3.Length > 0 Then
 			If s3.EndsWith(s2) Then
-				s3 = Strings.Left(s3, s3.Length - 3) & s1
+				s3 = Strings.Left(s3, s3.Length - n1) & s1
 				Me.tbFileOutput.Text = s3
 			End If
 		End If
@@ -1431,5 +1448,30 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Check for program updates
 	
+	Sub CheckForUpdatesToolStripMenuItemClick(sender As Object, e As EventArgs)
+		CheckForUpdates(True)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Clear list of chapter times
+	
+	Sub BClearTimesClick(sender As Object, e As EventArgs)
+		Me.cTimes = {}
+		ShowList()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Clear list of chapter titles
+	
+	Sub BClearTitlesClick(sender As Object, e As EventArgs)
+		Me.cTitles = {}
+		ShowList()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 End Class

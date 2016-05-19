@@ -50,11 +50,15 @@ Public Partial Class Settings
 		If AppConfig.OutputType = Defaults.cmOutputType.OGM Then Me.rbOGM.Checked = True
 		If AppConfig.OutputType = Defaults.cmOutputType.XML Then Me.rbXML.Checked = True
 		Me.tbOutputDir.Text = AppConfig.OutFilePath.Trim
+		Me.tbOGMExt.Text = AppConfig.OGMExt.Trim
 		If AppConfig.NoTitle = Defaults.cmNoTitle.NA Then Me.rbNA.Checked = True
 		If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then Me.rbChapterNum.Checked = True
+		If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime Then Me.rbChapterTime.Checked = True
 		Me.cbInsert.Checked = AppConfig.ConfirmInsert
 		Me.cbModify.Checked = AppConfig.ConfirmModify
 		Me.cbDelete.Checked = AppConfig.ConfirmDelete
+		Me.cbUpdates.Checked = AppConfig.UpdateCheck
+		Me.cbLoadAppend.Checked = AppConfig.LoadAppend
 		Me.tbFrameRate.Text = AppConfig.FrameRate.ToString.Trim
 	End Sub
 	
@@ -109,12 +113,16 @@ Public Partial Class Settings
 		AppConfig.OutputType = Defaults.cmOutputType.XML
 		If Me.rbOGM.Checked Then AppConfig.OutputType = Defaults.cmOutputType.OGM
 		AppConfig.OutFilePath = Me.tbOutputDir.Text.Trim
+		AppConfig.OGMExt = Me.tbOGMExt.Text.Trim
 		AppConfig.AddNumbers = Me.cbNumbers.Checked
 		AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum
 		If Me.rbNA.Checked Then AppConfig.NoTitle = Defaults.cmNoTitle.NA
+		If Me.rbChapterTime.Checked Then AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime
 		AppConfig.ConfirmInsert = Me.cbInsert.Checked
 		AppConfig.ConfirmModify = Me.cbModify.Checked
 		AppConfig.ConfirmDelete = Me.cbDelete.Checked
+		AppConfig.UpdateCheck = Me.cbUpdates.Checked
+		AppConfig.LoadAppend = Me.cbLoadAppend.Checked
 		Try
 			AppConfig.Language = Strings.Left(Me.cbLanguage.SelectedItem.ToString.Trim, 3).ToLower
 		Catch
@@ -126,10 +134,18 @@ Public Partial Class Settings
 		Catch
 			FR = 0
 		End Try
-		If (FR < 10) Or (FR > 40) Then FR = 23.976
+		If (FR < 10) Or (FR > 100) Then FR = 23.976
 		AppConfig.FrameRate = FR
 		AppConfig.Write
 		Me.Close
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Fix Default OGM File Extension
+	
+	Sub TbOGMExtTextChanged(sender As Object, e As EventArgs)
+		Me.tbOGMExt.Text = AppConfig.FixOGMExt(Me.tbOGMExt.Text).Trim
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------

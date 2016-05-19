@@ -98,6 +98,7 @@ Partial Class MainForm
 		Me.toolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.wordsListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.settingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.checkForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.helpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.contentsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.indexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -129,7 +130,11 @@ Partial Class MainForm
 		Me.groupBox3 = New System.Windows.Forms.GroupBox()
 		Me.cbLanguage = New System.Windows.Forms.ComboBox()
 		Me.groupBox4 = New System.Windows.Forms.GroupBox()
-		Me.bExit = New System.Windows.Forms.Button()
+		Me.label19 = New System.Windows.Forms.Label()
+		Me.label18 = New System.Windows.Forms.Label()
+		Me.label17 = New System.Windows.Forms.Label()
+		Me.label8 = New System.Windows.Forms.Label()
+		Me.label6 = New System.Windows.Forms.Label()
 		Me.maskedTextBox4 = New System.Windows.Forms.MaskedTextBox()
 		Me.label4 = New System.Windows.Forms.Label()
 		Me.maskedTextBox3 = New System.Windows.Forms.MaskedTextBox()
@@ -149,7 +154,10 @@ Partial Class MainForm
 		Me.label10 = New System.Windows.Forms.Label()
 		Me.bDeleteLine = New System.Windows.Forms.Button()
 		Me.label9 = New System.Windows.Forms.Label()
+		Me.bExit = New System.Windows.Forms.Button()
 		Me.helpProvider1 = New System.Windows.Forms.HelpProvider()
+		Me.bClearTimes = New System.Windows.Forms.Button()
+		Me.bClearTitles = New System.Windows.Forms.Button()
 		Me.menuStrip1.SuspendLayout
 		CType(Me.dataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
 		Me.groupBox1.SuspendLayout
@@ -166,7 +174,7 @@ Partial Class MainForm
 		Me.tbFileTitles.Margin = New System.Windows.Forms.Padding(4)
 		Me.tbFileTitles.Name = "tbFileTitles"
 		Me.tbFileTitles.Size = New System.Drawing.Size(320, 23)
-		Me.tbFileTitles.TabIndex = 0
+		Me.tbFileTitles.TabIndex = 8
 		Me.tbFileTitles.TabStop = false
 		AddHandler Me.tbFileTitles.TextChanged, AddressOf Me.TbFileTitlesTextChanged
 		AddHandler Me.tbFileTitles.DragDrop, AddressOf Me.TextBox1DragDrop
@@ -181,7 +189,7 @@ Partial Class MainForm
 		Me.tbFileTimes.Margin = New System.Windows.Forms.Padding(4)
 		Me.tbFileTimes.Name = "tbFileTimes"
 		Me.tbFileTimes.Size = New System.Drawing.Size(320, 23)
-		Me.tbFileTimes.TabIndex = 1
+		Me.tbFileTimes.TabIndex = 2
 		Me.tbFileTimes.TabStop = false
 		AddHandler Me.tbFileTimes.TextChanged, AddressOf Me.TbFileTimesTextChanged
 		AddHandler Me.tbFileTimes.DragDrop, AddressOf Me.TextBox2DragDrop
@@ -196,7 +204,7 @@ Partial Class MainForm
 		Me.tbFileOutput.Margin = New System.Windows.Forms.Padding(4)
 		Me.tbFileOutput.Name = "tbFileOutput"
 		Me.tbFileOutput.Size = New System.Drawing.Size(320, 23)
-		Me.tbFileOutput.TabIndex = 2
+		Me.tbFileOutput.TabIndex = 14
 		Me.tbFileOutput.TabStop = false
 		AddHandler Me.tbFileOutput.DragDrop, AddressOf Me.TextBox3DragDrop
 		AddHandler Me.tbFileOutput.DragEnter, AddressOf Me.TextBox3DragEnter
@@ -207,7 +215,7 @@ Partial Class MainForm
 		Me.label1.Location = New System.Drawing.Point(8, 60)
 		Me.label1.Name = "label1"
 		Me.label1.Size = New System.Drawing.Size(88, 18)
-		Me.label1.TabIndex = 3
+		Me.label1.TabIndex = 7
 		Me.label1.Text = "Titles File:"
 		'
 		'label2
@@ -215,7 +223,7 @@ Partial Class MainForm
 		Me.label2.Location = New System.Drawing.Point(8, 35)
 		Me.label2.Name = "label2"
 		Me.label2.Size = New System.Drawing.Size(88, 18)
-		Me.label2.TabIndex = 4
+		Me.label2.TabIndex = 1
 		Me.label2.Text = "Times File:"
 		'
 		'label3
@@ -223,7 +231,7 @@ Partial Class MainForm
 		Me.label3.Location = New System.Drawing.Point(8, 84)
 		Me.label3.Name = "label3"
 		Me.label3.Size = New System.Drawing.Size(88, 18)
-		Me.label3.TabIndex = 5
+		Me.label3.TabIndex = 13
 		Me.label3.Text = "Output File:"
 		'
 		'cbAddChapterNumbers
@@ -231,7 +239,7 @@ Partial Class MainForm
 		Me.cbAddChapterNumbers.Location = New System.Drawing.Point(8, 24)
 		Me.cbAddChapterNumbers.Name = "cbAddChapterNumbers"
 		Me.cbAddChapterNumbers.Size = New System.Drawing.Size(168, 24)
-		Me.cbAddChapterNumbers.TabIndex = 9
+		Me.cbAddChapterNumbers.TabIndex = 0
 		Me.cbAddChapterNumbers.TabStop = false
 		Me.cbAddChapterNumbers.Text = "Add Chapter Numbers"
 		Me.cbAddChapterNumbers.UseVisualStyleBackColor = true
@@ -239,22 +247,22 @@ Partial Class MainForm
 		'tbScaleFrom
 		'
 		Me.tbScaleFrom.BackColor = System.Drawing.SystemColors.Window
-		Me.tbScaleFrom.Location = New System.Drawing.Point(176, 120)
+		Me.tbScaleFrom.Location = New System.Drawing.Point(176, 184)
 		Me.tbScaleFrom.MaxLength = 20
 		Me.tbScaleFrom.Name = "tbScaleFrom"
 		Me.tbScaleFrom.ReadOnly = true
 		Me.tbScaleFrom.Size = New System.Drawing.Size(104, 23)
-		Me.tbScaleFrom.TabIndex = 11
+		Me.tbScaleFrom.TabIndex = 18
 		Me.tbScaleFrom.TabStop = false
 		Me.tbScaleFrom.Text = "00:00:00.00000"
 		Me.tbScaleFrom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		'
 		'bReset
 		'
-		Me.bReset.Location = New System.Drawing.Point(8, 224)
+		Me.bReset.Location = New System.Drawing.Point(640, 608)
 		Me.bReset.Name = "bReset"
 		Me.bReset.Size = New System.Drawing.Size(80, 31)
-		Me.bReset.TabIndex = 18
+		Me.bReset.TabIndex = 23
 		Me.bReset.TabStop = false
 		Me.bReset.Text = "Reset"
 		Me.bReset.UseVisualStyleBackColor = true
@@ -262,10 +270,10 @@ Partial Class MainForm
 		'
 		'bOutput
 		'
-		Me.bOutput.Location = New System.Drawing.Point(104, 224)
+		Me.bOutput.Location = New System.Drawing.Point(736, 608)
 		Me.bOutput.Name = "bOutput"
 		Me.bOutput.Size = New System.Drawing.Size(80, 31)
-		Me.bOutput.TabIndex = 19
+		Me.bOutput.TabIndex = 24
 		Me.bOutput.TabStop = false
 		Me.bOutput.Text = "Output"
 		Me.bOutput.UseVisualStyleBackColor = true
@@ -277,11 +285,11 @@ Partial Class MainForm
 		'
 		'tbOffset
 		'
-		Me.tbOffset.Location = New System.Drawing.Point(152, 96)
+		Me.tbOffset.Location = New System.Drawing.Point(152, 144)
 		Me.tbOffset.MaxLength = 20
 		Me.tbOffset.Name = "tbOffset"
 		Me.tbOffset.Size = New System.Drawing.Size(48, 23)
-		Me.tbOffset.TabIndex = 23
+		Me.tbOffset.TabIndex = 13
 		Me.tbOffset.TabStop = false
 		Me.tbOffset.Text = "0.0"
 		Me.tbOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -291,7 +299,7 @@ Partial Class MainForm
 		Me.bTitlesFileDialog.Location = New System.Drawing.Point(424, 56)
 		Me.bTitlesFileDialog.Name = "bTitlesFileDialog"
 		Me.bTitlesFileDialog.Size = New System.Drawing.Size(24, 23)
-		Me.bTitlesFileDialog.TabIndex = 25
+		Me.bTitlesFileDialog.TabIndex = 9
 		Me.bTitlesFileDialog.TabStop = false
 		Me.bTitlesFileDialog.Text = "..."
 		Me.bTitlesFileDialog.UseVisualStyleBackColor = true
@@ -302,7 +310,7 @@ Partial Class MainForm
 		Me.bTimesFileDialog.Location = New System.Drawing.Point(424, 32)
 		Me.bTimesFileDialog.Name = "bTimesFileDialog"
 		Me.bTimesFileDialog.Size = New System.Drawing.Size(24, 23)
-		Me.bTimesFileDialog.TabIndex = 26
+		Me.bTimesFileDialog.TabIndex = 3
 		Me.bTimesFileDialog.TabStop = false
 		Me.bTimesFileDialog.Text = "..."
 		Me.bTimesFileDialog.UseVisualStyleBackColor = true
@@ -313,7 +321,7 @@ Partial Class MainForm
 		Me.bOutputFileDialog.Location = New System.Drawing.Point(424, 80)
 		Me.bOutputFileDialog.Name = "bOutputFileDialog"
 		Me.bOutputFileDialog.Size = New System.Drawing.Size(24, 23)
-		Me.bOutputFileDialog.TabIndex = 27
+		Me.bOutputFileDialog.TabIndex = 15
 		Me.bOutputFileDialog.TabStop = false
 		Me.bOutputFileDialog.Text = "..."
 		Me.bOutputFileDialog.UseVisualStyleBackColor = true
@@ -324,8 +332,8 @@ Partial Class MainForm
 		Me.menuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.fileToolStripMenuItem1, Me.editToolStripMenuItem1, Me.toolsToolStripMenuItem, Me.helpToolStripMenuItem})
 		Me.menuStrip1.Location = New System.Drawing.Point(0, 0)
 		Me.menuStrip1.Name = "menuStrip1"
-		Me.menuStrip1.Size = New System.Drawing.Size(865, 24)
-		Me.menuStrip1.TabIndex = 28
+		Me.menuStrip1.Size = New System.Drawing.Size(930, 24)
+		Me.menuStrip1.TabIndex = 25
 		Me.menuStrip1.Text = "menuStrip1"
 		'
 		'fileToolStripMenuItem1
@@ -497,7 +505,7 @@ Partial Class MainForm
 		'
 		'toolsToolStripMenuItem
 		'
-		Me.toolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.wordsListToolStripMenuItem, Me.settingsToolStripMenuItem})
+		Me.toolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.wordsListToolStripMenuItem, Me.settingsToolStripMenuItem, Me.checkForUpdatesToolStripMenuItem})
 		Me.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem"
 		Me.toolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
 		Me.toolsToolStripMenuItem.Text = "&Tools"
@@ -505,16 +513,23 @@ Partial Class MainForm
 		'wordsListToolStripMenuItem
 		'
 		Me.wordsListToolStripMenuItem.Name = "wordsListToolStripMenuItem"
-		Me.wordsListToolStripMenuItem.Size = New System.Drawing.Size(129, 22)
+		Me.wordsListToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
 		Me.wordsListToolStripMenuItem.Text = "&Words List"
 		AddHandler Me.wordsListToolStripMenuItem.Click, AddressOf Me.WordsListToolStripMenuItemClick
 		'
 		'settingsToolStripMenuItem
 		'
 		Me.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem"
-		Me.settingsToolStripMenuItem.Size = New System.Drawing.Size(129, 22)
+		Me.settingsToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
 		Me.settingsToolStripMenuItem.Text = "&Settings"
 		AddHandler Me.settingsToolStripMenuItem.Click, AddressOf Me.SettingsToolStripMenuItemClick
+		'
+		'checkForUpdatesToolStripMenuItem
+		'
+		Me.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem"
+		Me.checkForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+		Me.checkForUpdatesToolStripMenuItem.Text = "&Check for Updates"
+		AddHandler Me.checkForUpdatesToolStripMenuItem.Click, AddressOf Me.CheckForUpdatesToolStripMenuItemClick
 		'
 		'helpToolStripMenuItem
 		'
@@ -558,11 +573,11 @@ Partial Class MainForm
 		'
 		'tbFrameRate
 		'
-		Me.tbFrameRate.Location = New System.Drawing.Point(104, 72)
+		Me.tbFrameRate.Location = New System.Drawing.Point(104, 104)
 		Me.tbFrameRate.MaxLength = 20
 		Me.tbFrameRate.Name = "tbFrameRate"
 		Me.tbFrameRate.Size = New System.Drawing.Size(72, 23)
-		Me.tbFrameRate.TabIndex = 29
+		Me.tbFrameRate.TabIndex = 8
 		Me.tbFrameRate.TabStop = false
 		Me.tbFrameRate.Text = "23.976"
 		Me.tbFrameRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -572,7 +587,7 @@ Partial Class MainForm
 		Me.bLoadTitles.Location = New System.Drawing.Point(504, 56)
 		Me.bLoadTitles.Name = "bLoadTitles"
 		Me.bLoadTitles.Size = New System.Drawing.Size(56, 23)
-		Me.bLoadTitles.TabIndex = 31
+		Me.bLoadTitles.TabIndex = 11
 		Me.bLoadTitles.TabStop = false
 		Me.bLoadTitles.Text = "Load"
 		Me.bLoadTitles.UseVisualStyleBackColor = true
@@ -583,7 +598,7 @@ Partial Class MainForm
 		Me.bLoadTimes.Location = New System.Drawing.Point(504, 32)
 		Me.bLoadTimes.Name = "bLoadTimes"
 		Me.bLoadTimes.Size = New System.Drawing.Size(56, 23)
-		Me.bLoadTimes.TabIndex = 32
+		Me.bLoadTimes.TabIndex = 5
 		Me.bLoadTimes.TabStop = false
 		Me.bLoadTimes.Text = "Load"
 		Me.bLoadTimes.UseVisualStyleBackColor = true
@@ -594,7 +609,7 @@ Partial Class MainForm
 		Me.bOutputType.Location = New System.Drawing.Point(504, 80)
 		Me.bOutputType.Name = "bOutputType"
 		Me.bOutputType.Size = New System.Drawing.Size(56, 23)
-		Me.bOutputType.TabIndex = 33
+		Me.bOutputType.TabIndex = 17
 		Me.bOutputType.TabStop = false
 		Me.bOutputType.Text = "Type"
 		Me.bOutputType.UseVisualStyleBackColor = true
@@ -607,7 +622,7 @@ Partial Class MainForm
 		Me.tbTimeType.Name = "tbTimeType"
 		Me.tbTimeType.ReadOnly = true
 		Me.tbTimeType.Size = New System.Drawing.Size(40, 23)
-		Me.tbTimeType.TabIndex = 34
+		Me.tbTimeType.TabIndex = 4
 		Me.tbTimeType.TabStop = false
 		Me.tbTimeType.Text = "---"
 		Me.tbTimeType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -619,7 +634,7 @@ Partial Class MainForm
 		Me.tbTitleType.Name = "tbTitleType"
 		Me.tbTitleType.ReadOnly = true
 		Me.tbTitleType.Size = New System.Drawing.Size(40, 23)
-		Me.tbTitleType.TabIndex = 35
+		Me.tbTitleType.TabIndex = 10
 		Me.tbTitleType.TabStop = false
 		Me.tbTitleType.Text = "---"
 		Me.tbTitleType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -631,7 +646,7 @@ Partial Class MainForm
 		Me.tbOutputType.Name = "tbOutputType"
 		Me.tbOutputType.ReadOnly = true
 		Me.tbOutputType.Size = New System.Drawing.Size(40, 23)
-		Me.tbOutputType.TabIndex = 36
+		Me.tbOutputType.TabIndex = 16
 		Me.tbOutputType.TabStop = false
 		Me.tbOutputType.Text = "---"
 		Me.tbOutputType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -647,7 +662,7 @@ Partial Class MainForm
 		Me.maskedTextBox1.ResetOnPrompt = false
 		Me.maskedTextBox1.ResetOnSpace = false
 		Me.maskedTextBox1.Size = New System.Drawing.Size(120, 23)
-		Me.maskedTextBox1.TabIndex = 39
+		Me.maskedTextBox1.TabIndex = 0
 		Me.maskedTextBox1.TabStop = false
 		Me.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		AddHandler Me.maskedTextBox1.Leave, AddressOf Me.MaskedTextBox1Leave
@@ -670,8 +685,8 @@ Partial Class MainForm
 		Me.dataGridView1.Location = New System.Drawing.Point(8, 112)
 		Me.dataGridView1.MultiSelect = false
 		Me.dataGridView1.Name = "dataGridView1"
-		Me.dataGridView1.Size = New System.Drawing.Size(552, 440)
-		Me.dataGridView1.TabIndex = 41
+		Me.dataGridView1.Size = New System.Drawing.Size(616, 528)
+		Me.dataGridView1.TabIndex = 18
 		Me.dataGridView1.TabStop = false
 		AddHandler Me.dataGridView1.CellValueChanged, AddressOf Me.DataGridView1CellValueChanged
 		AddHandler Me.dataGridView1.SelectionChanged, AddressOf Me.DataGridView1SelectionChanged
@@ -707,14 +722,14 @@ Partial Class MainForm
 		Me.dgTitle.DefaultCellStyle = dataGridViewCellStyle4
 		Me.dgTitle.HeaderText = "Title"
 		Me.dgTitle.Name = "dgTitle"
-		Me.dgTitle.Width = 290
+		Me.dgTitle.Width = 340
 		'
 		'bTimeAdd
 		'
 		Me.bTimeAdd.Location = New System.Drawing.Point(8, 48)
 		Me.bTimeAdd.Name = "bTimeAdd"
 		Me.bTimeAdd.Size = New System.Drawing.Size(80, 23)
-		Me.bTimeAdd.TabIndex = 42
+		Me.bTimeAdd.TabIndex = 1
 		Me.bTimeAdd.TabStop = false
 		Me.bTimeAdd.Text = "Add"
 		Me.bTimeAdd.UseVisualStyleBackColor = true
@@ -725,7 +740,7 @@ Partial Class MainForm
 		Me.label7.Location = New System.Drawing.Point(8, 48)
 		Me.label7.Name = "label7"
 		Me.label7.Size = New System.Drawing.Size(80, 24)
-		Me.label7.TabIndex = 43
+		Me.label7.TabIndex = 1
 		Me.label7.Text = "Language:"
 		Me.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -734,7 +749,7 @@ Partial Class MainForm
 		Me.bTimeUpdate.Location = New System.Drawing.Point(104, 48)
 		Me.bTimeUpdate.Name = "bTimeUpdate"
 		Me.bTimeUpdate.Size = New System.Drawing.Size(80, 23)
-		Me.bTimeUpdate.TabIndex = 44
+		Me.bTimeUpdate.TabIndex = 2
 		Me.bTimeUpdate.TabStop = false
 		Me.bTimeUpdate.Text = "Update"
 		Me.bTimeUpdate.UseVisualStyleBackColor = true
@@ -748,7 +763,7 @@ Partial Class MainForm
 		Me.tbChapterTitle.Margin = New System.Windows.Forms.Padding(4)
 		Me.tbChapterTitle.Name = "tbChapterTitle"
 		Me.tbChapterTitle.Size = New System.Drawing.Size(256, 23)
-		Me.tbChapterTitle.TabIndex = 46
+		Me.tbChapterTitle.TabIndex = 0
 		Me.tbChapterTitle.TabStop = false
 		'
 		'bTimeRemove
@@ -756,7 +771,7 @@ Partial Class MainForm
 		Me.bTimeRemove.Location = New System.Drawing.Point(200, 48)
 		Me.bTimeRemove.Name = "bTimeRemove"
 		Me.bTimeRemove.Size = New System.Drawing.Size(80, 23)
-		Me.bTimeRemove.TabIndex = 48
+		Me.bTimeRemove.TabIndex = 3
 		Me.bTimeRemove.TabStop = false
 		Me.bTimeRemove.Text = "Remove"
 		Me.bTimeRemove.UseVisualStyleBackColor = true
@@ -768,10 +783,10 @@ Partial Class MainForm
 		Me.groupBox1.Controls.Add(Me.bTimeRemove)
 		Me.groupBox1.Controls.Add(Me.bTimeAdd)
 		Me.groupBox1.Controls.Add(Me.bTimeUpdate)
-		Me.groupBox1.Location = New System.Drawing.Point(568, 120)
+		Me.groupBox1.Location = New System.Drawing.Point(632, 120)
 		Me.groupBox1.Name = "groupBox1"
 		Me.groupBox1.Size = New System.Drawing.Size(288, 80)
-		Me.groupBox1.TabIndex = 49
+		Me.groupBox1.TabIndex = 20
 		Me.groupBox1.TabStop = false
 		Me.groupBox1.Text = "Chapter Time"
 		'
@@ -781,10 +796,10 @@ Partial Class MainForm
 		Me.groupBox2.Controls.Add(Me.bTitleUpdate)
 		Me.groupBox2.Controls.Add(Me.bTitleInsert)
 		Me.groupBox2.Controls.Add(Me.tbChapterTitle)
-		Me.groupBox2.Location = New System.Drawing.Point(568, 208)
+		Me.groupBox2.Location = New System.Drawing.Point(632, 208)
 		Me.groupBox2.Name = "groupBox2"
 		Me.groupBox2.Size = New System.Drawing.Size(288, 80)
-		Me.groupBox2.TabIndex = 50
+		Me.groupBox2.TabIndex = 21
 		Me.groupBox2.TabStop = false
 		Me.groupBox2.Text = "Chapter Title"
 		'
@@ -793,7 +808,7 @@ Partial Class MainForm
 		Me.bTitleRemove.Location = New System.Drawing.Point(200, 48)
 		Me.bTitleRemove.Name = "bTitleRemove"
 		Me.bTitleRemove.Size = New System.Drawing.Size(80, 23)
-		Me.bTitleRemove.TabIndex = 51
+		Me.bTitleRemove.TabIndex = 3
 		Me.bTitleRemove.TabStop = false
 		Me.bTitleRemove.Text = "Remove"
 		Me.bTitleRemove.UseVisualStyleBackColor = true
@@ -804,7 +819,7 @@ Partial Class MainForm
 		Me.bTitleUpdate.Location = New System.Drawing.Point(104, 48)
 		Me.bTitleUpdate.Name = "bTitleUpdate"
 		Me.bTitleUpdate.Size = New System.Drawing.Size(80, 23)
-		Me.bTitleUpdate.TabIndex = 50
+		Me.bTitleUpdate.TabIndex = 2
 		Me.bTitleUpdate.TabStop = false
 		Me.bTitleUpdate.Text = "Update"
 		Me.bTitleUpdate.UseVisualStyleBackColor = true
@@ -815,7 +830,7 @@ Partial Class MainForm
 		Me.bTitleInsert.Location = New System.Drawing.Point(8, 48)
 		Me.bTitleInsert.Name = "bTitleInsert"
 		Me.bTitleInsert.Size = New System.Drawing.Size(80, 23)
-		Me.bTitleInsert.TabIndex = 47
+		Me.bTitleInsert.TabIndex = 1
 		Me.bTitleInsert.TabStop = false
 		Me.bTitleInsert.Text = "Insert"
 		Me.bTitleInsert.UseVisualStyleBackColor = true
@@ -826,10 +841,10 @@ Partial Class MainForm
 		Me.groupBox3.Controls.Add(Me.cbLanguage)
 		Me.groupBox3.Controls.Add(Me.cbAddChapterNumbers)
 		Me.groupBox3.Controls.Add(Me.label7)
-		Me.groupBox3.Location = New System.Drawing.Point(568, 32)
+		Me.groupBox3.Location = New System.Drawing.Point(632, 32)
 		Me.groupBox3.Name = "groupBox3"
 		Me.groupBox3.Size = New System.Drawing.Size(288, 80)
-		Me.groupBox3.TabIndex = 51
+		Me.groupBox3.TabIndex = 19
 		Me.groupBox3.TabStop = false
 		Me.groupBox3.Text = "Output Options"
 		'
@@ -842,12 +857,16 @@ Partial Class MainForm
 		Me.cbLanguage.Location = New System.Drawing.Point(88, 48)
 		Me.cbLanguage.Name = "cbLanguage"
 		Me.cbLanguage.Size = New System.Drawing.Size(192, 24)
-		Me.cbLanguage.TabIndex = 52
+		Me.cbLanguage.TabIndex = 2
 		Me.cbLanguage.TabStop = false
 		'
 		'groupBox4
 		'
-		Me.groupBox4.Controls.Add(Me.bExit)
+		Me.groupBox4.Controls.Add(Me.label19)
+		Me.groupBox4.Controls.Add(Me.label18)
+		Me.groupBox4.Controls.Add(Me.label17)
+		Me.groupBox4.Controls.Add(Me.label8)
+		Me.groupBox4.Controls.Add(Me.label6)
 		Me.groupBox4.Controls.Add(Me.maskedTextBox4)
 		Me.groupBox4.Controls.Add(Me.label4)
 		Me.groupBox4.Controls.Add(Me.maskedTextBox3)
@@ -868,31 +887,59 @@ Partial Class MainForm
 		Me.groupBox4.Controls.Add(Me.label10)
 		Me.groupBox4.Controls.Add(Me.bDeleteLine)
 		Me.groupBox4.Controls.Add(Me.label9)
-		Me.groupBox4.Controls.Add(Me.bReset)
-		Me.groupBox4.Controls.Add(Me.bOutput)
 		Me.groupBox4.Controls.Add(Me.tbFrameRate)
 		Me.groupBox4.Controls.Add(Me.tbOffset)
-		Me.groupBox4.Location = New System.Drawing.Point(568, 296)
+		Me.groupBox4.Location = New System.Drawing.Point(632, 296)
 		Me.groupBox4.Name = "groupBox4"
-		Me.groupBox4.Size = New System.Drawing.Size(288, 264)
-		Me.groupBox4.TabIndex = 52
+		Me.groupBox4.Size = New System.Drawing.Size(288, 304)
+		Me.groupBox4.TabIndex = 22
 		Me.groupBox4.TabStop = false
 		Me.groupBox4.Text = "Chapter List"
 		'
-		'bExit
+		'label19
 		'
-		Me.bExit.Location = New System.Drawing.Point(200, 224)
-		Me.bExit.Name = "bExit"
-		Me.bExit.Size = New System.Drawing.Size(80, 31)
-		Me.bExit.TabIndex = 53
-		Me.bExit.Text = "Exit"
-		Me.bExit.UseVisualStyleBackColor = true
-		AddHandler Me.bExit.Click, AddressOf Me.BExitClick
+		Me.label19.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		Me.label19.Location = New System.Drawing.Point(8, 240)
+		Me.label19.Name = "label19"
+		Me.label19.Size = New System.Drawing.Size(272, 2)
+		Me.label19.TabIndex = 21
+		'
+		'label18
+		'
+		Me.label18.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		Me.label18.Location = New System.Drawing.Point(8, 176)
+		Me.label18.Name = "label18"
+		Me.label18.Size = New System.Drawing.Size(272, 2)
+		Me.label18.TabIndex = 15
+		'
+		'label17
+		'
+		Me.label17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		Me.label17.Location = New System.Drawing.Point(8, 136)
+		Me.label17.Name = "label17"
+		Me.label17.Size = New System.Drawing.Size(272, 2)
+		Me.label17.TabIndex = 10
+		'
+		'label8
+		'
+		Me.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		Me.label8.Location = New System.Drawing.Point(8, 96)
+		Me.label8.Name = "label8"
+		Me.label8.Size = New System.Drawing.Size(272, 2)
+		Me.label8.TabIndex = 5
+		'
+		'label6
+		'
+		Me.label6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		Me.label6.Location = New System.Drawing.Point(8, 56)
+		Me.label6.Name = "label6"
+		Me.label6.Size = New System.Drawing.Size(272, 2)
+		Me.label6.TabIndex = 2
 		'
 		'maskedTextBox4
 		'
 		Me.maskedTextBox4.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-		Me.maskedTextBox4.Location = New System.Drawing.Point(176, 192)
+		Me.maskedTextBox4.Location = New System.Drawing.Point(176, 272)
 		Me.maskedTextBox4.Mask = "00:00:00.00000"
 		Me.maskedTextBox4.Name = "maskedTextBox4"
 		Me.maskedTextBox4.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
@@ -900,24 +947,24 @@ Partial Class MainForm
 		Me.maskedTextBox4.ResetOnPrompt = false
 		Me.maskedTextBox4.ResetOnSpace = false
 		Me.maskedTextBox4.Size = New System.Drawing.Size(104, 23)
-		Me.maskedTextBox4.TabIndex = 71
+		Me.maskedTextBox4.TabIndex = 26
 		Me.maskedTextBox4.TabStop = false
 		Me.maskedTextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		AddHandler Me.maskedTextBox4.Leave, AddressOf Me.MaskedTextBox4Leave
 		'
 		'label4
 		'
-		Me.label4.Location = New System.Drawing.Point(88, 192)
+		Me.label4.Location = New System.Drawing.Point(88, 272)
 		Me.label4.Name = "label4"
 		Me.label4.Size = New System.Drawing.Size(88, 24)
-		Me.label4.TabIndex = 71
+		Me.label4.TabIndex = 25
 		Me.label4.Text = "Up to"
 		Me.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		'
 		'maskedTextBox3
 		'
 		Me.maskedTextBox3.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-		Me.maskedTextBox3.Location = New System.Drawing.Point(176, 168)
+		Me.maskedTextBox3.Location = New System.Drawing.Point(176, 248)
 		Me.maskedTextBox3.Mask = "00:00:00.00000"
 		Me.maskedTextBox3.Name = "maskedTextBox3"
 		Me.maskedTextBox3.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
@@ -925,26 +972,26 @@ Partial Class MainForm
 		Me.maskedTextBox3.ResetOnPrompt = false
 		Me.maskedTextBox3.ResetOnSpace = false
 		Me.maskedTextBox3.Size = New System.Drawing.Size(104, 23)
-		Me.maskedTextBox3.TabIndex = 70
+		Me.maskedTextBox3.TabIndex = 24
 		Me.maskedTextBox3.TabStop = false
 		Me.maskedTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		AddHandler Me.maskedTextBox3.Leave, AddressOf Me.MaskedTextBox3Leave
 		'
 		'label5
 		'
-		Me.label5.Location = New System.Drawing.Point(56, 168)
+		Me.label5.Location = New System.Drawing.Point(56, 248)
 		Me.label5.Name = "label5"
 		Me.label5.Size = New System.Drawing.Size(120, 24)
-		Me.label5.TabIndex = 69
+		Me.label5.TabIndex = 23
 		Me.label5.Text = "Add Times Every"
 		Me.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'bAddIntervals
 		'
-		Me.bAddIntervals.Location = New System.Drawing.Point(8, 168)
+		Me.bAddIntervals.Location = New System.Drawing.Point(8, 248)
 		Me.bAddIntervals.Name = "bAddIntervals"
 		Me.bAddIntervals.Size = New System.Drawing.Size(40, 23)
-		Me.bAddIntervals.TabIndex = 68
+		Me.bAddIntervals.TabIndex = 22
 		Me.bAddIntervals.TabStop = false
 		Me.bAddIntervals.Text = "Go"
 		Me.bAddIntervals.UseVisualStyleBackColor = true
@@ -952,17 +999,17 @@ Partial Class MainForm
 		'
 		'label16
 		'
-		Me.label16.Location = New System.Drawing.Point(88, 144)
+		Me.label16.Location = New System.Drawing.Point(88, 208)
 		Me.label16.Name = "label16"
 		Me.label16.Size = New System.Drawing.Size(88, 24)
-		Me.label16.TabIndex = 66
+		Me.label16.TabIndex = 19
 		Me.label16.Text = "Becomes"
 		Me.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		'
 		'maskedTextBox2
 		'
 		Me.maskedTextBox2.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-		Me.maskedTextBox2.Location = New System.Drawing.Point(176, 144)
+		Me.maskedTextBox2.Location = New System.Drawing.Point(176, 208)
 		Me.maskedTextBox2.Mask = "00:00:00.00000"
 		Me.maskedTextBox2.Name = "maskedTextBox2"
 		Me.maskedTextBox2.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
@@ -970,44 +1017,44 @@ Partial Class MainForm
 		Me.maskedTextBox2.ResetOnPrompt = false
 		Me.maskedTextBox2.ResetOnSpace = false
 		Me.maskedTextBox2.Size = New System.Drawing.Size(104, 23)
-		Me.maskedTextBox2.TabIndex = 65
+		Me.maskedTextBox2.TabIndex = 20
 		Me.maskedTextBox2.TabStop = false
 		Me.maskedTextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		AddHandler Me.maskedTextBox2.Leave, AddressOf Me.MaskedTextBox2Leave
 		'
 		'label15
 		'
-		Me.label15.Location = New System.Drawing.Point(56, 120)
+		Me.label15.Location = New System.Drawing.Point(56, 184)
 		Me.label15.Name = "label15"
 		Me.label15.Size = New System.Drawing.Size(120, 24)
-		Me.label15.TabIndex = 64
+		Me.label15.TabIndex = 17
 		Me.label15.Text = "Scale Times so"
 		Me.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'label14
 		'
-		Me.label14.Location = New System.Drawing.Point(200, 96)
+		Me.label14.Location = New System.Drawing.Point(200, 144)
 		Me.label14.Name = "label14"
 		Me.label14.Size = New System.Drawing.Size(64, 24)
-		Me.label14.TabIndex = 63
+		Me.label14.TabIndex = 14
 		Me.label14.Text = "seconds"
 		Me.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'label13
 		'
-		Me.label13.Location = New System.Drawing.Point(56, 96)
+		Me.label13.Location = New System.Drawing.Point(56, 144)
 		Me.label13.Name = "label13"
 		Me.label13.Size = New System.Drawing.Size(96, 24)
-		Me.label13.TabIndex = 62
+		Me.label13.TabIndex = 12
 		Me.label13.Text = "Shift Times by"
 		Me.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'bScaleTimes
 		'
-		Me.bScaleTimes.Location = New System.Drawing.Point(8, 120)
+		Me.bScaleTimes.Location = New System.Drawing.Point(8, 184)
 		Me.bScaleTimes.Name = "bScaleTimes"
 		Me.bScaleTimes.Size = New System.Drawing.Size(40, 23)
-		Me.bScaleTimes.TabIndex = 61
+		Me.bScaleTimes.TabIndex = 16
 		Me.bScaleTimes.TabStop = false
 		Me.bScaleTimes.Text = "Go"
 		Me.bScaleTimes.UseVisualStyleBackColor = true
@@ -1015,10 +1062,10 @@ Partial Class MainForm
 		'
 		'bShiftTimes
 		'
-		Me.bShiftTimes.Location = New System.Drawing.Point(8, 96)
+		Me.bShiftTimes.Location = New System.Drawing.Point(8, 144)
 		Me.bShiftTimes.Name = "bShiftTimes"
 		Me.bShiftTimes.Size = New System.Drawing.Size(40, 23)
-		Me.bShiftTimes.TabIndex = 60
+		Me.bShiftTimes.TabIndex = 11
 		Me.bShiftTimes.TabStop = false
 		Me.bShiftTimes.Text = "Go"
 		Me.bShiftTimes.UseVisualStyleBackColor = true
@@ -1026,28 +1073,28 @@ Partial Class MainForm
 		'
 		'label12
 		'
-		Me.label12.Location = New System.Drawing.Point(176, 72)
+		Me.label12.Location = New System.Drawing.Point(176, 104)
 		Me.label12.Name = "label12"
 		Me.label12.Size = New System.Drawing.Size(56, 24)
-		Me.label12.TabIndex = 59
+		Me.label12.TabIndex = 9
 		Me.label12.Text = "fps FR"
 		Me.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'label11
 		'
-		Me.label11.Location = New System.Drawing.Point(56, 72)
+		Me.label11.Location = New System.Drawing.Point(56, 104)
 		Me.label11.Name = "label11"
 		Me.label11.Size = New System.Drawing.Size(48, 24)
-		Me.label11.TabIndex = 58
+		Me.label11.TabIndex = 7
 		Me.label11.Text = "Match"
 		Me.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'bFrameRateTimes
 		'
-		Me.bFrameRateTimes.Location = New System.Drawing.Point(8, 72)
+		Me.bFrameRateTimes.Location = New System.Drawing.Point(8, 104)
 		Me.bFrameRateTimes.Name = "bFrameRateTimes"
 		Me.bFrameRateTimes.Size = New System.Drawing.Size(40, 23)
-		Me.bFrameRateTimes.TabIndex = 57
+		Me.bFrameRateTimes.TabIndex = 6
 		Me.bFrameRateTimes.TabStop = false
 		Me.bFrameRateTimes.Text = "Go"
 		Me.bFrameRateTimes.UseVisualStyleBackColor = true
@@ -1055,10 +1102,10 @@ Partial Class MainForm
 		'
 		'bFixTitleCase
 		'
-		Me.bFixTitleCase.Location = New System.Drawing.Point(8, 48)
+		Me.bFixTitleCase.Location = New System.Drawing.Point(8, 64)
 		Me.bFixTitleCase.Name = "bFixTitleCase"
 		Me.bFixTitleCase.Size = New System.Drawing.Size(40, 23)
-		Me.bFixTitleCase.TabIndex = 56
+		Me.bFixTitleCase.TabIndex = 3
 		Me.bFixTitleCase.TabStop = false
 		Me.bFixTitleCase.Text = "Go"
 		Me.bFixTitleCase.UseVisualStyleBackColor = true
@@ -1066,10 +1113,10 @@ Partial Class MainForm
 		'
 		'label10
 		'
-		Me.label10.Location = New System.Drawing.Point(56, 48)
+		Me.label10.Location = New System.Drawing.Point(56, 64)
 		Me.label10.Name = "label10"
 		Me.label10.Size = New System.Drawing.Size(160, 24)
-		Me.label10.TabIndex = 55
+		Me.label10.TabIndex = 4
 		Me.label10.Text = "Fix Case on All Titles"
 		Me.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -1078,7 +1125,7 @@ Partial Class MainForm
 		Me.bDeleteLine.Location = New System.Drawing.Point(8, 24)
 		Me.bDeleteLine.Name = "bDeleteLine"
 		Me.bDeleteLine.Size = New System.Drawing.Size(40, 23)
-		Me.bDeleteLine.TabIndex = 54
+		Me.bDeleteLine.TabIndex = 0
 		Me.bDeleteLine.TabStop = false
 		Me.bDeleteLine.Text = "Go"
 		Me.bDeleteLine.UseVisualStyleBackColor = true
@@ -1089,20 +1136,55 @@ Partial Class MainForm
 		Me.label9.Location = New System.Drawing.Point(56, 24)
 		Me.label9.Name = "label9"
 		Me.label9.Size = New System.Drawing.Size(160, 24)
-		Me.label9.TabIndex = 46
+		Me.label9.TabIndex = 1
 		Me.label9.Text = "Remove Selected Line"
 		Me.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		'
+		'bExit
+		'
+		Me.bExit.Location = New System.Drawing.Point(832, 608)
+		Me.bExit.Name = "bExit"
+		Me.bExit.Size = New System.Drawing.Size(80, 31)
+		Me.bExit.TabIndex = 0
+		Me.bExit.Text = "Exit"
+		Me.bExit.UseVisualStyleBackColor = true
+		AddHandler Me.bExit.Click, AddressOf Me.BExitClick
 		'
 		'helpProvider1
 		'
 		Me.helpProvider1.HelpNamespace = "ChapterMakerHelp.chm"
+		'
+		'bClearTimes
+		'
+		Me.bClearTimes.Location = New System.Drawing.Point(568, 32)
+		Me.bClearTimes.Name = "bClearTimes"
+		Me.bClearTimes.Size = New System.Drawing.Size(56, 23)
+		Me.bClearTimes.TabIndex = 6
+		Me.bClearTimes.TabStop = false
+		Me.bClearTimes.Text = "Clear"
+		Me.bClearTimes.UseVisualStyleBackColor = true
+		AddHandler Me.bClearTimes.Click, AddressOf Me.BClearTimesClick
+		'
+		'bClearTitles
+		'
+		Me.bClearTitles.Location = New System.Drawing.Point(568, 56)
+		Me.bClearTitles.Name = "bClearTitles"
+		Me.bClearTitles.Size = New System.Drawing.Size(56, 23)
+		Me.bClearTitles.TabIndex = 12
+		Me.bClearTitles.TabStop = false
+		Me.bClearTitles.Text = "Clear"
+		Me.bClearTitles.UseVisualStyleBackColor = true
+		AddHandler Me.bClearTitles.Click, AddressOf Me.BClearTitlesClick
 		'
 		'MainForm
 		'
 		Me.AllowDrop = true
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(7!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(865, 565)
+		Me.ClientSize = New System.Drawing.Size(930, 652)
+		Me.Controls.Add(Me.bClearTitles)
+		Me.Controls.Add(Me.bClearTimes)
+		Me.Controls.Add(Me.bExit)
 		Me.Controls.Add(Me.groupBox4)
 		Me.Controls.Add(Me.groupBox3)
 		Me.Controls.Add(Me.groupBox2)
@@ -1122,7 +1204,9 @@ Partial Class MainForm
 		Me.Controls.Add(Me.label1)
 		Me.Controls.Add(Me.bTimesFileDialog)
 		Me.Controls.Add(Me.label2)
+		Me.Controls.Add(Me.bReset)
 		Me.Controls.Add(Me.bTitlesFileDialog)
+		Me.Controls.Add(Me.bOutput)
 		Me.Controls.Add(Me.label3)
 		Me.Font = New System.Drawing.Font("Arial", 10!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
 		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -1133,6 +1217,7 @@ Partial Class MainForm
 		Me.Name = "MainForm"
 		Me.Text = "ChapterMaker"
 		AddHandler Load, AddressOf Me.MainFormLoad
+		AddHandler Shown, AddressOf Me.MainFormShown
 		Me.menuStrip1.ResumeLayout(false)
 		Me.menuStrip1.PerformLayout
 		CType(Me.dataGridView1,System.ComponentModel.ISupportInitialize).EndInit
@@ -1146,6 +1231,14 @@ Partial Class MainForm
 		Me.ResumeLayout(false)
 		Me.PerformLayout
 	End Sub
+	Private bClearTitles As System.Windows.Forms.Button
+	Private bClearTimes As System.Windows.Forms.Button
+	Private label8 As System.Windows.Forms.Label
+	Private label17 As System.Windows.Forms.Label
+	Private label18 As System.Windows.Forms.Label
+	Private label19 As System.Windows.Forms.Label
+	Private label6 As System.Windows.Forms.Label
+	Private checkForUpdatesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Private helpProvider1 As System.Windows.Forms.HelpProvider
 	Private bExit As System.Windows.Forms.Button
 	Private settingsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

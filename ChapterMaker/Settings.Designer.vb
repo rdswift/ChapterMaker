@@ -57,6 +57,8 @@ Partial Class Settings
 		Me.bSave = New System.Windows.Forms.Button()
 		Me.bCancel = New System.Windows.Forms.Button()
 		Me.groupBox1 = New System.Windows.Forms.GroupBox()
+		Me.label7 = New System.Windows.Forms.Label()
+		Me.tbOGMExt = New System.Windows.Forms.TextBox()
 		Me.bDirectoryLookup = New System.Windows.Forms.Button()
 		Me.tbOutputDir = New System.Windows.Forms.TextBox()
 		Me.label2 = New System.Windows.Forms.Label()
@@ -69,6 +71,7 @@ Partial Class Settings
 		Me.label3 = New System.Windows.Forms.Label()
 		Me.folderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
 		Me.groupBox3 = New System.Windows.Forms.GroupBox()
+		Me.cbUpdates = New System.Windows.Forms.CheckBox()
 		Me.cbModify = New System.Windows.Forms.CheckBox()
 		Me.cbInsert = New System.Windows.Forms.CheckBox()
 		Me.cbDelete = New System.Windows.Forms.CheckBox()
@@ -79,15 +82,21 @@ Partial Class Settings
 		Me.label5 = New System.Windows.Forms.Label()
 		Me.label4 = New System.Windows.Forms.Label()
 		Me.groupBox2 = New System.Windows.Forms.GroupBox()
+		Me.rbChapterTime = New System.Windows.Forms.RadioButton()
+		Me.groupBox5 = New System.Windows.Forms.GroupBox()
+		Me.groupBox6 = New System.Windows.Forms.GroupBox()
+		Me.cbLoadAppend = New System.Windows.Forms.CheckBox()
 		Me.groupBox1.SuspendLayout
 		Me.groupBox3.SuspendLayout
 		Me.groupBox4.SuspendLayout
 		Me.groupBox2.SuspendLayout
+		Me.groupBox5.SuspendLayout
+		Me.groupBox6.SuspendLayout
 		Me.SuspendLayout
 		'
 		'bSave
 		'
-		Me.bSave.Location = New System.Drawing.Point(272, 400)
+		Me.bSave.Location = New System.Drawing.Point(272, 648)
 		Me.bSave.Margin = New System.Windows.Forms.Padding(4)
 		Me.bSave.Name = "bSave"
 		Me.bSave.Size = New System.Drawing.Size(100, 28)
@@ -98,7 +107,7 @@ Partial Class Settings
 		'
 		'bCancel
 		'
-		Me.bCancel.Location = New System.Drawing.Point(376, 400)
+		Me.bCancel.Location = New System.Drawing.Point(376, 648)
 		Me.bCancel.Margin = New System.Windows.Forms.Padding(4)
 		Me.bCancel.Name = "bCancel"
 		Me.bCancel.Size = New System.Drawing.Size(100, 28)
@@ -109,25 +118,45 @@ Partial Class Settings
 		'
 		'groupBox1
 		'
+		Me.groupBox1.Controls.Add(Me.label7)
+		Me.groupBox1.Controls.Add(Me.tbOGMExt)
 		Me.groupBox1.Controls.Add(Me.bDirectoryLookup)
 		Me.groupBox1.Controls.Add(Me.tbOutputDir)
 		Me.groupBox1.Controls.Add(Me.label2)
 		Me.groupBox1.Controls.Add(Me.rbXML)
 		Me.groupBox1.Controls.Add(Me.label1)
 		Me.groupBox1.Controls.Add(Me.rbOGM)
-		Me.groupBox1.Location = New System.Drawing.Point(8, 8)
+		Me.groupBox1.Location = New System.Drawing.Point(8, 152)
 		Me.groupBox1.Name = "groupBox1"
-		Me.groupBox1.Size = New System.Drawing.Size(464, 80)
-		Me.groupBox1.TabIndex = 2
+		Me.groupBox1.Size = New System.Drawing.Size(464, 112)
+		Me.groupBox1.TabIndex = 4
 		Me.groupBox1.TabStop = false
 		Me.groupBox1.Text = "Output File"
+		'
+		'label7
+		'
+		Me.label7.Location = New System.Drawing.Point(8, 72)
+		Me.label7.Name = "label7"
+		Me.label7.Size = New System.Drawing.Size(72, 24)
+		Me.label7.TabIndex = 6
+		Me.label7.Text = "OGM Ext.:"
+		Me.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		'
+		'tbOGMExt
+		'
+		Me.tbOGMExt.Location = New System.Drawing.Point(80, 72)
+		Me.tbOGMExt.Name = "tbOGMExt"
+		Me.tbOGMExt.Size = New System.Drawing.Size(344, 22)
+		Me.tbOGMExt.TabIndex = 7
+		Me.tbOGMExt.TabStop = false
+		AddHandler Me.tbOGMExt.TextChanged, AddressOf Me.TbOGMExtTextChanged
 		'
 		'bDirectoryLookup
 		'
 		Me.bDirectoryLookup.Location = New System.Drawing.Point(432, 48)
 		Me.bDirectoryLookup.Name = "bDirectoryLookup"
 		Me.bDirectoryLookup.Size = New System.Drawing.Size(24, 24)
-		Me.bDirectoryLookup.TabIndex = 3
+		Me.bDirectoryLookup.TabIndex = 5
 		Me.bDirectoryLookup.TabStop = false
 		Me.bDirectoryLookup.Text = "..."
 		Me.bDirectoryLookup.UseVisualStyleBackColor = true
@@ -138,7 +167,7 @@ Partial Class Settings
 		Me.tbOutputDir.Location = New System.Drawing.Point(80, 48)
 		Me.tbOutputDir.Name = "tbOutputDir"
 		Me.tbOutputDir.Size = New System.Drawing.Size(344, 22)
-		Me.tbOutputDir.TabIndex = 3
+		Me.tbOutputDir.TabIndex = 4
 		Me.tbOutputDir.TabStop = false
 		AddHandler Me.tbOutputDir.DoubleClick, AddressOf Me.TbOutputDirDoubleClick
 		'
@@ -147,7 +176,7 @@ Partial Class Settings
 		Me.label2.Location = New System.Drawing.Point(8, 48)
 		Me.label2.Name = "label2"
 		Me.label2.Size = New System.Drawing.Size(72, 24)
-		Me.label2.TabIndex = 4
+		Me.label2.TabIndex = 3
 		Me.label2.Text = "Directory:"
 		Me.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -167,7 +196,7 @@ Partial Class Settings
 		Me.label1.Location = New System.Drawing.Point(8, 24)
 		Me.label1.Name = "label1"
 		Me.label1.Size = New System.Drawing.Size(72, 24)
-		Me.label1.TabIndex = 3
+		Me.label1.TabIndex = 0
 		Me.label1.Text = "Type:"
 		Me.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -176,27 +205,27 @@ Partial Class Settings
 		Me.rbOGM.Location = New System.Drawing.Point(320, 24)
 		Me.rbOGM.Name = "rbOGM"
 		Me.rbOGM.Size = New System.Drawing.Size(136, 24)
-		Me.rbOGM.TabIndex = 0
+		Me.rbOGM.TabIndex = 2
 		Me.rbOGM.Text = "OGM (Ogg Media)"
 		Me.rbOGM.UseVisualStyleBackColor = true
 		'
 		'rbChapterNum
 		'
 		Me.rbChapterNum.Checked = true
-		Me.rbChapterNum.Location = New System.Drawing.Point(288, 48)
+		Me.rbChapterNum.Location = New System.Drawing.Point(224, 48)
 		Me.rbChapterNum.Name = "rbChapterNum"
 		Me.rbChapterNum.Size = New System.Drawing.Size(128, 24)
-		Me.rbChapterNum.TabIndex = 6
+		Me.rbChapterNum.TabIndex = 2
 		Me.rbChapterNum.TabStop = true
 		Me.rbChapterNum.Text = "Chapter Number"
 		Me.rbChapterNum.UseVisualStyleBackColor = true
 		'
 		'rbNA
 		'
-		Me.rbNA.Location = New System.Drawing.Point(224, 48)
+		Me.rbNA.Location = New System.Drawing.Point(224, 96)
 		Me.rbNA.Name = "rbNA"
 		Me.rbNA.Size = New System.Drawing.Size(56, 24)
-		Me.rbNA.TabIndex = 5
+		Me.rbNA.TabIndex = 4
 		Me.rbNA.Text = """n/a"""
 		Me.rbNA.UseVisualStyleBackColor = true
 		'
@@ -205,7 +234,7 @@ Partial Class Settings
 		Me.cbNumbers.Location = New System.Drawing.Point(8, 24)
 		Me.cbNumbers.Name = "cbNumbers"
 		Me.cbNumbers.Size = New System.Drawing.Size(448, 24)
-		Me.cbNumbers.TabIndex = 4
+		Me.cbNumbers.TabIndex = 0
 		Me.cbNumbers.TabStop = false
 		Me.cbNumbers.Text = "Include chapter numbers in output chapter titles"
 		Me.cbNumbers.UseVisualStyleBackColor = true
@@ -215,7 +244,7 @@ Partial Class Settings
 		Me.label3.Location = New System.Drawing.Point(8, 48)
 		Me.label3.Name = "label3"
 		Me.label3.Size = New System.Drawing.Size(216, 24)
-		Me.label3.TabIndex = 4
+		Me.label3.TabIndex = 1
 		Me.label3.Text = "Replace missing chapter titles with:"
 		Me.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -224,19 +253,29 @@ Partial Class Settings
 		Me.groupBox3.Controls.Add(Me.cbModify)
 		Me.groupBox3.Controls.Add(Me.cbInsert)
 		Me.groupBox3.Controls.Add(Me.cbDelete)
-		Me.groupBox3.Location = New System.Drawing.Point(8, 184)
+		Me.groupBox3.Location = New System.Drawing.Point(8, 432)
 		Me.groupBox3.Name = "groupBox3"
 		Me.groupBox3.Size = New System.Drawing.Size(464, 104)
-		Me.groupBox3.TabIndex = 4
+		Me.groupBox3.TabIndex = 6
 		Me.groupBox3.TabStop = false
 		Me.groupBox3.Text = "Confirmations"
+		'
+		'cbUpdates
+		'
+		Me.cbUpdates.Location = New System.Drawing.Point(8, 24)
+		Me.cbUpdates.Name = "cbUpdates"
+		Me.cbUpdates.Size = New System.Drawing.Size(448, 24)
+		Me.cbUpdates.TabIndex = 0
+		Me.cbUpdates.TabStop = false
+		Me.cbUpdates.Text = "Check for program updates at start-up"
+		Me.cbUpdates.UseVisualStyleBackColor = true
 		'
 		'cbModify
 		'
 		Me.cbModify.Location = New System.Drawing.Point(8, 48)
 		Me.cbModify.Name = "cbModify"
 		Me.cbModify.Size = New System.Drawing.Size(448, 24)
-		Me.cbModify.TabIndex = 2
+		Me.cbModify.TabIndex = 1
 		Me.cbModify.TabStop = false
 		Me.cbModify.Text = "Scaling, shifting or adjusting chapter times"
 		Me.cbModify.UseVisualStyleBackColor = true
@@ -246,7 +285,7 @@ Partial Class Settings
 		Me.cbInsert.Location = New System.Drawing.Point(8, 24)
 		Me.cbInsert.Name = "cbInsert"
 		Me.cbInsert.Size = New System.Drawing.Size(448, 24)
-		Me.cbInsert.TabIndex = 1
+		Me.cbInsert.TabIndex = 0
 		Me.cbInsert.TabStop = false
 		Me.cbInsert.Text = "Inserting chapter times or titles"
 		Me.cbInsert.UseVisualStyleBackColor = true
@@ -256,7 +295,7 @@ Partial Class Settings
 		Me.cbDelete.Location = New System.Drawing.Point(8, 72)
 		Me.cbDelete.Name = "cbDelete"
 		Me.cbDelete.Size = New System.Drawing.Size(448, 24)
-		Me.cbDelete.TabIndex = 0
+		Me.cbDelete.TabIndex = 2
 		Me.cbDelete.TabStop = false
 		Me.cbDelete.Text = "Deleting chapter times, titles or chapter list lines"
 		Me.cbDelete.UseVisualStyleBackColor = true
@@ -268,10 +307,10 @@ Partial Class Settings
 		Me.groupBox4.Controls.Add(Me.cbLanguage)
 		Me.groupBox4.Controls.Add(Me.label5)
 		Me.groupBox4.Controls.Add(Me.label4)
-		Me.groupBox4.Location = New System.Drawing.Point(8, 304)
+		Me.groupBox4.Location = New System.Drawing.Point(8, 552)
 		Me.groupBox4.Name = "groupBox4"
 		Me.groupBox4.Size = New System.Drawing.Size(464, 80)
-		Me.groupBox4.TabIndex = 5
+		Me.groupBox4.TabIndex = 7
 		Me.groupBox4.TabStop = false
 		Me.groupBox4.Text = "Default Preferences"
 		'
@@ -280,7 +319,7 @@ Partial Class Settings
 		Me.label6.Location = New System.Drawing.Point(264, 48)
 		Me.label6.Name = "label6"
 		Me.label6.Size = New System.Drawing.Size(32, 24)
-		Me.label6.TabIndex = 6
+		Me.label6.TabIndex = 4
 		Me.label6.Text = "fps"
 		Me.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -289,7 +328,7 @@ Partial Class Settings
 		Me.tbFrameRate.Location = New System.Drawing.Point(120, 48)
 		Me.tbFrameRate.Name = "tbFrameRate"
 		Me.tbFrameRate.Size = New System.Drawing.Size(136, 22)
-		Me.tbFrameRate.TabIndex = 6
+		Me.tbFrameRate.TabIndex = 3
 		Me.tbFrameRate.TabStop = false
 		Me.tbFrameRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		'
@@ -302,7 +341,7 @@ Partial Class Settings
 		Me.cbLanguage.Location = New System.Drawing.Point(120, 24)
 		Me.cbLanguage.Name = "cbLanguage"
 		Me.cbLanguage.Size = New System.Drawing.Size(304, 24)
-		Me.cbLanguage.TabIndex = 53
+		Me.cbLanguage.TabIndex = 1
 		Me.cbLanguage.TabStop = false
 		'
 		'label5
@@ -310,7 +349,7 @@ Partial Class Settings
 		Me.label5.Location = New System.Drawing.Point(8, 24)
 		Me.label5.Name = "label5"
 		Me.label5.Size = New System.Drawing.Size(112, 24)
-		Me.label5.TabIndex = 6
+		Me.label5.TabIndex = 0
 		Me.label5.Text = "Language Code:"
 		Me.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -319,28 +358,70 @@ Partial Class Settings
 		Me.label4.Location = New System.Drawing.Point(8, 48)
 		Me.label4.Name = "label4"
 		Me.label4.Size = New System.Drawing.Size(88, 24)
-		Me.label4.TabIndex = 5
+		Me.label4.TabIndex = 2
 		Me.label4.Text = "Frame Rate:"
 		Me.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'groupBox2
 		'
+		Me.groupBox2.Controls.Add(Me.rbChapterTime)
 		Me.groupBox2.Controls.Add(Me.rbChapterNum)
 		Me.groupBox2.Controls.Add(Me.cbNumbers)
 		Me.groupBox2.Controls.Add(Me.label3)
 		Me.groupBox2.Controls.Add(Me.rbNA)
-		Me.groupBox2.Location = New System.Drawing.Point(8, 96)
+		Me.groupBox2.Location = New System.Drawing.Point(8, 280)
 		Me.groupBox2.Name = "groupBox2"
-		Me.groupBox2.Size = New System.Drawing.Size(464, 80)
-		Me.groupBox2.TabIndex = 6
+		Me.groupBox2.Size = New System.Drawing.Size(464, 136)
+		Me.groupBox2.TabIndex = 5
 		Me.groupBox2.TabStop = false
 		Me.groupBox2.Text = "Chapters"
+		'
+		'rbChapterTime
+		'
+		Me.rbChapterTime.Location = New System.Drawing.Point(224, 72)
+		Me.rbChapterTime.Name = "rbChapterTime"
+		Me.rbChapterTime.Size = New System.Drawing.Size(128, 24)
+		Me.rbChapterTime.TabIndex = 3
+		Me.rbChapterTime.Text = "Chapter Time"
+		Me.rbChapterTime.UseVisualStyleBackColor = true
+		'
+		'groupBox5
+		'
+		Me.groupBox5.Controls.Add(Me.cbUpdates)
+		Me.groupBox5.Location = New System.Drawing.Point(8, 8)
+		Me.groupBox5.Name = "groupBox5"
+		Me.groupBox5.Size = New System.Drawing.Size(464, 56)
+		Me.groupBox5.TabIndex = 2
+		Me.groupBox5.TabStop = false
+		Me.groupBox5.Text = "Updates"
+		'
+		'groupBox6
+		'
+		Me.groupBox6.Controls.Add(Me.cbLoadAppend)
+		Me.groupBox6.Location = New System.Drawing.Point(8, 80)
+		Me.groupBox6.Name = "groupBox6"
+		Me.groupBox6.Size = New System.Drawing.Size(464, 56)
+		Me.groupBox6.TabIndex = 3
+		Me.groupBox6.TabStop = false
+		Me.groupBox6.Text = "Input Files"
+		'
+		'cbLoadAppend
+		'
+		Me.cbLoadAppend.Location = New System.Drawing.Point(8, 24)
+		Me.cbLoadAppend.Name = "cbLoadAppend"
+		Me.cbLoadAppend.Size = New System.Drawing.Size(448, 24)
+		Me.cbLoadAppend.TabIndex = 0
+		Me.cbLoadAppend.TabStop = false
+		Me.cbLoadAppend.Text = "Append times and titles to existing list when loading"
+		Me.cbLoadAppend.UseVisualStyleBackColor = true
 		'
 		'Settings
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(486, 440)
+		Me.ClientSize = New System.Drawing.Size(490, 690)
+		Me.Controls.Add(Me.groupBox6)
+		Me.Controls.Add(Me.groupBox5)
 		Me.Controls.Add(Me.groupBox2)
 		Me.Controls.Add(Me.groupBox4)
 		Me.Controls.Add(Me.groupBox3)
@@ -362,8 +443,17 @@ Partial Class Settings
 		Me.groupBox4.ResumeLayout(false)
 		Me.groupBox4.PerformLayout
 		Me.groupBox2.ResumeLayout(false)
+		Me.groupBox5.ResumeLayout(false)
+		Me.groupBox6.ResumeLayout(false)
 		Me.ResumeLayout(false)
 	End Sub
+	Private cbLoadAppend As System.Windows.Forms.CheckBox
+	Private groupBox6 As System.Windows.Forms.GroupBox
+	Private groupBox5 As System.Windows.Forms.GroupBox
+	Private cbUpdates As System.Windows.Forms.CheckBox
+	Private rbChapterTime As System.Windows.Forms.RadioButton
+	Private tbOGMExt As System.Windows.Forms.TextBox
+	Private label7 As System.Windows.Forms.Label
 	Private groupBox2 As System.Windows.Forms.GroupBox
 	Private cbLanguage As System.Windows.Forms.ComboBox
 	Private tbFrameRate As System.Windows.Forms.TextBox

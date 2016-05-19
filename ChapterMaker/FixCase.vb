@@ -37,7 +37,7 @@ Public Class FixCase
 	Private FCFilePath As String
 	Private StartValues() As String = { "a", "an", "and", "as", "at", "for", "I", "in", "is", "of", "on", "or", "the", "to", _
 		"A.", "B.", "C.", "D.", "E.", "F.", "G.", "H.", "I", "J.", "K.", "L.", "M.", "N.", "O.", "P.", "Q.", "R.", "S.", "T.", "U.", "V.", "W.", "X.", "Y.", "Z.", _
-		"CIA", "FBI", "KGB", "NASA", "NSA", "HQ" }
+		"CIA", "FBI", "KGB", "NASA", "NSA", "HQ", "USA" }
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -199,31 +199,7 @@ Public Class FixCase
 			Next
 			
 			''''''''''''''''''''''''''''''''''''''
-			' Process characters after numbers
-			''''''''''''''''''''''''''''''''''''''
-			LB = 0
-			UB = 9
-			For AC = LB To UB Step 1
-				sOld = sNew
-				TestWord = AC.ToString.Trim
-				iStart = 1
-				iEnd = sOld.Trim.Length
-				Do While iStart < iEnd
-					sOld = sNew
-					iStart = InStr(iStart, sOld, TestWord, CompareMethod.Text)
-					If (iStart < 1) Then
-						iStart = iEnd
-					Else
-						sNew = Left(sOld, iStart)
-						iStart = iStart + 1
-						If (iStart <= iEnd) Then sNew = sNew & LCase(Mid(sOld, iStart, 1))
-						If (iStart < iEnd) Then sNew = sNew & Mid(sOld, iStart + 1)
-					End If
-				Loop
-			Next
-			
-			''''''''''''''''''''''''''''''''''''''
-			' Process spaced words
+			' Process spaced words (Words not marked as "Always")
 			''''''''''''''''''''''''''''''''''''''
 			For Each myRow As DataRow In WordCaseDS.Tables(0).Select("tAlways < 1", "tWord")
 				sOld = sNew
@@ -305,7 +281,47 @@ Public Class FixCase
 			Loop
 			
 			''''''''''''''''''''''''''''''''''''''
-			' Process non-spaced words
+			' Process first letter, ignoring leading non-characters
+			''''''''''''''''''''''''''''''''''''''
+			iStart = 0
+			Do While iStart < sNew.Trim.Length
+				sBefore = Left(sNew,iStart)
+				sAfter = Mid(sNew,iStart + 1)
+				sOld = Left(sAfter,1)
+				If TestChar(sOld) Then
+					sAfter = Replace(sAfter, Left(sAfter, 1), Left(sAfter, 1).ToUpper, 1, 1, CompareMethod.Text)
+					sNew = sBefore & sAfter
+					iStart = sNew.Trim.Length
+				End If
+				iStart += 1
+			Loop
+			
+			''''''''''''''''''''''''''''''''''''''
+			' Process characters after numbers
+			''''''''''''''''''''''''''''''''''''''
+			LB = 0
+			UB = 9
+			For AC = LB To UB Step 1
+				sOld = sNew
+				TestWord = AC.ToString.Trim
+				iStart = 1
+				iEnd = sOld.Trim.Length
+				Do While iStart < iEnd
+					sOld = sNew
+					iStart = InStr(iStart, sOld, TestWord, CompareMethod.Text)
+					If (iStart < 1) Then
+						iStart = iEnd
+					Else
+						sNew = Left(sOld, iStart)
+						iStart = iStart + 1
+						If (iStart <= iEnd) Then sNew = sNew & LCase(Mid(sOld, iStart, 1))
+						If (iStart < iEnd) Then sNew = sNew & Mid(sOld, iStart + 1)
+					End If
+				Loop
+			Next
+			
+			''''''''''''''''''''''''''''''''''''''
+			' Process non-spaced words (words markes as "Always")
 			''''''''''''''''''''''''''''''''''''''
 			For Each myRow As DataRow In WordCaseDS.Tables(0).Select("tAlways > 0", "tWord")
 				sOld = sNew
@@ -327,7 +343,7 @@ Public Class FixCase
 					iStart = iStart + TestWord.Length
 				Loop
 			Next
-			Return Replace(sNew, Left(sNew, 1), Left(sNew, 1).ToUpper, 1, 1, CompareMethod.Text)
+			Return sNew
 		Else
 			Return ""
 		End If

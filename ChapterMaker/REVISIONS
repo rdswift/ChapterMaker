@@ -1,0 +1,32 @@
+Version 1.1
+
+ - Updated default words list for new installations.
+
+ ! Corrected bug when checking for chapter times that would force you
+   to have at least one chapter title entered to continue.
+
+ - Set initial value for scaling chapter times to the currently
+   selected chapter time.  
+
+ + Add setting for default OGM output file extension. (Default is
+   "chapters.txt".)
+
+ + Add option to replace missing titles with chapter times.
+
+ ! Corrected bug that prevented capitalization of the first word if
+   the title began with a quote (e.g. "the Pink Panther").
+
+ + Added online check for program updates, including an option to
+   check automatically at start-up.
+
+ + Added option to append to the existing list when loading times or
+   titles, and a new setting to determine whether loading appends or
+   overwrites the existing list of times or titles.
+
+ + Added buttons to clear the times and titles lists.
+
+----------------------------------------------------------------------
+
+Version 1.0
+
+ + Initial public release.
