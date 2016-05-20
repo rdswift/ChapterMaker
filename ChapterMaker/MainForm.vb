@@ -449,7 +449,8 @@ Public Partial Class MainForm
 		For Each s1 In Me.cTimes
 			chaptercount += 1
 			s2 = ""
-			If Me.cbAddChapterNumbers.Checked Then s2 = chaptercount.ToString.Trim & ". "
+			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "[" & s1 & "] "
+			If Me.cbAddChapterNumbers.Checked Then s2 = s2 & chaptercount.ToString.Trim & ". "
 			If chaptercount > (UBound(Me.cTitles) + 1) Then
 				Dim s2s As String = "Unknown Chapter Title"
 				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then s2s = "Chapter " & chaptercount.ToString.Trim
@@ -579,6 +580,7 @@ Public Partial Class MainForm
 	Private Sub ResetAll
 		Dim s1 As String
 		Me.cbAddChapterNumbers.Checked = AppConfig.AddNumbers
+		Me.cbAddChapterTimes.Checked = AppConfig.AddTimes
 		Me.cbLanguage.SelectedIndex = cbLanguage.FindString(AppConfig.Language)
 		If Me.cbLanguage.SelectedIndex < 0 Then Me.cbLanguage.SelectedIndex = 0
 		Me.tbOffset.Text = "0.0"
@@ -962,12 +964,12 @@ Public Partial Class MainForm
 			Me.cOutputType = FileType.OGM
 			Me.tbOutputType.Text = "OGM"
 			s1 = AppConfig.OGMExt.Trim
-			s2 = "xml"
+			s2 = AppConfig.XMLExt.Trim
 		Else
 			n1 = AppConfig.OGMExt.Trim.Length
 			Me.cOutputType = FileType.XML
 			Me.tbOutputType.Text = "XML"
-			s1 = "xml"
+			s1 = AppConfig.XMLExt.Trim
 			s2 = AppConfig.OGMExt.Trim
 		End If
 		s3 = Me.tbFileOutput.Text.Trim

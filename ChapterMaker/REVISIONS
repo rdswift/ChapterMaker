@@ -1,4 +1,19 @@
-Version 1.1
+Version 1.02
+
+ ! Corrected bug with OGM file extension setting not being saved
+ 
+ + Add setting for default XML output file extension. (Default is
+   "xml".)
+
+ + Added option to include the chapter times in the chapter titles
+   generated, and a setting for the default action.
+
+ - Revised settings form to reduce the size and accommodate the
+   new settings.
+
+----------------------------------------------------------------------
+
+Version 1.01
 
  - Updated default words list for new installations.
 
@@ -27,6 +42,6 @@ Version 1.1
 
 ----------------------------------------------------------------------
 
-Version 1.0
+Version 1.00
 
  + Initial public release.

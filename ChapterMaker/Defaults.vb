@@ -25,6 +25,9 @@
 ' -----------------------------------------------------------------------
 
 Public Class Defaults
+	Public Const DefXML = "xml"
+	Public Const DefOGM = "chapters.txt"
+	
 	Private FNAME As String = AppFileRoot & ".cfg"
 	
 	Public Enum cmOutputType
@@ -43,11 +46,13 @@ Public Class Defaults
 	Private myFrameRate As Double
 	Private myOutFilePath As String
 	Private myAddNumbers As Boolean
+	Private myAddTimes As Boolean
 	Private myLanguage As String
 	Private myConfirmDelete As Boolean
 	Private myConfirmInsert As Boolean
 	Private myConfirmModify As Boolean
 	Private myNoTitle As Integer
+	Private myXMLExt As String
 	Private myOGMExt As String
 	Private myUpdateCheck As Boolean
 	Private myLoadAppend As Boolean
@@ -60,13 +65,15 @@ Public Class Defaults
 		myOutFilePath = ""
 		myLanguage = "und"
 		myAddNumbers = False
+		myAddTimes = False
 		myConfirmDelete = True
 		myConfirmInsert = True
 		myConfirmModify = True
 		myUpdateCheck = True
 		myLoadAppend = True
 		myNoTitle = cmNoTitle.ChapterNum
-		myOGMExt = ".chapters.txt"
+		myXMLExt = DefXML
+		myOGMExt = DefOGM
 		myCfgFileName = GetFileName()
 		If myCfgFileName.Trim.Length < 1 Then
 			MsgBox("Error accessing the application configuration file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
@@ -110,6 +117,15 @@ Public Class Defaults
 		End Get
 		Set(ByVal value As Boolean)
 			myAddNumbers = value
+		End Set
+	End Property
+	
+	Public Property AddTimes() As Boolean
+		Get
+			Return myAddTimes
+		End Get
+		Set(ByVal value As Boolean)
+			myAddTimes = value
 		End Set
 	End Property
 	
@@ -182,15 +198,24 @@ Public Class Defaults
 			Return myOGMExt.Trim
 		End Get
 		Set(ByVal value As String)
-			myOGMExt = FixOGMExt(value)
+			myOGMExt = FixExt(value, DefOGM)
+		End Set
+	End Property
+		
+	Public Property XMLExt() As String
+		Get
+			Return myXMLExt.Trim
+		End Get
+		Set(ByVal value As String)
+			myXMLExt = FixExt(value,"")
 		End Set
 	End Property
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Validate and repair OGM File Extension
+	'	Validate and repair OGM and XML File Extensions
 	
-	Public Function FixOGMExt(ByVal value As String) As String
+	Public Function FixExt(ByVal value As String, ByVal DefVal as String) As String
 		value = value.Trim
 		Do While (value.Trim.Length > 0 ) And (value.Trim.EndsWith("."))
 			value = value.Trim.Substring(0,value.Trim.Length - 1)
@@ -198,7 +223,7 @@ Public Class Defaults
 		Do While (value.Trim.Length > 0 ) And (value.Trim.StartsWith("."))
 			value = value.Trim.Substring(1,value.Trim.Length - 1)
 		Loop
-		If value.Trim.Length < 1 Then value = "chapters.txt"
+		If value.Trim.Length < 1 Then value = defval
 '		If Not value.Trim.StartsWith(".") Then value = "." & value.Trim
 		Return value.Trim
 	End Function
@@ -237,15 +262,25 @@ Public Class Defaults
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
             myOutFilePath = s4
             
+            'XML Output File extension
+            s3 = "XMLExtension"
+            s4 = ReadIni(s1, s2, s3, "").Trim
+            myXMLExt = FixExt(s4, DefXML)
+            
             'OGM Output File extension
             s3 = "OGMExtension"
-            s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
-            myOGMExt = FixOGMExt(s4)
+            s4 = ReadIni(s1, s2, s3, "").Trim
+            myOGMExt = FixExt(s4, DefOGM)
             
             'Add Chapter Numbers
             s3 = "ChapterNumbers"
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
             If s4 <> "" Then myAddNumbers = s4.Trim.ToUpper.StartsWith("Y")
+            
+            'Add Chapter Times
+            s3 = "ChapterTimes"
+            s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
+            If s4 <> "" Then myAddTimes = s4.Trim.ToUpper.StartsWith("Y")
             
             'Missing Chapter Titles
             s3 = "MissingTitle"
@@ -390,6 +425,8 @@ Public Class Defaults
 		Dim dFR As String = myFrameRate.ToString.Trim
 		Dim dCN As String = "No"
 		If myAddNumbers Then dCN = "Yes"
+		Dim dCT As String = "No"
+		If myAddTimes Then dCT = "Yes"
 		
 		Dim filecontents As String = ";=================================================================" & Environment.NewLine _
 			& ";" & Environment.NewLine _
@@ -404,14 +441,19 @@ Public Class Defaults
 			& Environment.NewLine & Environment.NewLine & "[Output]" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "; FileType:  Type of output file to generate (XML|OGM)" & Environment.NewLine _
+			& "; XMLExtension:  Default extension for XML output files" & Environment.NewLine _
 			& "; OGMExtension:  Default extension for OGM output files" & Environment.NewLine _
 			& "; Directory: Default directory to write output file" & Environment.NewLine _
 			& "; ChapterNumbers: Include chapter numbers in titles (Yes|No)" & Environment.NewLine _
+			& "; ChapterTimes: Include chapter times in titles (Yes|No)" & Environment.NewLine _
 			& "; MissingTitle:  How to deal with missing titles (ChapterNum|ChapterTime|NA)" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "FileType=" & oFT & Environment.NewLine _
+			& "XMLExtension=" & myXMLExt & Environment.NewLine _
+			& "OGMExtension=" & myOGMExt & Environment.NewLine _
 			& "Directory=" & oFP & Environment.NewLine _
 			& "ChapterNumbers=" & dCN & Environment.NewLine _
+			& "ChapterTimes=" & dCT & Environment.NewLine _
 			& "MissingTitle=" & sMT & Environment.NewLine _
 			& Environment.NewLine & Environment.NewLine & "[Confirmation]" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _

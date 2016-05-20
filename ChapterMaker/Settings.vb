@@ -41,15 +41,18 @@ Public Partial Class Settings
 	Sub SettingsLoad(sender As Object, e As EventArgs)
 		'Me.AllowDrop=True
 		Me.Text = AppName & " - Settings"
+		DisplayPanel(0)
 		Me.cbLanguage.Items.Clear
 		Me.cbLanguage.Items.AddRange(Languages)
 		Me.cbLanguage.SelectedIndex = cbLanguage.FindString(AppConfig.Language)
 		If Me.cbLanguage.SelectedIndex < 0 Then Me.cbLanguage.SelectedIndex = 0
 		Me.cbNumbers.Checked = AppConfig.AddNumbers
-		Me.rbXML.Checked = True
+		Me.cbTimes.Checked = AppConfig.AddTimes
+		Me.rbXML.Checked = True 
 		If AppConfig.OutputType = Defaults.cmOutputType.OGM Then Me.rbOGM.Checked = True
 		If AppConfig.OutputType = Defaults.cmOutputType.XML Then Me.rbXML.Checked = True
 		Me.tbOutputDir.Text = AppConfig.OutFilePath.Trim
+		Me.tbXMLExt.Text = AppConfig.XMLExt.Trim
 		Me.tbOGMExt.Text = AppConfig.OGMExt.Trim
 		If AppConfig.NoTitle = Defaults.cmNoTitle.NA Then Me.rbNA.Checked = True
 		If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then Me.rbChapterNum.Checked = True
@@ -60,6 +63,9 @@ Public Partial Class Settings
 		Me.cbUpdates.Checked = AppConfig.UpdateCheck
 		Me.cbLoadAppend.Checked = AppConfig.LoadAppend
 		Me.tbFrameRate.Text = AppConfig.FrameRate.ToString.Trim
+		Me.treeView1.SelectedNode = Me.treeView1.Nodes(0)
+		Me.treeView1.SelectedNode.Expand()
+		Me.treeView1.Focus
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -113,8 +119,10 @@ Public Partial Class Settings
 		AppConfig.OutputType = Defaults.cmOutputType.XML
 		If Me.rbOGM.Checked Then AppConfig.OutputType = Defaults.cmOutputType.OGM
 		AppConfig.OutFilePath = Me.tbOutputDir.Text.Trim
+		AppConfig.XMLExt = Me.tbXMLExt.Text.Trim
 		AppConfig.OGMExt = Me.tbOGMExt.Text.Trim
 		AppConfig.AddNumbers = Me.cbNumbers.Checked
+		AppConfig.AddTimes = Me.cbTimes.Checked
 		AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum
 		If Me.rbNA.Checked Then AppConfig.NoTitle = Defaults.cmNoTitle.NA
 		If Me.rbChapterTime.Checked Then AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime
@@ -144,10 +152,79 @@ Public Partial Class Settings
 	'
 	'	Fix Default OGM File Extension
 	
-	Sub TbOGMExtTextChanged(sender As Object, e As EventArgs)
-		Me.tbOGMExt.Text = AppConfig.FixOGMExt(Me.tbOGMExt.Text).Trim
+	Sub TbOGMExtLeave(sender As Object, e As EventArgs)
+		Me.tbOGMExt.Text = AppConfig.FixExt(Me.tbOGMExt.Text.Trim, Defaults.DefOGM).Trim
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Fix Default XML File Extension
 	
+	Sub TbXMLExtLeave(sender As Object, e As EventArgs)
+		Me.tbXMLExt.Text = AppConfig.FixExt(Me.tbXMLExt.Text.Trim, Defaults.DefXML).Trim
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Process Treeview Selection
+	
+	Sub TreeView1AfterSelect(sender As Object, e As TreeViewEventArgs)
+		Dim nNode As Integer = 0
+		If Me.treeView1.SelectedNode.Level < 1 Then
+			nNode = 0
+		Else
+			nNode = Me.treeView1.SelectedNode.Index + 1
+		End If
+		DisplayPanel(nNode)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Display specified panel
+	
+	Sub DisplayPanel(ByVal pNum As Integer)
+		Dim s1 As String
+		Dim b1 As Boolean
+		For I As Integer = 0 To 6 Step 1
+			s1 = "group" & I.ToString.Trim
+			b1 = False
+			If I = pNum Then b1 = True
+'			FindControl(Me, s1).Visible = b1
+			Me.Controls.Find("group" & I.ToString.Trim,True)(0).Visible = b1
+		Next
+		Me.treeView1.Focus
+	End Sub
+	
+'	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+'	'
+'	'	Locate and return specified control
+'	
+'	Private Function FindControl(ByVal parent As Control, ByVal ident As String) As Control
+'		Dim n As Integer
+'		Dim tmpctrl As Control
+'		Dim tmpctrl2 As Control
+'		For n = 0 To parent.Controls.Count - 1
+'			tmpctrl = parent.Controls(n)
+'			If tmpctrl.Name = ident Then
+'				Return parent.Controls(n)
+'			ElseIf tmpctrl.Controls.Count > 0 Then
+'				tmpctrl2 = FindControl(tmpctrl, ident)
+'				If Not IsNothing(tmpctrl2) Then
+'					Return tmpctrl2
+'				End If
+'			End If
+'		Next
+'		' Not found
+'		Return Nothing
+'	end function
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Check for updates
+	
+	Sub BUpdateCheckClick(sender As Object, e As EventArgs)
+		CheckForUpdates(True)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 End Class

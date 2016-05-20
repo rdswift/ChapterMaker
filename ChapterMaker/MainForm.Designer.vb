@@ -158,6 +158,7 @@ Partial Class MainForm
 		Me.helpProvider1 = New System.Windows.Forms.HelpProvider()
 		Me.bClearTimes = New System.Windows.Forms.Button()
 		Me.bClearTitles = New System.Windows.Forms.Button()
+		Me.cbAddChapterTimes = New System.Windows.Forms.CheckBox()
 		Me.menuStrip1.SuspendLayout
 		CType(Me.dataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
 		Me.groupBox1.SuspendLayout
@@ -259,7 +260,7 @@ Partial Class MainForm
 		'
 		'bReset
 		'
-		Me.bReset.Location = New System.Drawing.Point(640, 608)
+		Me.bReset.Location = New System.Drawing.Point(640, 632)
 		Me.bReset.Name = "bReset"
 		Me.bReset.Size = New System.Drawing.Size(80, 31)
 		Me.bReset.TabIndex = 23
@@ -270,7 +271,7 @@ Partial Class MainForm
 		'
 		'bOutput
 		'
-		Me.bOutput.Location = New System.Drawing.Point(736, 608)
+		Me.bOutput.Location = New System.Drawing.Point(736, 632)
 		Me.bOutput.Name = "bOutput"
 		Me.bOutput.Size = New System.Drawing.Size(80, 31)
 		Me.bOutput.TabIndex = 24
@@ -685,7 +686,7 @@ Partial Class MainForm
 		Me.dataGridView1.Location = New System.Drawing.Point(8, 112)
 		Me.dataGridView1.MultiSelect = false
 		Me.dataGridView1.Name = "dataGridView1"
-		Me.dataGridView1.Size = New System.Drawing.Size(616, 528)
+		Me.dataGridView1.Size = New System.Drawing.Size(616, 552)
 		Me.dataGridView1.TabIndex = 18
 		Me.dataGridView1.TabStop = false
 		AddHandler Me.dataGridView1.CellValueChanged, AddressOf Me.DataGridView1CellValueChanged
@@ -737,10 +738,10 @@ Partial Class MainForm
 		'
 		'label7
 		'
-		Me.label7.Location = New System.Drawing.Point(8, 48)
+		Me.label7.Location = New System.Drawing.Point(8, 72)
 		Me.label7.Name = "label7"
 		Me.label7.Size = New System.Drawing.Size(80, 24)
-		Me.label7.TabIndex = 1
+		Me.label7.TabIndex = 2
 		Me.label7.Text = "Language:"
 		Me.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -783,7 +784,7 @@ Partial Class MainForm
 		Me.groupBox1.Controls.Add(Me.bTimeRemove)
 		Me.groupBox1.Controls.Add(Me.bTimeAdd)
 		Me.groupBox1.Controls.Add(Me.bTimeUpdate)
-		Me.groupBox1.Location = New System.Drawing.Point(632, 120)
+		Me.groupBox1.Location = New System.Drawing.Point(632, 144)
 		Me.groupBox1.Name = "groupBox1"
 		Me.groupBox1.Size = New System.Drawing.Size(288, 80)
 		Me.groupBox1.TabIndex = 20
@@ -796,7 +797,7 @@ Partial Class MainForm
 		Me.groupBox2.Controls.Add(Me.bTitleUpdate)
 		Me.groupBox2.Controls.Add(Me.bTitleInsert)
 		Me.groupBox2.Controls.Add(Me.tbChapterTitle)
-		Me.groupBox2.Location = New System.Drawing.Point(632, 208)
+		Me.groupBox2.Location = New System.Drawing.Point(632, 232)
 		Me.groupBox2.Name = "groupBox2"
 		Me.groupBox2.Size = New System.Drawing.Size(288, 80)
 		Me.groupBox2.TabIndex = 21
@@ -838,12 +839,13 @@ Partial Class MainForm
 		'
 		'groupBox3
 		'
+		Me.groupBox3.Controls.Add(Me.cbAddChapterTimes)
 		Me.groupBox3.Controls.Add(Me.cbLanguage)
 		Me.groupBox3.Controls.Add(Me.cbAddChapterNumbers)
 		Me.groupBox3.Controls.Add(Me.label7)
 		Me.groupBox3.Location = New System.Drawing.Point(632, 32)
 		Me.groupBox3.Name = "groupBox3"
-		Me.groupBox3.Size = New System.Drawing.Size(288, 80)
+		Me.groupBox3.Size = New System.Drawing.Size(288, 104)
 		Me.groupBox3.TabIndex = 19
 		Me.groupBox3.TabStop = false
 		Me.groupBox3.Text = "Output Options"
@@ -854,10 +856,10 @@ Partial Class MainForm
 		Me.cbLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
 		Me.cbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
 		Me.cbLanguage.FormattingEnabled = true
-		Me.cbLanguage.Location = New System.Drawing.Point(88, 48)
+		Me.cbLanguage.Location = New System.Drawing.Point(88, 72)
 		Me.cbLanguage.Name = "cbLanguage"
 		Me.cbLanguage.Size = New System.Drawing.Size(192, 24)
-		Me.cbLanguage.TabIndex = 2
+		Me.cbLanguage.TabIndex = 3
 		Me.cbLanguage.TabStop = false
 		'
 		'groupBox4
@@ -889,7 +891,7 @@ Partial Class MainForm
 		Me.groupBox4.Controls.Add(Me.label9)
 		Me.groupBox4.Controls.Add(Me.tbFrameRate)
 		Me.groupBox4.Controls.Add(Me.tbOffset)
-		Me.groupBox4.Location = New System.Drawing.Point(632, 296)
+		Me.groupBox4.Location = New System.Drawing.Point(632, 320)
 		Me.groupBox4.Name = "groupBox4"
 		Me.groupBox4.Size = New System.Drawing.Size(288, 304)
 		Me.groupBox4.TabIndex = 22
@@ -1142,7 +1144,7 @@ Partial Class MainForm
 		'
 		'bExit
 		'
-		Me.bExit.Location = New System.Drawing.Point(832, 608)
+		Me.bExit.Location = New System.Drawing.Point(832, 632)
 		Me.bExit.Name = "bExit"
 		Me.bExit.Size = New System.Drawing.Size(80, 31)
 		Me.bExit.TabIndex = 0
@@ -1176,12 +1178,22 @@ Partial Class MainForm
 		Me.bClearTitles.UseVisualStyleBackColor = true
 		AddHandler Me.bClearTitles.Click, AddressOf Me.BClearTitlesClick
 		'
+		'cbAddChapterTimes
+		'
+		Me.cbAddChapterTimes.Location = New System.Drawing.Point(8, 48)
+		Me.cbAddChapterTimes.Name = "cbAddChapterTimes"
+		Me.cbAddChapterTimes.Size = New System.Drawing.Size(168, 24)
+		Me.cbAddChapterTimes.TabIndex = 1
+		Me.cbAddChapterTimes.TabStop = false
+		Me.cbAddChapterTimes.Text = "Add Chapter Times"
+		Me.cbAddChapterTimes.UseVisualStyleBackColor = true
+		'
 		'MainForm
 		'
 		Me.AllowDrop = true
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(7!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(930, 652)
+		Me.ClientSize = New System.Drawing.Size(930, 683)
 		Me.Controls.Add(Me.bClearTitles)
 		Me.Controls.Add(Me.bClearTimes)
 		Me.Controls.Add(Me.bExit)
@@ -1231,6 +1243,7 @@ Partial Class MainForm
 		Me.ResumeLayout(false)
 		Me.PerformLayout
 	End Sub
+	Private cbAddChapterTimes As System.Windows.Forms.CheckBox
 	Private bClearTitles As System.Windows.Forms.Button
 	Private bClearTimes As System.Windows.Forms.Button
 	Private label8 As System.Windows.Forms.Label
