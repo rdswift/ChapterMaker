@@ -1,2 +1,2 @@
-Version: v1.01
+Version: v1.02
 FileName: https://sourceforge.net/projects/chaptermaker/files/latest/download
