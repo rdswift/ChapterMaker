@@ -295,5 +295,23 @@ Public Module Globals
 	End Function
 
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Verify that the help file exists
+	
+	Public Function HelpFileExists() As Boolean
+		If System.IO.File.Exists(AppHelp) Then Return True
+		ErrorBox("Unable to locate the help file """ & AppHelp & """ in the program directory.")
+		Return False
+	End Function
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Standard error messagebox
+	
+	Public Sub ErrorBox(ByVal ErrorMessage As String, optional byval ErrorTitle As String = "Error")
+		MsgBox(ErrorMessage, MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, ErrorTitle)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 End Module

@@ -109,7 +109,9 @@
     <None Include="README">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="REVISIONS" />
+    <None Include="REVISIONS">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutBox.resx">

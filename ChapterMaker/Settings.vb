@@ -32,6 +32,7 @@ Public Partial Class Settings
 		'
 		' TODO : Add constructor code after InitializeComponents
 		'
+		AddHandler Application.Idle, AddressOf UpdateEditButtons
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -51,7 +52,9 @@ Public Partial Class Settings
 		Me.rbXML.Checked = True 
 		If AppConfig.OutputType = Defaults.cmOutputType.OGM Then Me.rbOGM.Checked = True
 		If AppConfig.OutputType = Defaults.cmOutputType.XML Then Me.rbXML.Checked = True
+		If AppConfig.OutputType = Defaults.cmOutputType.TXT Then Me.rbTXT.Checked = True
 		Me.tbOutputDir.Text = AppConfig.OutFilePath.Trim
+		Me.tbTXTExt.Text = AppConfig.TXTExt.Trim
 		Me.tbXMLExt.Text = AppConfig.XMLExt.Trim
 		Me.tbOGMExt.Text = AppConfig.OGMExt.Trim
 		If AppConfig.NoTitle = Defaults.cmNoTitle.NA Then Me.rbNA.Checked = True
@@ -66,6 +69,7 @@ Public Partial Class Settings
 		Me.treeView1.SelectedNode = Me.treeView1.Nodes(0)
 		Me.treeView1.SelectedNode.Expand()
 		Me.treeView1.Focus
+		Me.toolStripStatusLabel1.Text = "Settings loaded from configuration file."
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -116,9 +120,20 @@ Public Partial Class Settings
 	'	Save the settings and close the window
 	
 	Sub BSaveClick(sender As Object, e As EventArgs)
+		SaveSettings()
+		Me.Close
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Save the settings
+	
+	Sub SaveSettings()
 		AppConfig.OutputType = Defaults.cmOutputType.XML
 		If Me.rbOGM.Checked Then AppConfig.OutputType = Defaults.cmOutputType.OGM
+		If Me.rbTXT.Checked Then AppConfig.OutputType = Defaults.cmOutputType.TXT
 		AppConfig.OutFilePath = Me.tbOutputDir.Text.Trim
+		AppConfig.TXTExt = Me.tbTXTExt.Text.Trim
 		AppConfig.XMLExt = Me.tbXMLExt.Text.Trim
 		AppConfig.OGMExt = Me.tbOGMExt.Text.Trim
 		AppConfig.AddNumbers = Me.cbNumbers.Checked
@@ -144,9 +159,13 @@ Public Partial Class Settings
 		End Try
 		If (FR < 10) Or (FR > 100) Then FR = 23.976
 		AppConfig.FrameRate = FR
-		AppConfig.Write
-		Me.Close
-	End Sub
+		If AppConfig.Write() Then
+			Me.toolStripStatusLabel1.Text = "Settings saved to configuration file."
+		Else
+			Me.toolStripStatusLabel1.Text = "Error saving settings to configuration file."
+			ErrorBox("Error saving settings to configuration file.")
+		End If
+End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
@@ -192,6 +211,22 @@ Public Partial Class Settings
 '			FindControl(Me, s1).Visible = b1
 			Me.Controls.Find("group" & I.ToString.Trim,True)(0).Visible = b1
 		Next
+		Select Case pNum
+		    Case 1
+				Me.toolStripStatusLabel1.Text = "Settings related to automated update checking."
+		    Case 2
+				Me.toolStripStatusLabel1.Text = "Settings related to input files."
+		    Case 3
+				Me.toolStripStatusLabel1.Text = "Settings related to output files."
+		    Case 4
+				Me.toolStripStatusLabel1.Text = "Settings related to chapter title formatting."
+		    Case 5
+				Me.toolStripStatusLabel1.Text = "Settings related to pre-action user confirmations."
+		    Case 6
+				Me.toolStripStatusLabel1.Text = "Settings related to preferred program setting defaults."
+		    Case Else
+				Me.toolStripStatusLabel1.Text = "Select the group of settings to edit."
+		End Select
 		Me.treeView1.Focus
 	End Sub
 	
@@ -226,5 +261,129 @@ Public Partial Class Settings
 		CheckForUpdates(True)
 	End Sub
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Select from list of standard frame rates
+	
+	Sub LbFRListLeave(sender As Object, e As EventArgs)
+		CopyFR()
+	End Sub
+
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Select from list of standard frame rates
+	
+	Sub LbFRListSelectedIndexChanged(sender As Object, e As EventArgs)
+		CopyFR()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Select from list of standard frame rates
+	
+	Sub CopyFR()
+		If (Me.lbFRList.SelectedIndex >= 0) Then
+			If Me.lbFRList.SelectedIndex < 8 Then
+				Me.tbFrameRate.Text = Me.lbFRList.SelectedItem.ToString.Trim
+			Else
+				Me.tbFrameRate.Text = ""
+			End If
+		End If
+		Me.tbFrameRate.Focus
+		Me.lbFRList.Visible = False
+	End Sub
+
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Display drop down list of standard frame rates
+	
+	Sub BFRDropDownClick(sender As Object, e As EventArgs)
+		If Me.lbFRList.Visible Then
+			Me.tbFrameRate.Focus
+			Me.lbFRList.Visible = False
+		Else
+			Me.lbFRList.ClearSelected
+			Me.lbFRList.Visible = True
+			'Me.lbFRList.Focus
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip save
+	
+	Sub SaveToolStripButtonClick(sender As Object, e As EventArgs)
+		SaveSettings()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip cut
+	
+	Sub CutToolStripButtonClick(sender As Object, e As EventArgs)
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			If box.SelectedText <> "" Then
+				Clipboard.SetText(box.SelectedText)
+				box.SelectedText = ""
+			End If
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip copy
+	
+	Sub CopyToolStripButtonClick(sender As Object, e As EventArgs)
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+'			MsgBox("This is a text box.")
+			If box.SelectedText <> "" Then
+				Clipboard.SetText(box.SelectedText)
+			End If
+		ElseIf TypeOf Me.ActiveControl Is MaskedTextBox Then
+			Dim box As MaskedTextBox = TryCast(Me.ActiveControl, MaskedTextBox)
+			Clipboard.SetText(box.Text)
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip paste
+	
+	Sub PasteToolStripButtonClick(sender As Object, e As EventArgs)
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			Dim iData As IDataObject = Clipboard.GetDataObject()
+        	'Check to see if the data is in a text format
+        	If iData.GetDataPresent(DataFormats.Text) Then box.SelectedText = Clipboard.GetText()
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip help
+	
+	Sub HelpToolStripButtonClick(sender As Object, e As EventArgs)
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.TableOfContents, Nothing)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update the enabled status of the edit buttons
+	
+    Private Sub UpdateEditButtons(ByVal sender As Object, ByVal e As EventArgs)
+    	If TypeOf Me.ActiveControl Is TextBox Then
+    		Me.copyToolStripButton.Enabled = (TryCast(Me.ActiveControl, TextBox).SelectionLength > 0)
+    		Me.cutToolStripButton.Enabled = (TryCast(Me.ActiveControl, TextBox).SelectionLength > 0)
+    		Me.pasteToolStripButton.Enabled = Clipboard.ContainsText
+    	Else
+    		Me.copyToolStripButton.Enabled = False
+    		Me.cutToolStripButton.Enabled = False
+    		Me.pasteToolStripButton.Enabled = False
+		End If
+    End Sub
+    
+    '-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 End Class

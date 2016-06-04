@@ -42,6 +42,7 @@ Public Partial Class WordsList
 		'
 		' TODO : Add constructor code after InitializeComponents
 		'
+		AddHandler Application.Idle, AddressOf UpdateEditButtons
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -58,8 +59,11 @@ Public Partial Class WordsList
 				DS.Clear
 				DS.ReadXml(AppFixCase.XMLFilePath)
 				Me.dataGridView1.DataSource = DS.Tables(0)
+				Me.toolStripStatusLabel1.Text = "Words list loaded from XML file."
 			Catch
-				MsgBox("Unable to read the Words XML file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
+				Me.toolStripStatusLabel1.Text = "Error loading words list from XML file."
+				ErrorBox("Unable to read the words list XML file.")
+'				MsgBox("Unable to read the words list XML file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
 			End Try
 		End If
 	End Sub
@@ -78,17 +82,29 @@ Public Partial Class WordsList
 	'	Write the words list and force a reload of the new list
 	
 	Sub Button1Click(sender As Object, e As EventArgs)
+		SaveWords()
+		Me.Close
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Write the words list and force a reload of the new list
+	
+	Sub SaveWords()
 		Dim FCFilePath As String = AppFixCase.XMLFilePath
 		If FCFilePath.Trim.Length > 0 Then
 			Try
 				DS.WriteXml(FCFilePath)
+				Me.toolStripStatusLabel1.Text = "Words list saved to XML file."
+'				MsgBox("Words list saved.", MsgBoxStyle.ApplicationModal and MsgBoxStyle.Information And MsgBoxStyle.OkOnly, "Save Words List")
 			Catch
-				MsgBox("Error writing XML file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
+				Me.toolStripStatusLabel1.Text = "Error writing the words list XML file."
+				ErrorBox("Error writing the words list XML file.")
+'				MsgBox("Error writing the words list XML file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
 			End Try
 		End If
 		AppFixCase.Read
 		AppFixCase.Write
-		Me.Close
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,5 +119,79 @@ Public Partial Class WordsList
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip save
 	
+	Sub SaveToolStripButtonClick(sender As Object, e As EventArgs)
+		SaveWords()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip cut
+	
+	Sub CutToolStripButtonClick(sender As Object, e As EventArgs)
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			If box.SelectedText <> "" Then
+				Clipboard.SetText(box.SelectedText)
+				box.SelectedText = ""
+			End If
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip copy
+	
+	Sub CopyToolStripButtonClick(sender As Object, e As EventArgs)
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			If box.SelectedText <> "" Then
+				Clipboard.SetText(box.SelectedText)
+			End If
+		ElseIf TypeOf Me.ActiveControl Is MaskedTextBox Then
+			Dim box As MaskedTextBox = TryCast(Me.ActiveControl, MaskedTextBox)
+			Clipboard.SetText(box.Text)
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip paste
+	
+	Sub PasteToolStripButtonClick(sender As Object, e As EventArgs)
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			Dim iData As IDataObject = Clipboard.GetDataObject()
+        	'Check to see if the data is in a text format
+        	If iData.GetDataPresent(DataFormats.Text) Then box.SelectedText = Clipboard.GetText()
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handles toolstrip help
+	
+	Sub HelpToolStripButtonClick(sender As Object, e As EventArgs)
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.TableOfContents, Nothing)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update the enabled status of the edit buttons
+	
+    Private Sub UpdateEditButtons(ByVal sender As Object, ByVal e As EventArgs)
+    	If TypeOf Me.ActiveControl Is TextBox Then
+    		Me.copyToolStripButton.Enabled = (TryCast(Me.ActiveControl, TextBox).SelectionLength > 0)
+    		Me.cutToolStripButton.Enabled = (TryCast(Me.ActiveControl, TextBox).SelectionLength > 0)
+    		Me.pasteToolStripButton.Enabled = Clipboard.ContainsText
+    	Else
+    		Me.copyToolStripButton.Enabled = False
+    		Me.cutToolStripButton.Enabled = False
+    		Me.pasteToolStripButton.Enabled = False
+		End If
+    End Sub
+    
+    '-----------------------------------------------------------------------------------------------------------------------------------------------------
 End Class

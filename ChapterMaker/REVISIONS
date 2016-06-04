@@ -1,14 +1,38 @@
+Version 1.03
+
+ ! Corrected bug with file extension settings in output file dialog
+   box.
+ 
+ ! Corrected bug with changing file extensions when toggling output
+   file type.
+ 
+ + Added option to output simple text file of titles, optionally
+   with chapter durations.
+
+ + Added list of standard framerates for selection on the main screen
+   and the settings screen.
+
+ + Added cut / copy / paste functionality to all text boxes on all
+   forms.
+
+ + Added toolbars to all forms.
+
+ + Added status bars to all forms.
+
+----------------------------------------------------------------------
+
 Version 1.02
 
- ! Corrected bug with OGM file extension setting not being saved
+ ! Corrected bug with default OGM output file extension setting not
+   being saved.
  
- + Add setting for default XML output file extension. (Default is
+ + Added setting for default XML output file extension. (Default is
    "xml".)
 
  + Added option to include the chapter times in the chapter titles
    generated, and a setting for the default action.
 
- - Revised settings form to reduce the size and accommodate the
+ - Revised the settings form to reduce the size and accommodate the
    new settings.
 
 ----------------------------------------------------------------------

@@ -45,6 +45,11 @@ Partial Class Settings
 		MyBase.Dispose(disposing)
 	End Sub
 	
+	Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+		RemoveHandler Application.Idle, AddressOf UpdateEditButtons
+		MyBase.OnFormClosing(e)
+	End Sub
+	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	''' <summary>
@@ -64,6 +69,9 @@ Partial Class Settings
 		Me.bSave = New System.Windows.Forms.Button()
 		Me.bCancel = New System.Windows.Forms.Button()
 		Me.group3 = New System.Windows.Forms.GroupBox()
+		Me.rbTXT = New System.Windows.Forms.RadioButton()
+		Me.label8 = New System.Windows.Forms.Label()
+		Me.tbTXTExt = New System.Windows.Forms.TextBox()
 		Me.label10 = New System.Windows.Forms.Label()
 		Me.tbXMLExt = New System.Windows.Forms.TextBox()
 		Me.label7 = New System.Windows.Forms.Label()
@@ -84,6 +92,8 @@ Partial Class Settings
 		Me.cbInsert = New System.Windows.Forms.CheckBox()
 		Me.cbDelete = New System.Windows.Forms.CheckBox()
 		Me.group6 = New System.Windows.Forms.GroupBox()
+		Me.lbFRList = New System.Windows.Forms.ListBox()
+		Me.bFRDropDown = New System.Windows.Forms.Button()
 		Me.label6 = New System.Windows.Forms.Label()
 		Me.tbFrameRate = New System.Windows.Forms.TextBox()
 		Me.cbLanguage = New System.Windows.Forms.ComboBox()
@@ -100,6 +110,19 @@ Partial Class Settings
 		Me.group1 = New System.Windows.Forms.GroupBox()
 		Me.bUpdateCheck = New System.Windows.Forms.Button()
 		Me.cbUpdates = New System.Windows.Forms.CheckBox()
+		Me.toolStrip1 = New System.Windows.Forms.ToolStrip()
+		Me.newToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.openToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.saveToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.printToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.toolStripSeparator = New System.Windows.Forms.ToolStripSeparator()
+		Me.cutToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.copyToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.pasteToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+		Me.helpToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.statusStrip1 = New System.Windows.Forms.StatusStrip()
+		Me.toolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
 		Me.group3.SuspendLayout
 		Me.group5.SuspendLayout
 		Me.group6.SuspendLayout
@@ -107,22 +130,24 @@ Partial Class Settings
 		Me.group2.SuspendLayout
 		Me.group0.SuspendLayout
 		Me.group1.SuspendLayout
+		Me.toolStrip1.SuspendLayout
+		Me.statusStrip1.SuspendLayout
 		Me.SuspendLayout
 		'
 		'bSave
 		'
-		Me.bSave.Location = New System.Drawing.Point(496, 248)
+		Me.bSave.Location = New System.Drawing.Point(496, 272)
 		Me.bSave.Margin = New System.Windows.Forms.Padding(4)
 		Me.bSave.Name = "bSave"
 		Me.bSave.Size = New System.Drawing.Size(100, 28)
 		Me.bSave.TabIndex = 0
-		Me.bSave.Text = "Save"
+		Me.bSave.Text = "Save / Exit"
 		Me.bSave.UseVisualStyleBackColor = true
 		AddHandler Me.bSave.Click, AddressOf Me.BSaveClick
 		'
 		'bCancel
 		'
-		Me.bCancel.Location = New System.Drawing.Point(600, 248)
+		Me.bCancel.Location = New System.Drawing.Point(600, 272)
 		Me.bCancel.Margin = New System.Windows.Forms.Padding(4)
 		Me.bCancel.Name = "bCancel"
 		Me.bCancel.Size = New System.Drawing.Size(100, 28)
@@ -133,6 +158,9 @@ Partial Class Settings
 		'
 		'group3
 		'
+		Me.group3.Controls.Add(Me.rbTXT)
+		Me.group3.Controls.Add(Me.label8)
+		Me.group3.Controls.Add(Me.tbTXTExt)
 		Me.group3.Controls.Add(Me.label10)
 		Me.group3.Controls.Add(Me.tbXMLExt)
 		Me.group3.Controls.Add(Me.label7)
@@ -143,53 +171,79 @@ Partial Class Settings
 		Me.group3.Controls.Add(Me.rbXML)
 		Me.group3.Controls.Add(Me.label1)
 		Me.group3.Controls.Add(Me.rbOGM)
-		Me.group3.Location = New System.Drawing.Point(232, 8)
+		Me.group3.Location = New System.Drawing.Point(232, 32)
 		Me.group3.Name = "group3"
 		Me.group3.Size = New System.Drawing.Size(464, 232)
 		Me.group3.TabIndex = 4
 		Me.group3.TabStop = false
 		Me.group3.Text = "Output Files"
 		'
+		'rbTXT
+		'
+		Me.rbTXT.Location = New System.Drawing.Point(80, 72)
+		Me.rbTXT.Name = "rbTXT"
+		Me.rbTXT.Size = New System.Drawing.Size(136, 24)
+		Me.rbTXT.TabIndex = 3
+		Me.rbTXT.TabStop = true
+		Me.rbTXT.Text = "TXT (Simple Text File)"
+		Me.rbTXT.UseVisualStyleBackColor = true
+		'
+		'label8
+		'
+		Me.label8.Location = New System.Drawing.Point(8, 120)
+		Me.label8.Name = "label8"
+		Me.label8.Size = New System.Drawing.Size(72, 24)
+		Me.label8.TabIndex = 7
+		Me.label8.Text = "Text Ext.:"
+		Me.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		'
+		'tbTXTExt
+		'
+		Me.tbTXTExt.Location = New System.Drawing.Point(80, 120)
+		Me.tbTXTExt.Name = "tbTXTExt"
+		Me.tbTXTExt.Size = New System.Drawing.Size(344, 22)
+		Me.tbTXTExt.TabIndex = 8
+		'
 		'label10
 		'
-		Me.label10.Location = New System.Drawing.Point(8, 72)
+		Me.label10.Location = New System.Drawing.Point(8, 144)
 		Me.label10.Name = "label10"
 		Me.label10.Size = New System.Drawing.Size(72, 24)
-		Me.label10.TabIndex = 6
+		Me.label10.TabIndex = 9
 		Me.label10.Text = "XML Ext.:"
 		Me.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'tbXMLExt
 		'
-		Me.tbXMLExt.Location = New System.Drawing.Point(80, 72)
+		Me.tbXMLExt.Location = New System.Drawing.Point(80, 144)
 		Me.tbXMLExt.Name = "tbXMLExt"
 		Me.tbXMLExt.Size = New System.Drawing.Size(344, 22)
-		Me.tbXMLExt.TabIndex = 7
+		Me.tbXMLExt.TabIndex = 10
 		AddHandler Me.tbXMLExt.Leave, AddressOf Me.TbXMLExtLeave
 		'
 		'label7
 		'
-		Me.label7.Location = New System.Drawing.Point(8, 96)
+		Me.label7.Location = New System.Drawing.Point(8, 168)
 		Me.label7.Name = "label7"
 		Me.label7.Size = New System.Drawing.Size(72, 24)
-		Me.label7.TabIndex = 8
+		Me.label7.TabIndex = 11
 		Me.label7.Text = "OGM Ext.:"
 		Me.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
 		'tbOGMExt
 		'
-		Me.tbOGMExt.Location = New System.Drawing.Point(80, 96)
+		Me.tbOGMExt.Location = New System.Drawing.Point(80, 168)
 		Me.tbOGMExt.Name = "tbOGMExt"
 		Me.tbOGMExt.Size = New System.Drawing.Size(344, 22)
-		Me.tbOGMExt.TabIndex = 9
+		Me.tbOGMExt.TabIndex = 12
 		AddHandler Me.tbOGMExt.Leave, AddressOf Me.TbOGMExtLeave
 		'
 		'bDirectoryLookup
 		'
-		Me.bDirectoryLookup.Location = New System.Drawing.Point(432, 48)
+		Me.bDirectoryLookup.Location = New System.Drawing.Point(432, 96)
 		Me.bDirectoryLookup.Name = "bDirectoryLookup"
 		Me.bDirectoryLookup.Size = New System.Drawing.Size(24, 24)
-		Me.bDirectoryLookup.TabIndex = 5
+		Me.bDirectoryLookup.TabIndex = 6
 		Me.bDirectoryLookup.TabStop = false
 		Me.bDirectoryLookup.Text = "..."
 		Me.bDirectoryLookup.UseVisualStyleBackColor = true
@@ -197,18 +251,18 @@ Partial Class Settings
 		'
 		'tbOutputDir
 		'
-		Me.tbOutputDir.Location = New System.Drawing.Point(80, 48)
+		Me.tbOutputDir.Location = New System.Drawing.Point(80, 96)
 		Me.tbOutputDir.Name = "tbOutputDir"
 		Me.tbOutputDir.Size = New System.Drawing.Size(344, 22)
-		Me.tbOutputDir.TabIndex = 4
+		Me.tbOutputDir.TabIndex = 5
 		AddHandler Me.tbOutputDir.DoubleClick, AddressOf Me.TbOutputDirDoubleClick
 		'
 		'label2
 		'
-		Me.label2.Location = New System.Drawing.Point(8, 48)
+		Me.label2.Location = New System.Drawing.Point(8, 96)
 		Me.label2.Name = "label2"
 		Me.label2.Size = New System.Drawing.Size(72, 24)
-		Me.label2.TabIndex = 3
+		Me.label2.TabIndex = 4
 		Me.label2.Text = "Directory:"
 		Me.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		'
@@ -234,7 +288,7 @@ Partial Class Settings
 		'
 		'rbOGM
 		'
-		Me.rbOGM.Location = New System.Drawing.Point(320, 24)
+		Me.rbOGM.Location = New System.Drawing.Point(80, 48)
 		Me.rbOGM.Name = "rbOGM"
 		Me.rbOGM.Size = New System.Drawing.Size(136, 24)
 		Me.rbOGM.TabIndex = 2
@@ -286,7 +340,7 @@ Partial Class Settings
 		Me.group5.Controls.Add(Me.cbModify)
 		Me.group5.Controls.Add(Me.cbInsert)
 		Me.group5.Controls.Add(Me.cbDelete)
-		Me.group5.Location = New System.Drawing.Point(232, 8)
+		Me.group5.Location = New System.Drawing.Point(232, 32)
 		Me.group5.Name = "group5"
 		Me.group5.Size = New System.Drawing.Size(464, 232)
 		Me.group5.TabIndex = 6
@@ -322,21 +376,48 @@ Partial Class Settings
 		'
 		'group6
 		'
+		Me.group6.Controls.Add(Me.lbFRList)
+		Me.group6.Controls.Add(Me.bFRDropDown)
 		Me.group6.Controls.Add(Me.label6)
 		Me.group6.Controls.Add(Me.tbFrameRate)
 		Me.group6.Controls.Add(Me.cbLanguage)
 		Me.group6.Controls.Add(Me.label5)
 		Me.group6.Controls.Add(Me.label4)
-		Me.group6.Location = New System.Drawing.Point(232, 8)
+		Me.group6.Location = New System.Drawing.Point(232, 32)
 		Me.group6.Name = "group6"
 		Me.group6.Size = New System.Drawing.Size(464, 232)
 		Me.group6.TabIndex = 7
 		Me.group6.TabStop = false
 		Me.group6.Text = "Preferred Defaults"
 		'
+		'lbFRList
+		'
+		Me.lbFRList.FormattingEnabled = true
+		Me.lbFRList.ItemHeight = 16
+		Me.lbFRList.Items.AddRange(New Object() {"23.976", "24.0", "25.0", "29.97", "30.0", "50.0", "59.94", "60", "Custom"})
+		Me.lbFRList.Location = New System.Drawing.Point(120, 48)
+		Me.lbFRList.Name = "lbFRList"
+		Me.lbFRList.Size = New System.Drawing.Size(72, 148)
+		Me.lbFRList.TabIndex = 28
+		Me.lbFRList.Visible = false
+		AddHandler Me.lbFRList.SelectedIndexChanged, AddressOf Me.LbFRListSelectedIndexChanged
+		AddHandler Me.lbFRList.Leave, AddressOf Me.LbFRListLeave
+		'
+		'bFRDropDown
+		'
+		Me.bFRDropDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+		Me.bFRDropDown.Location = New System.Drawing.Point(192, 48)
+		Me.bFRDropDown.Name = "bFRDropDown"
+		Me.bFRDropDown.Size = New System.Drawing.Size(24, 23)
+		Me.bFRDropDown.TabIndex = 29
+		Me.bFRDropDown.TabStop = false
+		Me.bFRDropDown.Text = "▼"
+		Me.bFRDropDown.UseVisualStyleBackColor = true
+		AddHandler Me.bFRDropDown.Click, AddressOf Me.BFRDropDownClick
+		'
 		'label6
 		'
-		Me.label6.Location = New System.Drawing.Point(264, 48)
+		Me.label6.Location = New System.Drawing.Point(224, 48)
 		Me.label6.Name = "label6"
 		Me.label6.Size = New System.Drawing.Size(32, 24)
 		Me.label6.TabIndex = 4
@@ -347,7 +428,7 @@ Partial Class Settings
 		'
 		Me.tbFrameRate.Location = New System.Drawing.Point(120, 48)
 		Me.tbFrameRate.Name = "tbFrameRate"
-		Me.tbFrameRate.Size = New System.Drawing.Size(136, 22)
+		Me.tbFrameRate.Size = New System.Drawing.Size(72, 22)
 		Me.tbFrameRate.TabIndex = 3
 		Me.tbFrameRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		'
@@ -388,7 +469,7 @@ Partial Class Settings
 		Me.group4.Controls.Add(Me.cbNumbers)
 		Me.group4.Controls.Add(Me.label3)
 		Me.group4.Controls.Add(Me.rbNA)
-		Me.group4.Location = New System.Drawing.Point(232, 8)
+		Me.group4.Location = New System.Drawing.Point(232, 32)
 		Me.group4.Name = "group4"
 		Me.group4.Size = New System.Drawing.Size(464, 232)
 		Me.group4.TabIndex = 5
@@ -418,7 +499,7 @@ Partial Class Settings
 		'group2
 		'
 		Me.group2.Controls.Add(Me.cbLoadAppend)
-		Me.group2.Location = New System.Drawing.Point(232, 8)
+		Me.group2.Location = New System.Drawing.Point(232, 32)
 		Me.group2.Name = "group2"
 		Me.group2.Size = New System.Drawing.Size(464, 232)
 		Me.group2.TabIndex = 3
@@ -436,7 +517,7 @@ Partial Class Settings
 		'
 		'treeView1
 		'
-		Me.treeView1.Location = New System.Drawing.Point(8, 8)
+		Me.treeView1.Location = New System.Drawing.Point(8, 32)
 		Me.treeView1.Name = "treeView1"
 		treeNode1.Name = "Node1"
 		treeNode1.Text = "Updates"
@@ -471,7 +552,7 @@ Partial Class Settings
 		'group0
 		'
 		Me.group0.Controls.Add(Me.label9)
-		Me.group0.Location = New System.Drawing.Point(232, 8)
+		Me.group0.Location = New System.Drawing.Point(232, 32)
 		Me.group0.Name = "group0"
 		Me.group0.Size = New System.Drawing.Size(464, 232)
 		Me.group0.TabIndex = 15
@@ -482,7 +563,7 @@ Partial Class Settings
 		'
 		Me.group1.Controls.Add(Me.bUpdateCheck)
 		Me.group1.Controls.Add(Me.cbUpdates)
-		Me.group1.Location = New System.Drawing.Point(232, 8)
+		Me.group1.Location = New System.Drawing.Point(232, 32)
 		Me.group1.Name = "group1"
 		Me.group1.Size = New System.Drawing.Size(464, 232)
 		Me.group1.TabIndex = 16
@@ -509,11 +590,127 @@ Partial Class Settings
 		Me.cbUpdates.Text = "Check for updates during program start-up"
 		Me.cbUpdates.UseVisualStyleBackColor = true
 		'
+		'toolStrip1
+		'
+		Me.toolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripButton, Me.openToolStripButton, Me.saveToolStripButton, Me.printToolStripButton, Me.toolStripSeparator, Me.cutToolStripButton, Me.copyToolStripButton, Me.pasteToolStripButton, Me.toolStripSeparator1, Me.helpToolStripButton})
+		Me.toolStrip1.Location = New System.Drawing.Point(0, 0)
+		Me.toolStrip1.Name = "toolStrip1"
+		Me.toolStrip1.Size = New System.Drawing.Size(707, 25)
+		Me.toolStrip1.TabIndex = 17
+		Me.toolStrip1.Text = "toolStrip1"
+		'
+		'newToolStripButton
+		'
+		Me.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.newToolStripButton.Image = CType(resources.GetObject("newToolStripButton.Image"),System.Drawing.Image)
+		Me.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.newToolStripButton.Name = "newToolStripButton"
+		Me.newToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.newToolStripButton.Text = "&New"
+		Me.newToolStripButton.Visible = false
+		'
+		'openToolStripButton
+		'
+		Me.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.openToolStripButton.Image = CType(resources.GetObject("openToolStripButton.Image"),System.Drawing.Image)
+		Me.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.openToolStripButton.Name = "openToolStripButton"
+		Me.openToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.openToolStripButton.Text = "&Open"
+		Me.openToolStripButton.Visible = false
+		'
+		'saveToolStripButton
+		'
+		Me.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.saveToolStripButton.Image = CType(resources.GetObject("saveToolStripButton.Image"),System.Drawing.Image)
+		Me.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.saveToolStripButton.Name = "saveToolStripButton"
+		Me.saveToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.saveToolStripButton.Text = "&Save"
+		AddHandler Me.saveToolStripButton.Click, AddressOf Me.SaveToolStripButtonClick
+		'
+		'printToolStripButton
+		'
+		Me.printToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.printToolStripButton.Image = CType(resources.GetObject("printToolStripButton.Image"),System.Drawing.Image)
+		Me.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.printToolStripButton.Name = "printToolStripButton"
+		Me.printToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.printToolStripButton.Text = "&Print"
+		Me.printToolStripButton.Visible = false
+		'
+		'toolStripSeparator
+		'
+		Me.toolStripSeparator.Name = "toolStripSeparator"
+		Me.toolStripSeparator.Size = New System.Drawing.Size(6, 25)
+		'
+		'cutToolStripButton
+		'
+		Me.cutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.cutToolStripButton.Image = CType(resources.GetObject("cutToolStripButton.Image"),System.Drawing.Image)
+		Me.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.cutToolStripButton.Name = "cutToolStripButton"
+		Me.cutToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.cutToolStripButton.Text = "C&ut"
+		AddHandler Me.cutToolStripButton.Click, AddressOf Me.CutToolStripButtonClick
+		'
+		'copyToolStripButton
+		'
+		Me.copyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.copyToolStripButton.Image = CType(resources.GetObject("copyToolStripButton.Image"),System.Drawing.Image)
+		Me.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.copyToolStripButton.Name = "copyToolStripButton"
+		Me.copyToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.copyToolStripButton.Text = "&Copy"
+		AddHandler Me.copyToolStripButton.Click, AddressOf Me.CopyToolStripButtonClick
+		'
+		'pasteToolStripButton
+		'
+		Me.pasteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.pasteToolStripButton.Image = CType(resources.GetObject("pasteToolStripButton.Image"),System.Drawing.Image)
+		Me.pasteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.pasteToolStripButton.Name = "pasteToolStripButton"
+		Me.pasteToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.pasteToolStripButton.Text = "&Paste"
+		AddHandler Me.pasteToolStripButton.Click, AddressOf Me.PasteToolStripButtonClick
+		'
+		'toolStripSeparator1
+		'
+		Me.toolStripSeparator1.Name = "toolStripSeparator1"
+		Me.toolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+		'
+		'helpToolStripButton
+		'
+		Me.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.helpToolStripButton.Image = CType(resources.GetObject("helpToolStripButton.Image"),System.Drawing.Image)
+		Me.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.helpToolStripButton.Name = "helpToolStripButton"
+		Me.helpToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.helpToolStripButton.Text = "He&lp"
+		AddHandler Me.helpToolStripButton.Click, AddressOf Me.HelpToolStripButtonClick
+		'
+		'statusStrip1
+		'
+		Me.statusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripStatusLabel1})
+		Me.statusStrip1.Location = New System.Drawing.Point(0, 312)
+		Me.statusStrip1.Name = "statusStrip1"
+		Me.statusStrip1.Size = New System.Drawing.Size(707, 22)
+		Me.statusStrip1.TabIndex = 18
+		Me.statusStrip1.Text = "statusStrip1"
+		'
+		'toolStripStatusLabel1
+		'
+		Me.toolStripStatusLabel1.Name = "toolStripStatusLabel1"
+		Me.toolStripStatusLabel1.Size = New System.Drawing.Size(118, 17)
+		Me.toolStripStatusLabel1.Text = "toolStripStatusLabel1"
+		'
 		'Settings
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(712, 288)
+		Me.ClientSize = New System.Drawing.Size(707, 334)
+		Me.Controls.Add(Me.statusStrip1)
+		Me.Controls.Add(Me.toolStrip1)
 		Me.Controls.Add(Me.group1)
 		Me.Controls.Add(Me.group5)
 		Me.Controls.Add(Me.group0)
@@ -542,8 +739,31 @@ Partial Class Settings
 		Me.group2.ResumeLayout(false)
 		Me.group0.ResumeLayout(false)
 		Me.group1.ResumeLayout(false)
+		Me.toolStrip1.ResumeLayout(false)
+		Me.toolStrip1.PerformLayout
+		Me.statusStrip1.ResumeLayout(false)
+		Me.statusStrip1.PerformLayout
 		Me.ResumeLayout(false)
+		Me.PerformLayout
 	End Sub
+	Private toolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
+	Private statusStrip1 As System.Windows.Forms.StatusStrip
+	Private helpToolStripButton As System.Windows.Forms.ToolStripButton
+	Private toolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+	Private pasteToolStripButton As System.Windows.Forms.ToolStripButton
+	Private copyToolStripButton As System.Windows.Forms.ToolStripButton
+	Private cutToolStripButton As System.Windows.Forms.ToolStripButton
+	Private toolStripSeparator As System.Windows.Forms.ToolStripSeparator
+	Private printToolStripButton As System.Windows.Forms.ToolStripButton
+	Private saveToolStripButton As System.Windows.Forms.ToolStripButton
+	Private openToolStripButton As System.Windows.Forms.ToolStripButton
+	Private newToolStripButton As System.Windows.Forms.ToolStripButton
+	Private toolStrip1 As System.Windows.Forms.ToolStrip
+	Private tbTXTExt As System.Windows.Forms.TextBox
+	Private label8 As System.Windows.Forms.Label
+	Private rbTXT As System.Windows.Forms.RadioButton
+	Private bFRDropDown As System.Windows.Forms.Button
+	Private lbFRList As System.Windows.Forms.ListBox
 	Private bUpdateCheck As System.Windows.Forms.Button
 	Private cbUpdates As System.Windows.Forms.CheckBox
 	Private group1 As System.Windows.Forms.GroupBox

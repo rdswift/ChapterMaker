@@ -27,12 +27,14 @@
 Public Class Defaults
 	Public Const DefXML = "xml"
 	Public Const DefOGM = "chapters.txt"
+	Public Const DefTXT = "txt"
 	
 	Private FNAME As String = AppFileRoot & ".cfg"
 	
 	Public Enum cmOutputType
 		XML = 1
 		OGM = 2
+		TXT = 3
 	End Enum
 	
 	Public Enum cmNoTitle
@@ -54,6 +56,7 @@ Public Class Defaults
 	Private myNoTitle As Integer
 	Private myXMLExt As String
 	Private myOGMExt As String
+	Private myTXTExt As String
 	Private myUpdateCheck As Boolean
 	Private myLoadAppend As Boolean
 	
@@ -74,6 +77,7 @@ Public Class Defaults
 		myNoTitle = cmNoTitle.ChapterNum
 		myXMLExt = DefXML
 		myOGMExt = DefOGM
+		myTXTExt = DefTXT
 		myCfgFileName = GetFileName()
 		If myCfgFileName.Trim.Length < 1 Then
 			MsgBox("Error accessing the application configuration file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
@@ -210,10 +214,19 @@ Public Class Defaults
 			myXMLExt = FixExt(value,"")
 		End Set
 	End Property
+		
+	Public Property TXTExt() As String
+		Get
+			Return myTXTExt.Trim
+		End Get
+		Set(ByVal value As String)
+			myTXTExt = FixExt(value,"")
+		End Set
+	End Property
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Validate and repair OGM and XML File Extensions
+	'	Validate and repair TXT, OGM and XML File Extensions
 	
 	Public Function FixExt(ByVal value As String, ByVal DefVal as String) As String
 		value = value.Trim
@@ -255,12 +268,18 @@ Public Class Defaults
             If s4 <> "" Then
             	If s4.Equals("XML", StringComparison.OrdinalIgnoreCase) Then myOutputType = cmOutputType.XML
             	If s4.Equals("OGM", StringComparison.OrdinalIgnoreCase) Then myOutputType = cmOutputType.OGM
+            	If s4.Equals("TXT", StringComparison.OrdinalIgnoreCase) Then myOutputType = cmOutputType.TXT
             End If
             
             'Output File directory
             s3 = "Directory"
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
             myOutFilePath = s4
+            
+            'TXT Output File extension
+            s3 = "TXTExtension"
+            s4 = ReadIni(s1, s2, s3, "").Trim
+            myTXTExt = FixExt(s4, DefTXT)
             
             'XML Output File extension
             s3 = "XMLExtension"
@@ -336,13 +355,14 @@ Public Class Defaults
 	'
 	'	Save the settings to the configuration file
 	
-	Public Sub Write()
+	Public Function Write() As Boolean
 		Try
 			System.IO.File.WriteAllText(myCfgFileName.Trim, MakeFileContents())
+			Return True
 		Catch
-			MsgBox("Error writing the application configuration file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
+			Return False
 		End Try
-	End Sub
+	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
@@ -405,6 +425,7 @@ Public Class Defaults
 		Dim oFT As String = "XML"
 		If (myOutputType = cmOutputType.OGM) Then oFT = "OGM"  
 		If (myOutputType = cmOutputType.XML) Then oFT = "XML"
+		If (myOutputType = cmOutputType.TXT) Then oFT = "TXT"
 		Dim oFP As String = myOutFilePath.Trim
 		Dim sMT As String = ""
 		If (myNoTitle = cmNoTitle.ChapterNum) Then sMT = "ChapterNum"
@@ -440,7 +461,8 @@ Public Class Defaults
 			& "AppendLoad=" & sAL & Environment.NewLine _
 			& Environment.NewLine & Environment.NewLine & "[Output]" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
-			& "; FileType:  Type of output file to generate (XML|OGM)" & Environment.NewLine _
+			& "; FileType:  Type of output file to generate (TXT|XML|OGM)" & Environment.NewLine _
+			& "; TXTExtension:  Default extension for TXT output files" & Environment.NewLine _
 			& "; XMLExtension:  Default extension for XML output files" & Environment.NewLine _
 			& "; OGMExtension:  Default extension for OGM output files" & Environment.NewLine _
 			& "; Directory: Default directory to write output file" & Environment.NewLine _
@@ -449,6 +471,7 @@ Public Class Defaults
 			& "; MissingTitle:  How to deal with missing titles (ChapterNum|ChapterTime|NA)" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "FileType=" & oFT & Environment.NewLine _
+			& "TXTExtension=" & myTXTExt & Environment.NewLine _
 			& "XMLExtension=" & myXMLExt & Environment.NewLine _
 			& "OGMExtension=" & myOGMExt & Environment.NewLine _
 			& "Directory=" & oFP & Environment.NewLine _

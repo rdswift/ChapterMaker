@@ -54,14 +54,7 @@ Public Partial Class MainForm
 		'
 		' TODO : Add constructor code after InitializeComponents
 		'
-	End Sub
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	'
-	'	Standard error messagebox
-	
-	Private Sub ErrorBox(ByVal ErrorMessage As String, optional byval ErrorTitle As String = "Error")
-		MsgBox(ErrorMessage, MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, ErrorTitle)
+		AddHandler Application.Idle, AddressOf UpdateEditButtons
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -228,11 +221,15 @@ Public Partial Class MainForm
 		s2 = ""
 		
 		' Set file type and associated filter
-		s3 = "xml"
-		s4 = "XML Files|*.xml|All Files|*.*"
+		s3 = AppConfig.XMLExt.Trim
+		s4 = "XML Files|*." & s3 & "|All Files|*.*"
 		If Me.cOutputType = FileType.OGM Then
-			s3 = "ogm"
-			s4 = "OGM Files|*.ogm|All Files|*.*"
+			s3 = AppConfig.OGMExt.Trim
+			s4 = "OGM Files|*." & s3 & "|All Files|*.*"
+		End If
+		If Me.cOutputType = FileType.TXT Then
+			s3 = AppConfig.TXTExt.Trim
+			s4 = "Text Files|*." & s3 & "|All Files|*.*"
 		End If
 		
 		' Get output file name from existing entry if possible or set to default
@@ -304,6 +301,7 @@ Public Partial Class MainForm
 			ErrorBox("Missing or invalid chapter times correction information.")
 			Exit Sub
 		End If
+		Dim s1 As String = "Chapter times scaled so " & FormatTimes(Me.tbScaleFrom.Text.Trim) & " is now " & FormatTimes(Me.maskedTextBox2.Text.Trim) & "." 
 		If AppConfig.ConfirmModify And Not MsgBoxResult.Yes = MsgBox("This will scale all chapter times up to and including " & _
 			FormatTimes(Me.tbScaleFrom.Text.Trim) & " so that the time " & FormatTimes(Me.tbScaleFrom.Text.Trim) & " will be " & _
 			FormatTimes(Me.maskedTextBox2.Text.Trim) & ".  Chapter times after "  & FormatTimes(Me.tbScaleFrom.Text.Trim) & _
@@ -319,6 +317,7 @@ Public Partial Class MainForm
 		Me.tbScaleFrom.Text = BLANKTIME
 		Me.maskedTextBox2.Text = BLANKTIME
 		ShowList()
+		Me.toolStripStatusLabel1.Text = s1
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -343,6 +342,7 @@ Public Partial Class MainForm
 			Exit Sub
 		End If
 		Dim fromseconds As Double = HMStoSEC(fromtime)
+		Dim s1 As String = "All chapter times from " & FormatTimes(Me.tbScaleFrom.Text.Trim) & " onward have been shifted by " & ShiftSeconds & " seconds."
 		If AppConfig.ConfirmModify And Not MsgBoxResult.Yes = MsgBox("This will shift all chapter times including and following " & _
 			FormatTimes(Me.tbScaleFrom.Text.Trim) & " by " & ShiftSeconds & " seconds.  Chapter times before "  & _
 			FormatTimes(Me.tbScaleFrom.Text.Trim) & " will not be adjusted.  Do you want to proceed?", _
@@ -358,6 +358,7 @@ Public Partial Class MainForm
 		Next
 		Me.tbOffset.Text = "0.0"
 		ShowList()
+		Me.toolStripStatusLabel1.Text = s1
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -378,6 +379,7 @@ Public Partial Class MainForm
 			ErrorBox(eMsg)
 			Exit Sub
 		End If
+		Dim s1 As String = "All chapter times adjusted to match a frame rate of " & Me.tbFrameRate.Text.Trim & " fps."
 		If AppConfig.ConfirmModify And Not MsgBoxResult.Yes = MsgBox("This will adjust all chapter times to try to match up to a " & _
 			"frame boundary at the specified frame rate of " & Me.tbFrameRate.Text.Trim & " fps.  Do you want to proceed?", _
 			MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Confirm Changes") Then Exit Sub
@@ -391,6 +393,7 @@ Public Partial Class MainForm
 			Me.cTimes(I) = SECtoHMS(seconds)
 		Next
 		ShowList()
+		Me.toolStripStatusLabel1.Text = s1
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -404,6 +407,7 @@ Public Partial Class MainForm
 			ErrorBox("Missing or invalid chapter interval time information.")
 			Exit Sub
 		End If
+		Dim s1 As String = "Times added every " & Me.maskedTextBox3.Text.Trim & " from 00:00:00.00000 to " & Me.maskedTextBox4.Text.Trim & "."
 		If AppConfig.ConfirmInsert And Not MsgBoxResult.Yes = MsgBox("This will create chapter times every " & _
 			Me.maskedTextBox3.Text.Trim & " (specified interval) from 00:00:00.00000 to " & Me.maskedTextBox4.Text.Trim & _
 			" (specified end time).  Do you want to proceed?", _
@@ -416,6 +420,7 @@ Public Partial Class MainForm
 		Me.maskedTextBox3.Text = BLANKTIME
 		Me.maskedTextBox4.Text = BLANKTIME
 		ShowList()
+		Me.toolStripStatusLabel1.Text = s1
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -424,7 +429,10 @@ Public Partial Class MainForm
 	'
 	
 	Sub WriteChapterFile()
-		Dim s1, s2 As String
+		Dim s1, s2, s3 As String
+		Dim i1, i2, i3 As Integer
+		Dim d1, d2 As Double
+		Dim b1 As Boolean = False
 		Dim eStr As String = ""
 		If (eStr.Trim.Length < 1) And (Me.cTimes.Length < 1) Then _
 			eStr = "No chapter times identified."
@@ -445,11 +453,15 @@ Public Partial Class MainForm
 		End If
 		
 		' Write one entry for each valid chapter time.  Any additional titles will be ignored.
+		d1 = 0
+		If (Me.cOutputType = FileType.TXT) Then b1 = (MsgBox("Do you want to include the chapter duration information with the chapter titles?" _
+			& vbCrLf & vbCrLf & "Note that the the duration of the final chapter will be set to [00:00].", MsgBoxStyle.ApplicationModal Or _
+			MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Include Durations") = MsgBoxResult.Yes)
 		Dim chaptercount As Integer = 0
 		For Each s1 In Me.cTimes
 			chaptercount += 1
 			s2 = ""
-			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "[" & s1 & "] "
+			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "{" & s1 & "} "
 			If Me.cbAddChapterNumbers.Checked Then s2 = s2 & chaptercount.ToString.Trim & ". "
 			If chaptercount > (UBound(Me.cTitles) + 1) Then
 				Dim s2s As String = "Unknown Chapter Title"
@@ -471,9 +483,22 @@ Public Partial Class MainForm
 				AppendArray(outlines, "      <ChapterFlagHidden>0</ChapterFlagHidden>")
 				AppendArray(outlines, "      <ChapterFlagEnabled>1</ChapterFlagEnabled>")
 				AppendArray(outlines, "    </ChapterAtom>")
-			Else
+			ElseIf Me.cOutputType = FileType.OGM Then
 				AppendArray(outlines, "CHAPTER" & chaptercount.ToString.PadLeft(2, CChar("0")) & "=" & s1)
 				AppendArray(outlines, "CHAPTER" & chaptercount.ToString.PadLeft(2, CChar("0")) & "NAME=" & s2)
+			Else
+				Try
+					d2 = HMStoSEC(Me.cTimes(chaptercount))
+				Catch
+					d2 = d1
+				End Try
+				i1 = CInt(d2 - d1)
+				d1 = d2
+				i2 = i1 \ 60
+				i3 = i1 Mod 60
+				s3 = ""
+				If b1 Then s3 = " [" & Format(i2, "00") & ":" & Format(i3, "00") & "] "
+				AppendArray(outlines, s2 & s3)
 			End If
 		Next
 		If Me.cOutputType = FileType.XML Then
@@ -491,9 +516,10 @@ Public Partial Class MainForm
 		
 		
 		If (eStr.Trim.Length > 0) Then
+			Me.toolStripStatusLabel1.Text = eStr
 			ErrorBox(eStr)
 		Else
-			MsgBox("Chapters file successfully created.", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information Or MsgBoxStyle.ApplicationModal, "Success")
+			Me.toolStripStatusLabel1.Text = "Chapters file successfully created."
 		End If
 	End Sub
 	
@@ -601,6 +627,10 @@ Public Partial Class MainForm
 			Me.tbOutputType.Text = "OGM"
 			Me.cOutputType = FileType.OGM
 		End If
+		If AppConfig.OutputType = Defaults.cmOutputType.TXT Then
+			Me.tbOutputType.Text = "TXT"
+			Me.cOutputType = FileType.TXT
+		End If
 		s1 = AppConfig.OutFilePath.Trim
 		If s1.Trim.Length > 0 Then
 			If Not s1.EndsWith("\") Then s1 &= "\"
@@ -608,6 +638,7 @@ Public Partial Class MainForm
 		End If
 		Me.tbFileOutput.Text = s1.Trim
 		ShowList()
+		Me.toolStripStatusLabel1.Text = "Form reset.  Default configuration loaded."
 	End Sub
 		
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -617,7 +648,8 @@ Public Partial Class MainForm
 	Function GetOutputFileName() As String
 		Dim s1 As String = AppFileRoot & "Chapters."
 		If Me.cOutputType = FileType.OGM Then s1 &= AppConfig.OGMExt
-		If Me.cOutputType = FileType.XML Then s1 &= "xml"
+		If Me.cOutputType = FileType.XML Then s1 &= AppConfig.XMLExt
+		If Me.cOutputType = FileType.TXT Then s1 &= AppConfig.TXTExt
 		Return s1
 	End Function
 	
@@ -730,11 +762,13 @@ Public Partial Class MainForm
 				Next
 			Next
 		Catch
+			Me.toolStripStatusLabel1.Text = "Error loading the specified chapter times file."
 			ErrorBox("There was a problem loading the chapter times file.")
 			Me.cTimes = {}
 		End Try
 		If (Me.cTimes.Length > 0) And (Me.cTimesType = FileType.TXT) Then AppendArray(Me.cTimes, FormatTimes(SECtoHMS(0)))
 		ShowList()
+		Me.toolStripStatusLabel1.Text = "Chapter times loaded from specified file."
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -779,10 +813,12 @@ Public Partial Class MainForm
 				End If
 			Next	
 		Catch
+			Me.toolStripStatusLabel1.Text = "Error loading the specified chapter titles file."
 			ErrorBox("There was a problem loading the chapter titles file.")
 			Me.cTitles = {}
 		End Try
 		ShowList()
+		Me.toolStripStatusLabel1.Text = "Chapter titles loaded from specified file."
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -954,23 +990,29 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Toggle output file type selection
+	'	Toggle output file type selection (TXT -> XML -> OGM) 
 	
 	Sub Button8Click(sender As Object, e As EventArgs)
 		Dim s1, s2, s3 As String
 		Dim n1 As Integer
 		If Me.cOutputType = FileType.XML Then
-			n1 = 3
+			n1 = AppConfig.XMLExt.Trim.Length
 			Me.cOutputType = FileType.OGM
 			Me.tbOutputType.Text = "OGM"
 			s1 = AppConfig.OGMExt.Trim
 			s2 = AppConfig.XMLExt.Trim
-		Else
+		ElseIf Me.cOutputType = FileType.OGM Then
 			n1 = AppConfig.OGMExt.Trim.Length
+			Me.cOutputType = FileType.TXT
+			Me.tbOutputType.Text = "TXT"
+			s1 = AppConfig.TXTExt.Trim
+			s2 = AppConfig.OGMExt.Trim
+		Else
+			n1 = AppConfig.TXTExt.Trim.Length
 			Me.cOutputType = FileType.XML
 			Me.tbOutputType.Text = "XML"
 			s1 = AppConfig.XMLExt.Trim
-			s2 = AppConfig.OGMExt.Trim
+			s2 = AppConfig.TXTExt.Trim
 		End If
 		s3 = Me.tbFileOutput.Text.Trim
 		If s3.Length > 0 Then
@@ -979,6 +1021,7 @@ Public Partial Class MainForm
 				Me.tbFileOutput.Text = s3
 			End If
 		End If
+		Me.toolStripStatusLabel1.Text = "Output file set to " & Me.tbOutputType.Text.Trim & " format."
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1202,6 +1245,7 @@ Public Partial Class MainForm
 			Me.cTitles(I) = AppFixCase.MakeProper(Me.cTitles(I))
 		Next
 		ShowList()
+		Me.toolStripStatusLabel1.Text = "All chapter titles have been adjusted to title case."
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1355,16 +1399,6 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Verify that the help file exists
-	
-	Private Function HelpFileExists() As Boolean
-		If System.IO.File.Exists(AppHelp) Then Return True
-		ErrorBox("Unable to locate the help file """ & AppHelp & """ in the program directory.")
-		Return False
-	End Function
-	
-	'-----------------------------------------------------------------------------------------------------------------------------------------------------
-	'
 	'	Open the help file Table of Contents tab
 	
 	Sub ContentsToolStripMenuItemClick(sender As Object, e As EventArgs)
@@ -1476,4 +1510,202 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Select from list of standard frame rates
+	
+	Sub LbFRListLeave(sender As Object, e As EventArgs)
+		CopyFR()
+	End Sub
+
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Select from list of standard frame rates
+	
+	Sub LbFRListSelectedIndexChanged(sender As Object, e As EventArgs)
+		CopyFR()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Select from list of standard frame rates
+	
+	Sub CopyFR()
+		If (Me.lbFRList.SelectedIndex >= 0) Then
+			If Me.lbFRList.SelectedIndex < 8 Then
+				Me.tbFrameRate.Text = Me.lbFRList.SelectedItem.ToString.Trim
+			Else
+				Me.tbFrameRate.Text = ""
+			End If
+		End If
+		Me.tbFrameRate.Focus
+		Me.lbFRList.Visible = False
+	End Sub
+
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Display drop down list of standard frame rates
+	
+	Sub BFRDropDownClick(sender As Object, e As EventArgs)
+		If Me.lbFRList.Visible Then
+			Me.tbFrameRate.Focus
+			Me.lbFRList.Visible = False
+		Else
+			Me.lbFRList.ClearSelected
+			Me.lbFRList.Visible = True
+			'Me.lbFRList.Focus
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Text edit cut function
+	
+	Sub TextEditCut()
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			If box.SelectedText <> "" Then
+				Clipboard.SetText(box.SelectedText)
+				box.SelectedText = ""
+			End If
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Text edit copy function
+	
+	Sub TextEditCopy()
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			If box.SelectedText <> "" Then
+				Clipboard.SetText(box.SelectedText)
+			End If
+		ElseIf TypeOf Me.ActiveControl Is MaskedTextBox Then
+			Dim box As MaskedTextBox = TryCast(Me.ActiveControl, MaskedTextBox)
+			Clipboard.SetText(box.Text)
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Text edit paste function
+	
+	Sub TextEditPaste()
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			Dim iData As IDataObject = Clipboard.GetDataObject()
+        	'Check to see if the data is in a text format
+        	If iData.GetDataPresent(DataFormats.Text) Then box.SelectedText = Clipboard.GetText()
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the cut function
+	
+	Sub CutToolStripMenuItemClick(sender As Object, e As EventArgs)
+		TextEditCut()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the copy function
+	
+	Sub CopyToolStripMenuItemClick(sender As Object, e As EventArgs)
+		TextEditCopy()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the paste function
+	
+	Sub PasteToolStripMenuItemClick(sender As Object, e As EventArgs)
+		TextEditPaste()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the select all function
+	
+	Sub SelectAllToolStripMenuItemClick(sender As Object, e As EventArgs)
+		If TypeOf Me.ActiveControl Is TextBox Then
+			Dim box As TextBox = TryCast(Me.ActiveControl, TextBox)
+			box.SelectAll()
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update the enabled status of the edit buttons
+	
+    Private Sub UpdateEditButtons(ByVal sender As Object, ByVal e As EventArgs)
+    	If TypeOf Me.ActiveControl Is TextBox Then
+    		Me.selectAllToolStripMenuItem.Enabled = (Me.ActiveControl.Text.Trim.Length > 0)
+    		Me.copyToolStripMenuItem.Enabled = (TryCast(Me.ActiveControl, TextBox).SelectionLength > 0)
+    		Me.cutToolStripMenuItem.Enabled = (TryCast(Me.ActiveControl, TextBox).SelectionLength > 0)
+    		Me.pasteToolStripMenuItem.Enabled = Clipboard.ContainsText
+    		Me.cutToolStripButton.Enabled = (TryCast(Me.ActiveControl, TextBox).SelectionLength > 0)
+    		Me.copyToolStripButton.Enabled = (TryCast(Me.ActiveControl, TextBox).SelectionLength > 0)
+    		Me.pasteToolStripButton.Enabled = Clipboard.ContainsText
+    	Else
+    		Me.selectAllToolStripMenuItem.Enabled = False
+    		Me.pasteToolStripMenuItem.Enabled = False
+    		Me.copyToolStripMenuItem.Enabled = False
+    		Me.cutToolStripMenuItem.Enabled = False
+    		Me.cutToolStripButton.Enabled = False
+    		Me.copyToolStripButton.Enabled = False
+    		Me.pasteToolStripButton.Enabled = False
+		End If
+    End Sub
+    
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the new document tool strip button 
+	
+	Sub NewToolStripButtonClick(sender As Object, e As EventArgs)
+		ResetAll()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the save tool strip button 
+	
+	Sub SaveToolStripButtonClick(sender As Object, e As EventArgs)
+		WriteChapterFile()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the cut tool strip button
+	
+	Sub CutToolStripButtonClick(sender As Object, e As EventArgs)
+		TextEditCut()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the copy tool strip button
+	
+	Sub CopyToolStripButtonClick(sender As Object, e As EventArgs)
+		TextEditCopy()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the paste tool strip button
+	
+	Sub PasteToolStripButtonClick(sender As Object, e As EventArgs)
+		TextEditPaste()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the help tool strip button
+	
+	Sub HelpToolStripButtonClick(sender As Object, e As EventArgs)
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.TableOfContents, Nothing)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	
 End Class
