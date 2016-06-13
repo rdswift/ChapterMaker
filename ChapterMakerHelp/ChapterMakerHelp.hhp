@@ -33,9 +33,15 @@ ChapterMakerHelp08.htm
 
 
 [ALIAS]
+H_04AB=ChapterMakerHelp04AB.htm
+H_04AD=ChapterMakerHelp04AD.htm
+H_04AE=ChapterMakerHelp04AE.htm
 
 
 [MAP]
+#define H_04AB 9030
+#define H_04AD 9010
+#define H_04AE 9020
 
 
 [INFOTYPES]
