@@ -117,12 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>722, 17</value>
+  </metadata>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <metadata name="saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>150, 17</value>
   </metadata>
+  <data name="bTitlesFileDialog.ToolTip" xml:space="preserve">
+    <value>Select the file to read the chapter titles using the system file browser.
+This can be either an XLM file, an OGM-format Chapters file, or a plain
+text file.  The program will try to automatically detect the file type.
+
+Alternately, you can drag 'n' drop the file onto the file title text box to
+load it automatically.
+</value>
+  </data>
+  <data name="bTimesFileDialog.ToolTip" xml:space="preserve">
+    <value>Select the file to read the chapter times using the system file browser.
+This can be either an XLM file, an OGM-format Chapters file, or a plain
+text file.  The program will try to automatically detect the file type.
+
+Alternately, you can drag 'n' drop the file onto the file title text box to
+load it automatically.
+</value>
+  </data>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>282, 17</value>
   </metadata>
@@ -241,6 +262,27 @@
         PdXm80/AfDokTVu+8DfPXv9XCcIPTvjvLQ8YoakAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="bLoadTitles.ToolTip" xml:space="preserve">
+    <value>Read the chapter titles from the specified input file.  If there is no file
+specified, you will have the option of loading the titles from the
+chapter times input file.  Titles will be appended to any existing times
+in the list.
+
+Alternately, you can drag 'n' drop the file onto the file title text box to
+load it automatically.
+
+</value>
+  </data>
+  <data name="bLoadTimes.ToolTip" xml:space="preserve">
+    <value>Read the chapter times from the specified input file.  If there is no file
+specified, you will have the option of loading the times from the
+chapter titles input file.  Times will be added to any existing times in
+the list.
+
+Alternately, you can drag 'n' drop the file onto the file title text box to
+load it automatically.
+</value>
+  </data>
   <metadata name="dgNumber.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -249,6 +291,9 @@
   </metadata>
   <metadata name="dgTitle.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
+  </metadata>
+  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>814, 17</value>
   </metadata>
   <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>391, 17</value>

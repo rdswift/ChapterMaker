@@ -31,9 +31,9 @@ Imports System.Data
 Public Partial Class MainForm
 	Enum FileType
 		Undefined = -1
-		TXT = 0
-		OGM = 1
-		XML = 2
+		TXT = 3
+		OGM = 2
+		XML = 1
 	End Enum
 	
 	Const BLANKTIME = "00:00:00.00000"
@@ -43,8 +43,9 @@ Public Partial Class MainForm
 	Private dragRect As Rectangle
 	
 	Dim cTimes(), cTitles() As String
-	Dim cTimesType, cTitlesType, cOutputType As Integer
+	Dim cTimesType, cTitlesType As Integer
 	Dim ChaptersDS As DataSet
+	Dim cOutputType As FileType
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -66,6 +67,10 @@ Public Partial Class MainForm
 		Me.AllowDrop=True
 		Me.cbLanguage.Items.Clear
 		Me.cbLanguage.Items.AddRange(Languages)
+		Me.cbOutputType.Items.Clear
+		Me.cbOutputType.Items.Add("XML (Extensible Markup)")
+		Me.cbOutputType.Items.Add("OGM (OGG Media)")
+		Me.cbOutputType.Items.Add("TXT (Plain Text)")
 		AppConfig = New Defaults
 		AppConfig.Read()
 		ChaptersDS = New DataSet()
@@ -78,6 +83,7 @@ Public Partial Class MainForm
 		DT.Columns.Add(DC3)
 		ChaptersDS.Tables.Add(DT)
 		Me.dataGridView1.DataSource = ChaptersDS.Tables(0)
+		Me.cOutputType = CType(AppConfig.OutputType, FileType)
 		ResetAll
 		AppFixCase = New FixCase
 		AppFixCase.Read()
@@ -473,6 +479,7 @@ Public Partial Class MainForm
 				s2 &= Me.cTitles(chaptercount - 1)
 			End If
 			If Me.cOutputType = FileType.XML Then
+				s2 = System.Net.WebUtility.HtmlEncode(s2)
 				AppendArray(outlines, "")
 				AppendArray(outlines, "    <ChapterAtom>")
 				AppendArray(outlines, "      <ChapterDisplay>")
@@ -621,16 +628,10 @@ Public Partial Class MainForm
 		Me.cTitlesType = FileType.Undefined
 		Me.tbTimeType.Text = "---"
 		Me.tbTitleType.Text = "---"
-		Me.tbOutputType.Text = "XML"
-		Me.cOutputType = FileType.XML
-		If AppConfig.OutputType = Defaults.cmOutputType.OGM Then
-			Me.tbOutputType.Text = "OGM"
-			Me.cOutputType = FileType.OGM
-		End If
-		If AppConfig.OutputType = Defaults.cmOutputType.TXT Then
-			Me.tbOutputType.Text = "TXT"
-			Me.cOutputType = FileType.TXT
-		End If
+		s1 = "XML"
+		If AppConfig.OutputType = Defaults.cmOutputType.OGM Then s1 = "OGM"
+		If AppConfig.OutputType = Defaults.cmOutputType.TXT Then s1 = "TXT"
+		SetOutputType(CType(AppConfig.OutputType, FileType))
 		s1 = AppConfig.OutFilePath.Trim
 		If s1.Trim.Length > 0 Then
 			If Not s1.EndsWith("\") Then s1 &= "\"
@@ -745,14 +746,15 @@ Public Partial Class MainForm
 		'Read the times
 		Dim RegEx3 As String = ""
 		If Me.cTimesType = FileType.OGM Then RegEx3 = "CHAPTER[0-9]+=(.*)$"
-		If Me.cTimesType = FileType.XML Then RegEx3 = "ChapterTimeStart>(.*)<"
+		If Me.cTimesType = FileType.XML Then RegEx3 = "<ChapterTimeStart>([^<]*)<"
 		If Me.cTimesType = FileType.TXT Then RegEx3 = "\[([0-9:]*)\]\s*$"
 		Dim s2 As String = Me.tbFileTimes.Text.Trim
 		Dim cumTime As Double = 0
 		Try
 			Dim readTimes() As String = File.ReadAllLines(s2)
 			For Each s1 In readTimes
-				For Each match As Match In Regex.Matches(s1, RegEx3, RegexOptions.IgnoreCase)
+				Dim matches As MatchCollection = Regex.Matches(s1, RegEx3, RegexOptions.IgnoreCase)
+				For Each match As Match In matches
 					If Me.cTimesType = FileType.TXT Then
 						cumTime += HMStoSEC(match.Groups(1).Value)
 						AppendArray(Me.cTimes, FormatTimes(SECtoHMS(cumTime)))
@@ -794,7 +796,7 @@ Public Partial Class MainForm
 		'Read the titles
 		Dim RegEx1 As String = ""
 		If Me.cTitlesType = FileType.OGM Then RegEx1 = "CHAPTER[0-9]+NAME=(.*)$"
-		If Me.cTitlesType = FileType.XML Then RegEx1 = "ChapterString>(.*)</ChapterString"
+		If Me.cTitlesType = FileType.XML Then RegEx1 = "ChapterString>([^<]*)</ChapterString"
 		Dim RegEx2 As String = "^[0-9]+\.\s+"
 		Dim RegEx3 As String = "\s+\[[0-9\:]+\]\s*$"
 		Try
@@ -808,6 +810,7 @@ Public Partial Class MainForm
 				Else
 					For Each match As Match In Regex.Matches(s1, RegEx1, RegexOptions.IgnoreCase)
 						s2 = match.Groups(1).Value
+						s2 = System.Net.WebUtility.HtmlDecode(s2)
 						AppendArray(Me.cTitles, Regex.Replace(s2, RegEx2, String.Empty))
 					Next
 				End If
@@ -825,7 +828,7 @@ Public Partial Class MainForm
 	'
 	'	Update the DataGridView with any changes from the time and title arrays
 	
-	Sub ShowList()
+	Sub ShowList(optional sRow As Integer = 0, optional sCol As Integer = 0)
 		Dim cntTimes As Integer = Me.cTimes.Length
 		Dim cntTitles As Integer = Me.cTitles.Length
 		Dim cntList As Integer = cntTimes
@@ -848,7 +851,29 @@ Public Partial Class MainForm
 			End If
 			ChaptersDS.Tables(0).Rows.Add(DR)
 		Next
+		UpdateContextMenuItemEnabled()
 		Me.dataGridView1.Refresh
+		If Me.dataGridView1.Rows.Count > sRow Then Me.dataGridView1.CurrentCell = Me.dataGridView1(sCol, sRow)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Update the buttons on the list item context menu
+	
+	Sub UpdateContextMenuItemEnabled()
+		If ChaptersDS.Tables(0).Rows.Count > 0 Then
+			Me.contextMenuStrip1.Enabled = True
+			Dim i As Integer = Me.dataGridView1.CurrentRow.Index	'zero-based
+			Dim j As Integer = Me.cTimes.Length
+			Dim k As Integer = Me.cTitles.Length
+			Me.moveUpToolStripMenuItem.Enabled =  ((i > 0) And (i < k))
+			Me.moveDownToolStripMenuItem.Enabled = ((i > -1) And (i < k - 1))
+			Me.deleteLineToolStripMenuItem.Enabled = (i > -1)
+			Me.deleteTimeOnlyToolStripMenuItem.Enabled = ((i > -1) And (i < j))
+			Me.deleteTitleOnlyToolStripMenuItem.Enabled = ((i > -1) And (i < k))
+		Else
+			Me.contextMenuStrip1.Enabled = False
+		End If
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -929,6 +954,7 @@ Public Partial Class MainForm
 	
 	Sub DataGridView1SelectionChanged(sender As Object, e As EventArgs)
 		dgvLineInfo()
+		UpdateContextMenuItemEnabled()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -993,35 +1019,13 @@ Public Partial Class MainForm
 	'	Toggle output file type selection (TXT -> XML -> OGM) 
 	
 	Sub Button8Click(sender As Object, e As EventArgs)
-		Dim s1, s2, s3 As String
-		Dim n1 As Integer
 		If Me.cOutputType = FileType.XML Then
-			n1 = AppConfig.XMLExt.Trim.Length
-			Me.cOutputType = FileType.OGM
-			Me.tbOutputType.Text = "OGM"
-			s1 = AppConfig.OGMExt.Trim
-			s2 = AppConfig.XMLExt.Trim
+			SetOutputType(FileType.OGM)
 		ElseIf Me.cOutputType = FileType.OGM Then
-			n1 = AppConfig.OGMExt.Trim.Length
-			Me.cOutputType = FileType.TXT
-			Me.tbOutputType.Text = "TXT"
-			s1 = AppConfig.TXTExt.Trim
-			s2 = AppConfig.OGMExt.Trim
+			SetOutputType(FileType.TXT)
 		Else
-			n1 = AppConfig.TXTExt.Trim.Length
-			Me.cOutputType = FileType.XML
-			Me.tbOutputType.Text = "XML"
-			s1 = AppConfig.XMLExt.Trim
-			s2 = AppConfig.TXTExt.Trim
+			SetOutputType(FileType.XML)
 		End If
-		s3 = Me.tbFileOutput.Text.Trim
-		If s3.Length > 0 Then
-			If s3.EndsWith(s2) Then
-				s3 = Strings.Left(s3, s3.Length - n1) & s1
-				Me.tbFileOutput.Text = s3
-			End If
-		End If
-		Me.toolStripStatusLabel1.Text = "Output file set to " & Me.tbOutputType.Text.Trim & " format."
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1092,6 +1096,14 @@ Public Partial Class MainForm
 	'	Delete selected chapter time from the list
 	
 	Sub BTimeRemoveClick(sender As Object, e As EventArgs)
+		DeleteSelectedTime()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Delete selected chapter time from the list
+	
+	Sub DeleteSelectedTime()
 		Dim idx As Integer
 		Dim confirm As Boolean = True
 		Try
@@ -1179,6 +1191,14 @@ Public Partial Class MainForm
 	'	Delete selected chapter title from the list
 	
 	Sub BTitleRemoveClick(sender As Object, e As EventArgs)
+		DeleteSelectedTitle()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Delete selected chapter title from the list
+	
+	Sub DeleteSelectedTitle()
 		Dim idx As Integer
 		Dim confirm As Boolean = True
 		Try
@@ -1208,6 +1228,14 @@ Public Partial Class MainForm
 	'	Delete selected line (chapter time and title) from the list
 	
 	Sub BDeleteLineClick(sender As Object, e As EventArgs)
+		DeleteSelectedLine()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Delete selected line (chapter time and title) from the list
+	
+	Sub DeleteSelectedLine()
 		Dim idx As Integer
 		Dim confirm As Boolean = True
 		Try
@@ -1282,7 +1310,7 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Launch the wite output file routine
+	'	Launch the write output file routine
 	
 	Sub BOutputClick(sender As Object, e As EventArgs)
 		WriteChapterFile()
@@ -1399,6 +1427,30 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
+	'	Open the help file Scaling Chapter Times screen
+	
+	Sub BScaleHelpClick(sender As Object, e As EventArgs)
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.TopicId, "9010")
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Open the help file Shifting Chapter Times screen
+	
+	Sub BShiftTimesHelpClick(sender As Object, e As EventArgs)
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.TopicId, "9020")
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Open the help file Adding Chapter Times screen
+	
+	Sub BAddTimesHelpClick(sender As Object, e As EventArgs)
+		If HelpFileExists() Then System.Windows.Forms.Help.ShowHelp(ParentForm, AppHelp, HelpNavigator.TopicId, "9030")
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
 	'	Open the help file Table of Contents tab
 	
 	Sub ContentsToolStripMenuItemClick(sender As Object, e As EventArgs)
@@ -1427,6 +1479,7 @@ Public Partial Class MainForm
 	
 	Sub DataGridView1DragDrop(sender As Object, e As DragEventArgs)
 		Dim p As Point = DataGridView1.PointToClient(New Point(e.X, e.Y))
+		Dim z As Integer
 		dragIndex = DataGridView1.HitTest(p.X, p.Y).RowIndex
 		If (e.Effect = DragDropEffects.Move) Then
 			Dim dragRow As DataGridViewRow = CType(e.Data.GetData(GetType(DataGridViewRow)), DataGridViewRow)
@@ -1438,7 +1491,9 @@ Public Partial Class MainForm
 				If Not (I = fromIndex) Then AppendArray(tempTitles, cTitles(I))
 			Next
 			cTitles = tempTitles
-			ShowList()
+			z = dragIndex
+			If dragIndex > fromIndex Then z = dragIndex - 1
+			ShowList(z, 2)
 		End If
 	End Sub
 	
@@ -1707,5 +1762,158 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Set output file type
+	
+	Sub SetOutputType(ByVal newType As FileType)
+		Dim s1, s2, s3, s4, s5 As String
+		Dim n1 As Integer
+		If Me.cOutputType = FileType.XML Then
+			n1 = AppConfig.XMLExt.Trim.Length
+			s2 = AppConfig.XMLExt.Trim
+		ElseIf Me.cOutputType = FileType.OGM Then
+			n1 = AppConfig.OGMExt.Trim.Length
+			s2 = AppConfig.OGMExt.Trim
+		Else
+			n1 = AppConfig.TXTExt.Trim.Length
+			s2 = AppConfig.TXTExt.Trim
+		End If
+		Me.cOutputType = newType
+		If newType = FileType.XML Then
+			s4 = "XML"
+			s5 = "Extensible Markup Language"
+			s1 = AppConfig.XMLExt.Trim
+			Me.xMLToolStripMenuItem.Checked = True
+			Me.oGGMediaToolStripMenuItem.Checked = False
+			Me.plainTextToolStripMenuItem.Checked = False
+		ElseIf newType = FileType.OGM Then
+			s4 = "OGM"
+			s5 = "OGG Media / Chapters"
+			s1 = AppConfig.OGMExt.Trim
+			Me.xMLToolStripMenuItem.Checked =  False
+			Me.oGGMediaToolStripMenuItem.Checked = True
+			Me.plainTextToolStripMenuItem.Checked = False
+		Else
+			s4 = "TXT"
+			s5 = "Plain Text"
+			s1 = AppConfig.TXTExt.Trim
+			Me.xMLToolStripMenuItem.Checked = False
+			Me.oGGMediaToolStripMenuItem.Checked = False
+			Me.plainTextToolStripMenuItem.Checked = True
+		End If
+		s3 = Me.tbFileOutput.Text.Trim
+		If s3.Length > 0 Then
+			If s3.EndsWith(s2) Then
+				s3 = Strings.Left(s3, s3.Length - n1) & s1
+				Me.tbFileOutput.Text = s3
+			End If
+		End If
+		'Dim otItem As Object
+		For Each otItem As Object In Me.cbOutputType.Items
+			If Strings.Left(otItem.ToString.Trim, 3) = s4 Then Me.cbOutputType.SelectedItem = otItem
+		Next
+		Me.toolStripStatusLabel1.Text = "Output file set to " & s5 & " (" & s4 & ") format."
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the XML Output tool strip button
+	
+	Sub XMLToolStripMenuItemClick(sender As Object, e As EventArgs)
+		SetOutputType(FileType.XML)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the OGM Output tool strip button
+	
+	Sub OGGMediaToolStripMenuItemClick(sender As Object, e As EventArgs)
+		SetOutputType(FileType.OGM)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle the TXT Output tool strip button
+	
+	Sub PlainTextToolStripMenuItemClick(sender As Object, e As EventArgs)
+		SetOutputType(FileType.TXT)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle output file type selection update
+	
+	Sub CbOutputTypeSelectedIndexChanged(sender As Object, e As EventArgs)
+		Dim s1 As String = Strings.Left(Me.cbOutputType.SelectedItem.ToString.Trim, 3)
+		If s1 = "XML" Then
+			SetOutputType(FileType.XML)
+		ElseIf s1 = "OGM" Then
+			SetOutputType(FileType.OGM)
+		Else
+			SetOutputType(FileType.TXT)
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle delete line toolstrip item
+	
+	Sub DeleteLineToolStripMenuItemClick(sender As Object, e As EventArgs)
+		DeleteSelectedLine()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle delete title only toolstrip item
+	
+	Sub DeleteTitleOnlyToolStripMenuItemClick(sender As Object, e As EventArgs)
+		DeleteSelectedTitle()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle delete time only toolstrip item
+	
+	Sub DeleteTimeOnlyToolStripMenuItemClick(sender As Object, e As EventArgs)
+		DeleteSelectedTime()
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle move title up toolstrip item
+	
+	Sub MoveUpToolStripMenuItemClick(sender As Object, e As EventArgs)
+		Dim i As Integer = Me.dataGridView1.CurrentRow.Index
+		Dim s1 As String = Me.cTitles(i - 1)
+		Me.cTitles(i - 1) = Me.cTitles(i)
+		Me.cTitles(i) = s1
+		ShowList(i - 1, 2)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Handle move title down toolstrip item
+	
+	Sub MoveDownToolStripMenuItemClick(sender As Object, e As EventArgs)
+		Dim i As Integer = Me.dataGridView1.CurrentRow.Index
+		Dim s1 As String = Me.cTitles(i + 1)
+		Me.cTitles(i + 1) = Me.cTitles(i)
+		Me.cTitles(i) = s1
+		ShowList(i + 1, 2)
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Select line on right mouse click
+	
+	Sub DataGridView1CellMouseDown(sender As Object, e As DataGridViewCellMouseEventArgs)
+		If (e.Button = MouseButtons.Right) And (e.ColumnIndex >= 0) And (e.RowIndex >= 0) Then
+			Me.dataGridView1.CurrentCell = Me.dataGridView1(e.ColumnIndex, e.RowIndex)
+			UpdateContextMenuItemEnabled()
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	
 End Class

@@ -56,6 +56,7 @@ Partial Class MainForm
 	''' not be able to load this method if it was changed manually.
 	''' </summary>
 	Private Sub InitializeComponent()
+		Me.components = New System.ComponentModel.Container()
 		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
 		Dim dataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
 		Dim dataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -86,6 +87,10 @@ Partial Class MainForm
 		Me.toolStripSeparator = New System.Windows.Forms.ToolStripSeparator()
 		Me.saveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.saveAsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.outputTypeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.xMLToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.oGGMediaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.plainTextToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
 		Me.printToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.printPreviewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -113,15 +118,19 @@ Partial Class MainForm
 		Me.tbFrameRate = New System.Windows.Forms.TextBox()
 		Me.bLoadTitles = New System.Windows.Forms.Button()
 		Me.bLoadTimes = New System.Windows.Forms.Button()
-		Me.bOutputType = New System.Windows.Forms.Button()
 		Me.tbTimeType = New System.Windows.Forms.TextBox()
 		Me.tbTitleType = New System.Windows.Forms.TextBox()
-		Me.tbOutputType = New System.Windows.Forms.TextBox()
 		Me.maskedTextBox1 = New System.Windows.Forms.MaskedTextBox()
 		Me.dataGridView1 = New System.Windows.Forms.DataGridView()
 		Me.dgNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
 		Me.dgTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
 		Me.dgTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+		Me.contextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+		Me.moveUpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.moveDownToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.deleteLineToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.deleteTimeOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.deleteTitleOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.bTimeAdd = New System.Windows.Forms.Button()
 		Me.label7 = New System.Windows.Forms.Label()
 		Me.bTimeUpdate = New System.Windows.Forms.Button()
@@ -136,6 +145,9 @@ Partial Class MainForm
 		Me.cbAddChapterTimes = New System.Windows.Forms.CheckBox()
 		Me.cbLanguage = New System.Windows.Forms.ComboBox()
 		Me.groupBox4 = New System.Windows.Forms.GroupBox()
+		Me.bShiftTimesHelp = New System.Windows.Forms.Button()
+		Me.bAddTimesHelp = New System.Windows.Forms.Button()
+		Me.bScaleHelp = New System.Windows.Forms.Button()
 		Me.lbFRList = New System.Windows.Forms.ListBox()
 		Me.bFRDropDown = New System.Windows.Forms.Button()
 		Me.label19 = New System.Windows.Forms.Label()
@@ -179,8 +191,11 @@ Partial Class MainForm
 		Me.helpToolStripButton = New System.Windows.Forms.ToolStripButton()
 		Me.statusStrip1 = New System.Windows.Forms.StatusStrip()
 		Me.toolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+		Me.cbOutputType = New System.Windows.Forms.ComboBox()
+		Me.toolTip1 = New System.Windows.Forms.ToolTip(Me.components)
 		Me.menuStrip1.SuspendLayout
 		CType(Me.dataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
+		Me.contextMenuStrip1.SuspendLayout
 		Me.groupBox1.SuspendLayout
 		Me.groupBox2.SuspendLayout
 		Me.groupBox3.SuspendLayout
@@ -199,6 +214,9 @@ Partial Class MainForm
 		Me.tbFileTitles.Size = New System.Drawing.Size(320, 23)
 		Me.tbFileTitles.TabIndex = 8
 		Me.tbFileTitles.TabStop = false
+		Me.toolTip1.SetToolTip(Me.tbFileTitles, "The file to read the chapter titles.  This can be either an XLM file,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"an OGM-for"& _ 
+				"mat Chapters file, or a plain text file.  The program"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"will try to automatically"& _ 
+				" detect the file type."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		AddHandler Me.tbFileTitles.TextChanged, AddressOf Me.TbFileTitlesTextChanged
 		AddHandler Me.tbFileTitles.DragDrop, AddressOf Me.TextBox1DragDrop
 		AddHandler Me.tbFileTitles.DragEnter, AddressOf Me.TextBox1DragEnter
@@ -214,6 +232,9 @@ Partial Class MainForm
 		Me.tbFileTimes.Size = New System.Drawing.Size(320, 23)
 		Me.tbFileTimes.TabIndex = 2
 		Me.tbFileTimes.TabStop = false
+		Me.toolTip1.SetToolTip(Me.tbFileTimes, "The file to read the chapter times.  This can be either an XLM file,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"an OGM-form"& _ 
+				"at Chapters file, or a plain text file.  The program"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"will try to automatically "& _ 
+				"detect the file type."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		AddHandler Me.tbFileTimes.TextChanged, AddressOf Me.TbFileTimesTextChanged
 		AddHandler Me.tbFileTimes.DragDrop, AddressOf Me.TextBox2DragDrop
 		AddHandler Me.tbFileTimes.DragEnter, AddressOf Me.TextBox2DragEnter
@@ -229,6 +250,7 @@ Partial Class MainForm
 		Me.tbFileOutput.Size = New System.Drawing.Size(320, 23)
 		Me.tbFileOutput.TabIndex = 14
 		Me.tbFileOutput.TabStop = false
+		Me.toolTip1.SetToolTip(Me.tbFileOutput, "The path and name of the output file that you wish to write."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		AddHandler Me.tbFileOutput.DragDrop, AddressOf Me.TextBox3DragDrop
 		AddHandler Me.tbFileOutput.DragEnter, AddressOf Me.TextBox3DragEnter
 		AddHandler Me.tbFileOutput.DoubleClick, AddressOf Me.TextBox3DoubleClick
@@ -240,6 +262,9 @@ Partial Class MainForm
 		Me.label1.Size = New System.Drawing.Size(88, 18)
 		Me.label1.TabIndex = 7
 		Me.label1.Text = "Titles File:"
+		Me.toolTip1.SetToolTip(Me.label1, "The file to read the chapter titles.  This can be either an XLM file,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"an OGM-for"& _ 
+				"mat Chapters file, or a plain text file.  The program"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"will try to automatically"& _ 
+				" detect the file type."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		'
 		'label2
 		'
@@ -248,6 +273,9 @@ Partial Class MainForm
 		Me.label2.Size = New System.Drawing.Size(88, 18)
 		Me.label2.TabIndex = 1
 		Me.label2.Text = "Times File:"
+		Me.toolTip1.SetToolTip(Me.label2, "The file to read the chapter times.  This can be either an XLM file,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"an OGM-form"& _ 
+				"at Chapters file, or a plain text file.  The program"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"will try to automatically "& _ 
+				"detect the file type."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		'
 		'label3
 		'
@@ -256,6 +284,7 @@ Partial Class MainForm
 		Me.label3.Size = New System.Drawing.Size(88, 18)
 		Me.label3.TabIndex = 13
 		Me.label3.Text = "Output File:"
+		Me.toolTip1.SetToolTip(Me.label3, "The path and name of the output file that you wish to write.")
 		'
 		'cbAddChapterNumbers
 		'
@@ -265,12 +294,14 @@ Partial Class MainForm
 		Me.cbAddChapterNumbers.TabIndex = 0
 		Me.cbAddChapterNumbers.TabStop = false
 		Me.cbAddChapterNumbers.Text = "Add Chapter Numbers"
+		Me.toolTip1.SetToolTip(Me.cbAddChapterNumbers, "This will include the chapter numbers in the"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"chapter names written to the output"& _ 
+				" file.")
 		Me.cbAddChapterNumbers.UseVisualStyleBackColor = true
 		'
 		'tbScaleFrom
 		'
 		Me.tbScaleFrom.BackColor = System.Drawing.SystemColors.Window
-		Me.tbScaleFrom.Location = New System.Drawing.Point(176, 184)
+		Me.tbScaleFrom.Location = New System.Drawing.Point(176, 208)
 		Me.tbScaleFrom.MaxLength = 20
 		Me.tbScaleFrom.Name = "tbScaleFrom"
 		Me.tbScaleFrom.ReadOnly = true
@@ -279,26 +310,29 @@ Partial Class MainForm
 		Me.tbScaleFrom.TabStop = false
 		Me.tbScaleFrom.Text = "00:00:00.00000"
 		Me.tbScaleFrom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.tbScaleFrom, "Current chapter time for scaling.")
 		'
 		'bReset
 		'
-		Me.bReset.Location = New System.Drawing.Point(640, 656)
+		Me.bReset.Location = New System.Drawing.Point(640, 680)
 		Me.bReset.Name = "bReset"
 		Me.bReset.Size = New System.Drawing.Size(80, 31)
 		Me.bReset.TabIndex = 23
 		Me.bReset.TabStop = false
 		Me.bReset.Text = "Reset"
+		Me.toolTip1.SetToolTip(Me.bReset, "Clear the chapter list and reset all"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"settings to their specified defaults.")
 		Me.bReset.UseVisualStyleBackColor = true
 		AddHandler Me.bReset.Click, AddressOf Me.BResetClick
 		'
 		'bOutput
 		'
-		Me.bOutput.Location = New System.Drawing.Point(736, 656)
+		Me.bOutput.Location = New System.Drawing.Point(736, 680)
 		Me.bOutput.Name = "bOutput"
 		Me.bOutput.Size = New System.Drawing.Size(80, 31)
 		Me.bOutput.TabIndex = 24
 		Me.bOutput.TabStop = false
 		Me.bOutput.Text = "Output"
+		Me.toolTip1.SetToolTip(Me.bOutput, "White the chapters list to the specified output file.")
 		Me.bOutput.UseVisualStyleBackColor = true
 		AddHandler Me.bOutput.Click, AddressOf Me.BOutputClick
 		'
@@ -316,6 +350,7 @@ Partial Class MainForm
 		Me.tbOffset.TabStop = false
 		Me.tbOffset.Text = "0.0"
 		Me.tbOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.tbOffset, "Number of seconds to shift chapter times.")
 		'
 		'bTitlesFileDialog
 		'
@@ -325,6 +360,7 @@ Partial Class MainForm
 		Me.bTitlesFileDialog.TabIndex = 9
 		Me.bTitlesFileDialog.TabStop = false
 		Me.bTitlesFileDialog.Text = "..."
+		Me.toolTip1.SetToolTip(Me.bTitlesFileDialog, resources.GetString("bTitlesFileDialog.ToolTip"))
 		Me.bTitlesFileDialog.UseVisualStyleBackColor = true
 		AddHandler Me.bTitlesFileDialog.Click, AddressOf Me.Button3Click
 		'
@@ -336,6 +372,7 @@ Partial Class MainForm
 		Me.bTimesFileDialog.TabIndex = 3
 		Me.bTimesFileDialog.TabStop = false
 		Me.bTimesFileDialog.Text = "..."
+		Me.toolTip1.SetToolTip(Me.bTimesFileDialog, resources.GetString("bTimesFileDialog.ToolTip"))
 		Me.bTimesFileDialog.UseVisualStyleBackColor = true
 		AddHandler Me.bTimesFileDialog.Click, AddressOf Me.Button4Click
 		'
@@ -347,6 +384,9 @@ Partial Class MainForm
 		Me.bOutputFileDialog.TabIndex = 15
 		Me.bOutputFileDialog.TabStop = false
 		Me.bOutputFileDialog.Text = "..."
+		Me.toolTip1.SetToolTip(Me.bOutputFileDialog, "Select the output file name and path using the system file browser."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"This can be "& _ 
+				"either an XLM file, an OGM-format Chapters file, or a plain"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"text file, as deter"& _ 
+				"mined by the selected file type."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		Me.bOutputFileDialog.UseVisualStyleBackColor = true
 		AddHandler Me.bOutputFileDialog.Click, AddressOf Me.Button5Click
 		'
@@ -361,7 +401,7 @@ Partial Class MainForm
 		'
 		'fileToolStripMenuItem1
 		'
-		Me.fileToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripMenuItem, Me.openToolStripMenuItem, Me.toolStripSeparator, Me.saveToolStripMenuItem, Me.saveAsToolStripMenuItem, Me.toolStripSeparator1, Me.printToolStripMenuItem, Me.printPreviewToolStripMenuItem, Me.toolStripSeparator2, Me.exitToolStripMenuItem1})
+		Me.fileToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripMenuItem, Me.openToolStripMenuItem, Me.toolStripSeparator, Me.saveToolStripMenuItem, Me.saveAsToolStripMenuItem, Me.outputTypeToolStripMenuItem, Me.toolStripSeparator1, Me.printToolStripMenuItem, Me.printPreviewToolStripMenuItem, Me.toolStripSeparator2, Me.exitToolStripMenuItem1})
 		Me.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1"
 		Me.fileToolStripMenuItem1.Size = New System.Drawing.Size(37, 20)
 		Me.fileToolStripMenuItem1.Text = "&File"
@@ -421,6 +461,34 @@ Partial Class MainForm
 		Me.saveAsToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
 		Me.saveAsToolStripMenuItem.Text = "Save &As"
 		AddHandler Me.saveAsToolStripMenuItem.Click, AddressOf Me.SaveAsToolStripMenuItemClick
+		'
+		'outputTypeToolStripMenuItem
+		'
+		Me.outputTypeToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.xMLToolStripMenuItem, Me.oGGMediaToolStripMenuItem, Me.plainTextToolStripMenuItem})
+		Me.outputTypeToolStripMenuItem.Name = "outputTypeToolStripMenuItem"
+		Me.outputTypeToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+		Me.outputTypeToolStripMenuItem.Text = "Output &Type"
+		'
+		'xMLToolStripMenuItem
+		'
+		Me.xMLToolStripMenuItem.Name = "xMLToolStripMenuItem"
+		Me.xMLToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+		Me.xMLToolStripMenuItem.Text = "Extensible Markup (XML)"
+		AddHandler Me.xMLToolStripMenuItem.Click, AddressOf Me.XMLToolStripMenuItemClick
+		'
+		'oGGMediaToolStripMenuItem
+		'
+		Me.oGGMediaToolStripMenuItem.Name = "oGGMediaToolStripMenuItem"
+		Me.oGGMediaToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+		Me.oGGMediaToolStripMenuItem.Text = "OGG Media (OGM)"
+		AddHandler Me.oGGMediaToolStripMenuItem.Click, AddressOf Me.OGGMediaToolStripMenuItemClick
+		'
+		'plainTextToolStripMenuItem
+		'
+		Me.plainTextToolStripMenuItem.Name = "plainTextToolStripMenuItem"
+		Me.plainTextToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+		Me.plainTextToolStripMenuItem.Text = "Plain Text (TXT)"
+		AddHandler Me.plainTextToolStripMenuItem.Click, AddressOf Me.PlainTextToolStripMenuItemClick
 		'
 		'toolStripSeparator1
 		'
@@ -610,6 +678,7 @@ Partial Class MainForm
 		Me.tbFrameRate.TabStop = false
 		Me.tbFrameRate.Text = "23.976"
 		Me.tbFrameRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.tbFrameRate, "Frame rate to use for chapter time adjustments.")
 		'
 		'bLoadTitles
 		'
@@ -619,6 +688,7 @@ Partial Class MainForm
 		Me.bLoadTitles.TabIndex = 11
 		Me.bLoadTitles.TabStop = false
 		Me.bLoadTitles.Text = "Load"
+		Me.toolTip1.SetToolTip(Me.bLoadTitles, resources.GetString("bLoadTitles.ToolTip"))
 		Me.bLoadTitles.UseVisualStyleBackColor = true
 		AddHandler Me.bLoadTitles.Click, AddressOf Me.Button6Click
 		'
@@ -630,19 +700,9 @@ Partial Class MainForm
 		Me.bLoadTimes.TabIndex = 5
 		Me.bLoadTimes.TabStop = false
 		Me.bLoadTimes.Text = "Load"
+		Me.toolTip1.SetToolTip(Me.bLoadTimes, resources.GetString("bLoadTimes.ToolTip"))
 		Me.bLoadTimes.UseVisualStyleBackColor = true
 		AddHandler Me.bLoadTimes.Click, AddressOf Me.Button7Click
-		'
-		'bOutputType
-		'
-		Me.bOutputType.Location = New System.Drawing.Point(504, 104)
-		Me.bOutputType.Name = "bOutputType"
-		Me.bOutputType.Size = New System.Drawing.Size(56, 23)
-		Me.bOutputType.TabIndex = 17
-		Me.bOutputType.TabStop = false
-		Me.bOutputType.Text = "Type"
-		Me.bOutputType.UseVisualStyleBackColor = true
-		AddHandler Me.bOutputType.Click, AddressOf Me.Button8Click
 		'
 		'tbTimeType
 		'
@@ -655,6 +715,8 @@ Partial Class MainForm
 		Me.tbTimeType.TabStop = false
 		Me.tbTimeType.Text = "---"
 		Me.tbTimeType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.tbTimeType, "The type of input file used for the chapter times,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"as determined automatically b"& _ 
+				"y the program.")
 		'
 		'tbTitleType
 		'
@@ -667,18 +729,8 @@ Partial Class MainForm
 		Me.tbTitleType.TabStop = false
 		Me.tbTitleType.Text = "---"
 		Me.tbTitleType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-		'
-		'tbOutputType
-		'
-		Me.tbOutputType.Location = New System.Drawing.Point(456, 104)
-		Me.tbOutputType.MaxLength = 20
-		Me.tbOutputType.Name = "tbOutputType"
-		Me.tbOutputType.ReadOnly = true
-		Me.tbOutputType.Size = New System.Drawing.Size(40, 23)
-		Me.tbOutputType.TabIndex = 16
-		Me.tbOutputType.TabStop = false
-		Me.tbOutputType.Text = "---"
-		Me.tbOutputType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.tbTitleType, "The type of input file used for the chapter titles,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"as determined automatically "& _ 
+				"by the program."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		'
 		'maskedTextBox1
 		'
@@ -694,6 +746,8 @@ Partial Class MainForm
 		Me.maskedTextBox1.TabIndex = 0
 		Me.maskedTextBox1.TabStop = false
 		Me.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.maskedTextBox1, "The currently selected chapter time.  This can be"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"deleted, edited and saved, or "& _ 
+				"edited and the new"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"time inserted into the list."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		AddHandler Me.maskedTextBox1.Leave, AddressOf Me.MaskedTextBox1Leave
 		'
 		'dataGridView1
@@ -711,12 +765,14 @@ Partial Class MainForm
 		Me.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1
 		Me.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
 		Me.dataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dgNumber, Me.dgTime, Me.dgTitle})
+		Me.dataGridView1.ContextMenuStrip = Me.contextMenuStrip1
 		Me.dataGridView1.Location = New System.Drawing.Point(8, 136)
 		Me.dataGridView1.MultiSelect = false
 		Me.dataGridView1.Name = "dataGridView1"
-		Me.dataGridView1.Size = New System.Drawing.Size(616, 552)
+		Me.dataGridView1.Size = New System.Drawing.Size(616, 576)
 		Me.dataGridView1.TabIndex = 18
 		Me.dataGridView1.TabStop = false
+		AddHandler Me.dataGridView1.CellMouseDown, AddressOf Me.DataGridView1CellMouseDown
 		AddHandler Me.dataGridView1.CellValueChanged, AddressOf Me.DataGridView1CellValueChanged
 		AddHandler Me.dataGridView1.SelectionChanged, AddressOf Me.DataGridView1SelectionChanged
 		AddHandler Me.dataGridView1.DragDrop, AddressOf Me.DataGridView1DragDrop
@@ -753,6 +809,47 @@ Partial Class MainForm
 		Me.dgTitle.Name = "dgTitle"
 		Me.dgTitle.Width = 340
 		'
+		'contextMenuStrip1
+		'
+		Me.contextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.moveUpToolStripMenuItem, Me.moveDownToolStripMenuItem, Me.deleteLineToolStripMenuItem, Me.deleteTimeOnlyToolStripMenuItem, Me.deleteTitleOnlyToolStripMenuItem})
+		Me.contextMenuStrip1.Name = "contextMenuStrip1"
+		Me.contextMenuStrip1.Size = New System.Drawing.Size(166, 114)
+		'
+		'moveUpToolStripMenuItem
+		'
+		Me.moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem"
+		Me.moveUpToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+		Me.moveUpToolStripMenuItem.Text = "Move Title Up"
+		AddHandler Me.moveUpToolStripMenuItem.Click, AddressOf Me.MoveUpToolStripMenuItemClick
+		'
+		'moveDownToolStripMenuItem
+		'
+		Me.moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem"
+		Me.moveDownToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+		Me.moveDownToolStripMenuItem.Text = "Move Title Down"
+		AddHandler Me.moveDownToolStripMenuItem.Click, AddressOf Me.MoveDownToolStripMenuItemClick
+		'
+		'deleteLineToolStripMenuItem
+		'
+		Me.deleteLineToolStripMenuItem.Name = "deleteLineToolStripMenuItem"
+		Me.deleteLineToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+		Me.deleteLineToolStripMenuItem.Text = "Delete Line"
+		AddHandler Me.deleteLineToolStripMenuItem.Click, AddressOf Me.DeleteLineToolStripMenuItemClick
+		'
+		'deleteTimeOnlyToolStripMenuItem
+		'
+		Me.deleteTimeOnlyToolStripMenuItem.Name = "deleteTimeOnlyToolStripMenuItem"
+		Me.deleteTimeOnlyToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+		Me.deleteTimeOnlyToolStripMenuItem.Text = "Delete Time Only"
+		AddHandler Me.deleteTimeOnlyToolStripMenuItem.Click, AddressOf Me.DeleteTimeOnlyToolStripMenuItemClick
+		'
+		'deleteTitleOnlyToolStripMenuItem
+		'
+		Me.deleteTitleOnlyToolStripMenuItem.Name = "deleteTitleOnlyToolStripMenuItem"
+		Me.deleteTitleOnlyToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+		Me.deleteTitleOnlyToolStripMenuItem.Text = "Delete Title Only"
+		AddHandler Me.deleteTitleOnlyToolStripMenuItem.Click, AddressOf Me.DeleteTitleOnlyToolStripMenuItemClick
+		'
 		'bTimeAdd
 		'
 		Me.bTimeAdd.Location = New System.Drawing.Point(8, 48)
@@ -761,6 +858,7 @@ Partial Class MainForm
 		Me.bTimeAdd.TabIndex = 1
 		Me.bTimeAdd.TabStop = false
 		Me.bTimeAdd.Text = "Add"
+		Me.toolTip1.SetToolTip(Me.bTimeAdd, "Add a new chapter time to the list.")
 		Me.bTimeAdd.UseVisualStyleBackColor = true
 		AddHandler Me.bTimeAdd.Click, AddressOf Me.BTimeAddClick
 		'
@@ -781,6 +879,7 @@ Partial Class MainForm
 		Me.bTimeUpdate.TabIndex = 2
 		Me.bTimeUpdate.TabStop = false
 		Me.bTimeUpdate.Text = "Update"
+		Me.toolTip1.SetToolTip(Me.bTimeUpdate, "Update the currently selected chapter time.")
 		Me.bTimeUpdate.UseVisualStyleBackColor = true
 		AddHandler Me.bTimeUpdate.Click, AddressOf Me.BTimeUpdateClick
 		'
@@ -791,9 +890,12 @@ Partial Class MainForm
 		Me.tbChapterTitle.Location = New System.Drawing.Point(8, 24)
 		Me.tbChapterTitle.Margin = New System.Windows.Forms.Padding(4)
 		Me.tbChapterTitle.Name = "tbChapterTitle"
-		Me.tbChapterTitle.Size = New System.Drawing.Size(256, 23)
+		Me.tbChapterTitle.Size = New System.Drawing.Size(272, 23)
 		Me.tbChapterTitle.TabIndex = 0
 		Me.tbChapterTitle.TabStop = false
+		Me.toolTip1.SetToolTip(Me.tbChapterTitle, "The currently selected chapter title.  This can be"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"deleted, edited and saved, or"& _ 
+				" edited and the new"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"title inserted into the list."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"Titles can also be edited "& _ 
+				"directly in the list.")
 		'
 		'bTimeRemove
 		'
@@ -803,6 +905,7 @@ Partial Class MainForm
 		Me.bTimeRemove.TabIndex = 3
 		Me.bTimeRemove.TabStop = false
 		Me.bTimeRemove.Text = "Remove"
+		Me.toolTip1.SetToolTip(Me.bTimeRemove, "Delete the currently selected chapter time.")
 		Me.bTimeRemove.UseVisualStyleBackColor = true
 		AddHandler Me.bTimeRemove.Click, AddressOf Me.BTimeRemoveClick
 		'
@@ -840,6 +943,8 @@ Partial Class MainForm
 		Me.bTitleRemove.TabIndex = 3
 		Me.bTitleRemove.TabStop = false
 		Me.bTitleRemove.Text = "Remove"
+		Me.toolTip1.SetToolTip(Me.bTitleRemove, "Delete the currently selected chapter title."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"All following titles will be shifte"& _ 
+				"d up.")
 		Me.bTitleRemove.UseVisualStyleBackColor = true
 		AddHandler Me.bTitleRemove.Click, AddressOf Me.BTitleRemoveClick
 		'
@@ -851,6 +956,7 @@ Partial Class MainForm
 		Me.bTitleUpdate.TabIndex = 2
 		Me.bTitleUpdate.TabStop = false
 		Me.bTitleUpdate.Text = "Update"
+		Me.toolTip1.SetToolTip(Me.bTitleUpdate, "Update the currently selected chapter title.")
 		Me.bTitleUpdate.UseVisualStyleBackColor = true
 		AddHandler Me.bTitleUpdate.Click, AddressOf Me.BTitleUpdateClick
 		'
@@ -862,6 +968,7 @@ Partial Class MainForm
 		Me.bTitleInsert.TabIndex = 1
 		Me.bTitleInsert.TabStop = false
 		Me.bTitleInsert.Text = "Insert"
+		Me.toolTip1.SetToolTip(Me.bTitleInsert, "Insert a new chapter title ahead of the selected title.")
 		Me.bTitleInsert.UseVisualStyleBackColor = true
 		AddHandler Me.bTitleInsert.Click, AddressOf Me.BTitleInsertClick
 		'
@@ -886,6 +993,8 @@ Partial Class MainForm
 		Me.cbAddChapterTimes.TabIndex = 1
 		Me.cbAddChapterTimes.TabStop = false
 		Me.cbAddChapterTimes.Text = "Add Chapter Times"
+		Me.toolTip1.SetToolTip(Me.cbAddChapterTimes, "This will include the chapter start times in"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"the chapter names written to the ou"& _ 
+				"tput file.")
 		Me.cbAddChapterTimes.UseVisualStyleBackColor = true
 		'
 		'cbLanguage
@@ -899,9 +1008,14 @@ Partial Class MainForm
 		Me.cbLanguage.Size = New System.Drawing.Size(192, 24)
 		Me.cbLanguage.TabIndex = 3
 		Me.cbLanguage.TabStop = false
+		Me.toolTip1.SetToolTip(Me.cbLanguage, "This is the language code to be written to the"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"output file when XML output is se"& _ 
+				"lected.")
 		'
 		'groupBox4
 		'
+		Me.groupBox4.Controls.Add(Me.bShiftTimesHelp)
+		Me.groupBox4.Controls.Add(Me.bAddTimesHelp)
+		Me.groupBox4.Controls.Add(Me.bScaleHelp)
 		Me.groupBox4.Controls.Add(Me.lbFRList)
 		Me.groupBox4.Controls.Add(Me.bFRDropDown)
 		Me.groupBox4.Controls.Add(Me.label19)
@@ -933,10 +1047,46 @@ Partial Class MainForm
 		Me.groupBox4.Controls.Add(Me.tbOffset)
 		Me.groupBox4.Location = New System.Drawing.Point(632, 344)
 		Me.groupBox4.Name = "groupBox4"
-		Me.groupBox4.Size = New System.Drawing.Size(288, 304)
+		Me.groupBox4.Size = New System.Drawing.Size(288, 328)
 		Me.groupBox4.TabIndex = 22
 		Me.groupBox4.TabStop = false
 		Me.groupBox4.Text = "Chapter List"
+		'
+		'bShiftTimesHelp
+		'
+		Me.bShiftTimesHelp.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+		Me.bShiftTimesHelp.Location = New System.Drawing.Point(8, 168)
+		Me.bShiftTimesHelp.Name = "bShiftTimesHelp"
+		Me.bShiftTimesHelp.Size = New System.Drawing.Size(40, 23)
+		Me.bShiftTimesHelp.TabIndex = 29
+		Me.bShiftTimesHelp.TabStop = false
+		Me.bShiftTimesHelp.Text = "Help"
+		Me.bShiftTimesHelp.UseVisualStyleBackColor = true
+		AddHandler Me.bShiftTimesHelp.Click, AddressOf Me.BShiftTimesHelpClick
+		'
+		'bAddTimesHelp
+		'
+		Me.bAddTimesHelp.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+		Me.bAddTimesHelp.Location = New System.Drawing.Point(8, 296)
+		Me.bAddTimesHelp.Name = "bAddTimesHelp"
+		Me.bAddTimesHelp.Size = New System.Drawing.Size(40, 23)
+		Me.bAddTimesHelp.TabIndex = 29
+		Me.bAddTimesHelp.TabStop = false
+		Me.bAddTimesHelp.Text = "Help"
+		Me.bAddTimesHelp.UseVisualStyleBackColor = true
+		AddHandler Me.bAddTimesHelp.Click, AddressOf Me.BAddTimesHelpClick
+		'
+		'bScaleHelp
+		'
+		Me.bScaleHelp.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+		Me.bScaleHelp.Location = New System.Drawing.Point(8, 232)
+		Me.bScaleHelp.Name = "bScaleHelp"
+		Me.bScaleHelp.Size = New System.Drawing.Size(40, 23)
+		Me.bScaleHelp.TabIndex = 28
+		Me.bScaleHelp.TabStop = false
+		Me.bScaleHelp.Text = "Help"
+		Me.bScaleHelp.UseVisualStyleBackColor = true
+		AddHandler Me.bScaleHelp.Click, AddressOf Me.BScaleHelpClick
 		'
 		'lbFRList
 		'
@@ -947,6 +1097,7 @@ Partial Class MainForm
 		Me.lbFRList.Name = "lbFRList"
 		Me.lbFRList.Size = New System.Drawing.Size(72, 148)
 		Me.lbFRList.TabIndex = 26
+		Me.toolTip1.SetToolTip(Me.lbFRList, "Frame rate to use for chapter time adjustments.")
 		Me.lbFRList.Visible = false
 		AddHandler Me.lbFRList.SelectedIndexChanged, AddressOf Me.LbFRListSelectedIndexChanged
 		AddHandler Me.lbFRList.Leave, AddressOf Me.LbFRListLeave
@@ -959,13 +1110,14 @@ Partial Class MainForm
 		Me.bFRDropDown.TabIndex = 27
 		Me.bFRDropDown.TabStop = false
 		Me.bFRDropDown.Text = "▼"
+		Me.toolTip1.SetToolTip(Me.bFRDropDown, "Frame rate to use for chapter time adjustments.")
 		Me.bFRDropDown.UseVisualStyleBackColor = true
 		AddHandler Me.bFRDropDown.Click, AddressOf Me.BFRDropDownClick
 		'
 		'label19
 		'
 		Me.label19.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		Me.label19.Location = New System.Drawing.Point(8, 240)
+		Me.label19.Location = New System.Drawing.Point(8, 264)
 		Me.label19.Name = "label19"
 		Me.label19.Size = New System.Drawing.Size(272, 2)
 		Me.label19.TabIndex = 21
@@ -973,7 +1125,7 @@ Partial Class MainForm
 		'label18
 		'
 		Me.label18.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		Me.label18.Location = New System.Drawing.Point(8, 176)
+		Me.label18.Location = New System.Drawing.Point(8, 200)
 		Me.label18.Name = "label18"
 		Me.label18.Size = New System.Drawing.Size(272, 2)
 		Me.label18.TabIndex = 15
@@ -1005,7 +1157,7 @@ Partial Class MainForm
 		'maskedTextBox4
 		'
 		Me.maskedTextBox4.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-		Me.maskedTextBox4.Location = New System.Drawing.Point(176, 272)
+		Me.maskedTextBox4.Location = New System.Drawing.Point(176, 296)
 		Me.maskedTextBox4.Mask = "00:00:00.00000"
 		Me.maskedTextBox4.Name = "maskedTextBox4"
 		Me.maskedTextBox4.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
@@ -1016,11 +1168,12 @@ Partial Class MainForm
 		Me.maskedTextBox4.TabIndex = 26
 		Me.maskedTextBox4.TabStop = false
 		Me.maskedTextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.maskedTextBox4, "End time to use when adding a block of times.")
 		AddHandler Me.maskedTextBox4.Leave, AddressOf Me.MaskedTextBox4Leave
 		'
 		'label4
 		'
-		Me.label4.Location = New System.Drawing.Point(88, 272)
+		Me.label4.Location = New System.Drawing.Point(88, 296)
 		Me.label4.Name = "label4"
 		Me.label4.Size = New System.Drawing.Size(88, 24)
 		Me.label4.TabIndex = 25
@@ -1030,7 +1183,7 @@ Partial Class MainForm
 		'maskedTextBox3
 		'
 		Me.maskedTextBox3.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-		Me.maskedTextBox3.Location = New System.Drawing.Point(176, 248)
+		Me.maskedTextBox3.Location = New System.Drawing.Point(176, 272)
 		Me.maskedTextBox3.Mask = "00:00:00.00000"
 		Me.maskedTextBox3.Name = "maskedTextBox3"
 		Me.maskedTextBox3.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
@@ -1041,11 +1194,12 @@ Partial Class MainForm
 		Me.maskedTextBox3.TabIndex = 24
 		Me.maskedTextBox3.TabStop = false
 		Me.maskedTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.maskedTextBox3, "Interval to use for new block of times.")
 		AddHandler Me.maskedTextBox3.Leave, AddressOf Me.MaskedTextBox3Leave
 		'
 		'label5
 		'
-		Me.label5.Location = New System.Drawing.Point(56, 248)
+		Me.label5.Location = New System.Drawing.Point(56, 272)
 		Me.label5.Name = "label5"
 		Me.label5.Size = New System.Drawing.Size(120, 24)
 		Me.label5.TabIndex = 23
@@ -1054,18 +1208,20 @@ Partial Class MainForm
 		'
 		'bAddIntervals
 		'
-		Me.bAddIntervals.Location = New System.Drawing.Point(8, 248)
+		Me.bAddIntervals.Location = New System.Drawing.Point(8, 272)
 		Me.bAddIntervals.Name = "bAddIntervals"
 		Me.bAddIntervals.Size = New System.Drawing.Size(40, 23)
 		Me.bAddIntervals.TabIndex = 22
 		Me.bAddIntervals.TabStop = false
 		Me.bAddIntervals.Text = "Go"
+		Me.toolTip1.SetToolTip(Me.bAddIntervals, "Add a block of times at the specified interval"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"from 00:00:00.00000 to the specif"& _ 
+				"ied end time.")
 		Me.bAddIntervals.UseVisualStyleBackColor = true
 		AddHandler Me.bAddIntervals.Click, AddressOf Me.BAddIntervalsClick
 		'
 		'label16
 		'
-		Me.label16.Location = New System.Drawing.Point(88, 208)
+		Me.label16.Location = New System.Drawing.Point(88, 232)
 		Me.label16.Name = "label16"
 		Me.label16.Size = New System.Drawing.Size(88, 24)
 		Me.label16.TabIndex = 19
@@ -1075,7 +1231,7 @@ Partial Class MainForm
 		'maskedTextBox2
 		'
 		Me.maskedTextBox2.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-		Me.maskedTextBox2.Location = New System.Drawing.Point(176, 208)
+		Me.maskedTextBox2.Location = New System.Drawing.Point(176, 232)
 		Me.maskedTextBox2.Mask = "00:00:00.00000"
 		Me.maskedTextBox2.Name = "maskedTextBox2"
 		Me.maskedTextBox2.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
@@ -1086,11 +1242,12 @@ Partial Class MainForm
 		Me.maskedTextBox2.TabIndex = 20
 		Me.maskedTextBox2.TabStop = false
 		Me.maskedTextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.maskedTextBox2, "New chapter time for scaling.")
 		AddHandler Me.maskedTextBox2.Leave, AddressOf Me.MaskedTextBox2Leave
 		'
 		'label15
 		'
-		Me.label15.Location = New System.Drawing.Point(56, 184)
+		Me.label15.Location = New System.Drawing.Point(56, 208)
 		Me.label15.Name = "label15"
 		Me.label15.Size = New System.Drawing.Size(120, 24)
 		Me.label15.TabIndex = 17
@@ -1117,12 +1274,14 @@ Partial Class MainForm
 		'
 		'bScaleTimes
 		'
-		Me.bScaleTimes.Location = New System.Drawing.Point(8, 184)
+		Me.bScaleTimes.Location = New System.Drawing.Point(8, 208)
 		Me.bScaleTimes.Name = "bScaleTimes"
 		Me.bScaleTimes.Size = New System.Drawing.Size(40, 23)
 		Me.bScaleTimes.TabIndex = 16
 		Me.bScaleTimes.TabStop = false
 		Me.bScaleTimes.Text = "Go"
+		Me.toolTip1.SetToolTip(Me.bScaleTimes, "Change the currently selected time to the new"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"time specified, and scale all prec"& _ 
+				"eeding times"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"accordingly.")
 		Me.bScaleTimes.UseVisualStyleBackColor = true
 		AddHandler Me.bScaleTimes.Click, AddressOf Me.BScaleTimesClick
 		'
@@ -1134,6 +1293,8 @@ Partial Class MainForm
 		Me.bShiftTimes.TabIndex = 11
 		Me.bShiftTimes.TabStop = false
 		Me.bShiftTimes.Text = "Go"
+		Me.toolTip1.SetToolTip(Me.bShiftTimes, "Shift the currently selected time and all subsequent"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"times by the specified numb"& _ 
+				"er of seconds.")
 		Me.bShiftTimes.UseVisualStyleBackColor = true
 		AddHandler Me.bShiftTimes.Click, AddressOf Me.BShiftTimesClick
 		'
@@ -1163,6 +1324,8 @@ Partial Class MainForm
 		Me.bFrameRateTimes.TabIndex = 6
 		Me.bFrameRateTimes.TabStop = false
 		Me.bFrameRateTimes.Text = "Go"
+		Me.toolTip1.SetToolTip(Me.bFrameRateTimes, "Adjust all chapter times to align to frame"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"boundaries at the specified frame rat"& _ 
+				"e.")
 		Me.bFrameRateTimes.UseVisualStyleBackColor = true
 		AddHandler Me.bFrameRateTimes.Click, AddressOf Me.BFrameRateTimesClick
 		'
@@ -1174,6 +1337,8 @@ Partial Class MainForm
 		Me.bFixTitleCase.TabIndex = 3
 		Me.bFixTitleCase.TabStop = false
 		Me.bFixTitleCase.Text = "Go"
+		Me.toolTip1.SetToolTip(Me.bFixTitleCase, "Convert all chapter titles to proper title case while applying"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"the rules from th"& _ 
+				"e user-specified words list.")
 		Me.bFixTitleCase.UseVisualStyleBackColor = true
 		AddHandler Me.bFixTitleCase.Click, AddressOf Me.BFixTitleCaseClick
 		'
@@ -1194,6 +1359,7 @@ Partial Class MainForm
 		Me.bDeleteLine.TabIndex = 0
 		Me.bDeleteLine.TabStop = false
 		Me.bDeleteLine.Text = "Go"
+		Me.toolTip1.SetToolTip(Me.bDeleteLine, "Delete the currently selected line (time and title).")
 		Me.bDeleteLine.UseVisualStyleBackColor = true
 		AddHandler Me.bDeleteLine.Click, AddressOf Me.BDeleteLineClick
 		'
@@ -1208,11 +1374,12 @@ Partial Class MainForm
 		'
 		'bExit
 		'
-		Me.bExit.Location = New System.Drawing.Point(832, 656)
+		Me.bExit.Location = New System.Drawing.Point(832, 680)
 		Me.bExit.Name = "bExit"
 		Me.bExit.Size = New System.Drawing.Size(80, 31)
 		Me.bExit.TabIndex = 0
 		Me.bExit.Text = "Exit"
+		Me.toolTip1.SetToolTip(Me.bExit, "Close all windows and exit the program.")
 		Me.bExit.UseVisualStyleBackColor = true
 		AddHandler Me.bExit.Click, AddressOf Me.BExitClick
 		'
@@ -1228,6 +1395,8 @@ Partial Class MainForm
 		Me.bClearTimes.TabIndex = 6
 		Me.bClearTimes.TabStop = false
 		Me.bClearTimes.Text = "Clear"
+		Me.toolTip1.SetToolTip(Me.bClearTimes, "Clear all chapter time entries from the list.  Chapter"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"titles will remain as orp"& _ 
+				"han records in the list.")
 		Me.bClearTimes.UseVisualStyleBackColor = true
 		AddHandler Me.bClearTimes.Click, AddressOf Me.BClearTimesClick
 		'
@@ -1239,6 +1408,8 @@ Partial Class MainForm
 		Me.bClearTitles.TabIndex = 12
 		Me.bClearTitles.TabStop = false
 		Me.bClearTitles.Text = "Clear"
+		Me.toolTip1.SetToolTip(Me.bClearTitles, "Clear all chapter title entries from the list.  Chapter"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"times will remain in the"& _ 
+				" list, but will have no associated"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"titles."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		Me.bClearTitles.UseVisualStyleBackColor = true
 		AddHandler Me.bClearTitles.Click, AddressOf Me.BClearTitlesClick
 		'
@@ -1344,7 +1515,7 @@ Partial Class MainForm
 		'statusStrip1
 		'
 		Me.statusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripStatusLabel1})
-		Me.statusStrip1.Location = New System.Drawing.Point(0, 695)
+		Me.statusStrip1.Location = New System.Drawing.Point(0, 722)
 		Me.statusStrip1.Name = "statusStrip1"
 		Me.statusStrip1.Size = New System.Drawing.Size(926, 22)
 		Me.statusStrip1.TabIndex = 27
@@ -1356,12 +1527,26 @@ Partial Class MainForm
 		Me.toolStripStatusLabel1.Size = New System.Drawing.Size(118, 17)
 		Me.toolStripStatusLabel1.Text = "toolStripStatusLabel1"
 		'
+		'cbOutputType
+		'
+		Me.cbOutputType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+		Me.cbOutputType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+		Me.cbOutputType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+		Me.cbOutputType.FormattingEnabled = true
+		Me.cbOutputType.Location = New System.Drawing.Point(456, 104)
+		Me.cbOutputType.Name = "cbOutputType"
+		Me.cbOutputType.Size = New System.Drawing.Size(168, 24)
+		Me.cbOutputType.TabIndex = 28
+		Me.toolTip1.SetToolTip(Me.cbOutputType, "The type of output file that you wish to write.")
+		AddHandler Me.cbOutputType.SelectedIndexChanged, AddressOf Me.CbOutputTypeSelectedIndexChanged
+		'
 		'MainForm
 		'
 		Me.AllowDrop = true
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(7!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(926, 717)
+		Me.ClientSize = New System.Drawing.Size(926, 744)
+		Me.Controls.Add(Me.cbOutputType)
 		Me.Controls.Add(Me.statusStrip1)
 		Me.Controls.Add(Me.toolStrip1)
 		Me.Controls.Add(Me.bClearTitles)
@@ -1372,10 +1557,8 @@ Partial Class MainForm
 		Me.Controls.Add(Me.groupBox2)
 		Me.Controls.Add(Me.groupBox1)
 		Me.Controls.Add(Me.dataGridView1)
-		Me.Controls.Add(Me.tbOutputType)
 		Me.Controls.Add(Me.tbTitleType)
 		Me.Controls.Add(Me.tbTimeType)
-		Me.Controls.Add(Me.bOutputType)
 		Me.Controls.Add(Me.bLoadTimes)
 		Me.Controls.Add(Me.bLoadTitles)
 		Me.Controls.Add(Me.tbFileTitles)
@@ -1403,6 +1586,7 @@ Partial Class MainForm
 		Me.menuStrip1.ResumeLayout(false)
 		Me.menuStrip1.PerformLayout
 		CType(Me.dataGridView1,System.ComponentModel.ISupportInitialize).EndInit
+		Me.contextMenuStrip1.ResumeLayout(false)
 		Me.groupBox1.ResumeLayout(false)
 		Me.groupBox1.PerformLayout
 		Me.groupBox2.ResumeLayout(false)
@@ -1417,6 +1601,21 @@ Partial Class MainForm
 		Me.ResumeLayout(false)
 		Me.PerformLayout
 	End Sub
+	Private bShiftTimesHelp As System.Windows.Forms.Button
+	Private bScaleHelp As System.Windows.Forms.Button
+	Private bAddTimesHelp As System.Windows.Forms.Button
+	Private deleteTitleOnlyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private deleteTimeOnlyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private deleteLineToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private moveDownToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private moveUpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private contextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
+	Private toolTip1 As System.Windows.Forms.ToolTip
+	Private cbOutputType As System.Windows.Forms.ComboBox
+	Private plainTextToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private oGGMediaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private xMLToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private outputTypeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Private toolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
 	Private statusStrip1 As System.Windows.Forms.StatusStrip
 	Private helpToolStripButton As System.Windows.Forms.ToolStripButton
@@ -1458,7 +1657,6 @@ Partial Class MainForm
 	Private bOutputFileDialog As System.Windows.Forms.Button
 	Private bLoadTimes As System.Windows.Forms.Button
 	Private bLoadTitles As System.Windows.Forms.Button
-	Private bOutputType As System.Windows.Forms.Button
 	Private bFrameRateTimes As System.Windows.Forms.Button
 	Private bScaleTimes As System.Windows.Forms.Button
 	Private bShiftTimes As System.Windows.Forms.Button
@@ -1491,7 +1689,6 @@ Partial Class MainForm
 	Private dgNumber As System.Windows.Forms.DataGridViewTextBoxColumn
 	Private dataGridView1 As System.Windows.Forms.DataGridView
 	Private maskedTextBox1 As System.Windows.Forms.MaskedTextBox
-	Private tbOutputType As System.Windows.Forms.TextBox
 	Private tbTitleType As System.Windows.Forms.TextBox
 	Private tbTimeType As System.Windows.Forms.TextBox
 	Private wordsListToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

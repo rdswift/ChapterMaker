@@ -182,7 +182,7 @@ Partial Class Settings
 		'
 		Me.rbTXT.Location = New System.Drawing.Point(80, 72)
 		Me.rbTXT.Name = "rbTXT"
-		Me.rbTXT.Size = New System.Drawing.Size(136, 24)
+		Me.rbTXT.Size = New System.Drawing.Size(344, 24)
 		Me.rbTXT.TabIndex = 3
 		Me.rbTXT.TabStop = true
 		Me.rbTXT.Text = "TXT (Simple Text File)"
@@ -271,7 +271,7 @@ Partial Class Settings
 		Me.rbXML.Checked = true
 		Me.rbXML.Location = New System.Drawing.Point(80, 24)
 		Me.rbXML.Name = "rbXML"
-		Me.rbXML.Size = New System.Drawing.Size(240, 24)
+		Me.rbXML.Size = New System.Drawing.Size(344, 24)
 		Me.rbXML.TabIndex = 1
 		Me.rbXML.TabStop = true
 		Me.rbXML.Text = "XML (Extensible Markup Language)"
@@ -290,7 +290,7 @@ Partial Class Settings
 		'
 		Me.rbOGM.Location = New System.Drawing.Point(80, 48)
 		Me.rbOGM.Name = "rbOGM"
-		Me.rbOGM.Size = New System.Drawing.Size(136, 24)
+		Me.rbOGM.Size = New System.Drawing.Size(344, 24)
 		Me.rbOGM.TabIndex = 2
 		Me.rbOGM.TabStop = true
 		Me.rbOGM.Text = "OGM (Ogg Media)"
@@ -595,7 +595,7 @@ Partial Class Settings
 		Me.toolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripButton, Me.openToolStripButton, Me.saveToolStripButton, Me.printToolStripButton, Me.toolStripSeparator, Me.cutToolStripButton, Me.copyToolStripButton, Me.pasteToolStripButton, Me.toolStripSeparator1, Me.helpToolStripButton})
 		Me.toolStrip1.Location = New System.Drawing.Point(0, 0)
 		Me.toolStrip1.Name = "toolStrip1"
-		Me.toolStrip1.Size = New System.Drawing.Size(707, 25)
+		Me.toolStrip1.Size = New System.Drawing.Size(706, 25)
 		Me.toolStrip1.TabIndex = 17
 		Me.toolStrip1.Text = "toolStrip1"
 		'
@@ -694,7 +694,7 @@ Partial Class Settings
 		Me.statusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripStatusLabel1})
 		Me.statusStrip1.Location = New System.Drawing.Point(0, 312)
 		Me.statusStrip1.Name = "statusStrip1"
-		Me.statusStrip1.Size = New System.Drawing.Size(707, 22)
+		Me.statusStrip1.Size = New System.Drawing.Size(706, 22)
 		Me.statusStrip1.TabIndex = 18
 		Me.statusStrip1.Text = "statusStrip1"
 		'
@@ -708,7 +708,7 @@ Partial Class Settings
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(707, 334)
+		Me.ClientSize = New System.Drawing.Size(706, 334)
 		Me.Controls.Add(Me.statusStrip1)
 		Me.Controls.Add(Me.toolStrip1)
 		Me.Controls.Add(Me.group1)

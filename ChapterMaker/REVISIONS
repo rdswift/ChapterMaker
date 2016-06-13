@@ -1,4 +1,29 @@
-Version 1.03
+Version 1.04 (Released 2016-06-12)
+
+ - Updated the main form to select the output file type from a pull-
+   down list, and clearly indicate the type of output file selected.
+
+ + Added toolbar menu items for selecting the output file type.
+
+ + Added tooltips to help explain the fields and functions.  Tips
+   are displayed when the mouse pointer hovers over the control.
+
+ + Added buttons to bring up help screens for the functions to:
+   a) add blocks of times at set intervals; b) shift times; and
+   c) scale times.
+
+ + Added context (right click) commands to the chapter list items.
+
+ ! Corrected bug reading XML files with no line breaks.
+
+ ! Corrected reading web encoded titles (e.g.: "&amp;" now shows up
+   in the title as "&").
+
+ ! All titles are now web encoded when written to XML files.
+
+ ----------------------------------------------------------------------
+
+Version 1.03 (Released 2016-06-04)
 
  ! Corrected bug with file extension settings in output file dialog
    box.
@@ -21,7 +46,7 @@ Version 1.03
 
 ----------------------------------------------------------------------
 
-Version 1.02
+Version 1.02 (Released 2016-05-20)
 
  ! Corrected bug with default OGM output file extension setting not
    being saved.
@@ -37,7 +62,7 @@ Version 1.02
 
 ----------------------------------------------------------------------
 
-Version 1.01
+Version 1.01 (Released 2016-05-19)
 
  - Updated default words list for new installations.
 
@@ -66,6 +91,6 @@ Version 1.01
 
 ----------------------------------------------------------------------
 
-Version 1.00
+Version 1.00 (Released 2016-03-25)
 
  + Initial public release.
