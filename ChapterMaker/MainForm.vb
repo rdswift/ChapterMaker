@@ -542,6 +542,7 @@ Public Partial Class MainForm
 		For I As Integer = UBound(digits) To LBound(digits) Step - 1
 			J += 1
 			If (J < 4) Then
+				If (digits(I).Trim.Length() < 1) Then digits(I) = "0" 
 				RetVal += (Convert.ToDouble(digits(I)) * multiplier)
 				multiplier *= 60
 			End If
@@ -811,6 +812,7 @@ Public Partial Class MainForm
 					For Each match As Match In Regex.Matches(s1, RegEx1, RegexOptions.IgnoreCase)
 						s2 = match.Groups(1).Value
 						s2 = System.Net.WebUtility.HtmlDecode(s2)
+						s2 = Regex.Replace(s2, RegEx3, String.Empty)
 						AppendArray(Me.cTitles, Regex.Replace(s2, RegEx2, String.Empty))
 					Next
 				End If

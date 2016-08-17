@@ -1,3 +1,13 @@
+Version 1.05 (Released 2016-08-17)
+
+ ! Corrected bug reading TXT files with durations less than one minute
+   and the duration starting with a colon.
+
+ ! Corrected bug reading titles from XML and OGM files with durations 
+   shown after title (similar to a TXT file).
+
+ ----------------------------------------------------------------------
+
 Version 1.04 (Released 2016-06-12)
 
  - Updated the main form to select the output file type from a pull-
