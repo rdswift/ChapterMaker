@@ -36,7 +36,7 @@ Public Partial Class MainForm
 		XML = 1
 	End Enum
 	
-	Const BLANKTIME = "00:00:00.00000"
+	Const BLANKTIME = "00:00:00.000000000"
 	
 	Private fromIndex As Integer = 0
 	Private dragIndex As Integer = 0
@@ -219,7 +219,7 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Launch file dialog for outnput file
+	'	Launch file dialog for output file
 	
 	Private Function OutputFileDialog() As Boolean
 		Dim s1, s2, s3, s4, myJunk As String
@@ -413,9 +413,9 @@ Public Partial Class MainForm
 			ErrorBox("Missing or invalid chapter interval time information.")
 			Exit Sub
 		End If
-		Dim s1 As String = "Times added every " & Me.maskedTextBox3.Text.Trim & " from 00:00:00.00000 to " & Me.maskedTextBox4.Text.Trim & "."
+		Dim s1 As String = "Times added every " & Me.maskedTextBox3.Text.Trim & " from 00:00:00.000000000 to " & Me.maskedTextBox4.Text.Trim & "."
 		If AppConfig.ConfirmInsert And Not MsgBoxResult.Yes = MsgBox("This will create chapter times every " & _
-			Me.maskedTextBox3.Text.Trim & " (specified interval) from 00:00:00.00000 to " & Me.maskedTextBox4.Text.Trim & _
+			Me.maskedTextBox3.Text.Trim & " (specified interval) from 00:00:00.000000000 to " & Me.maskedTextBox4.Text.Trim & _
 			" (specified end time).  Do you want to proceed?", _
 			MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Confirm Changes") Then Exit Sub
 		Dim seconds As Double = 0
@@ -435,7 +435,7 @@ Public Partial Class MainForm
 	'
 	
 	Sub WriteChapterFile()
-		Dim s1, s2, s3 As String
+		Dim s1, s2, s3, s4 As String
 		Dim i1, i2, i3 As Integer
 		Dim d1, d2 As Double
 		Dim b1 As Boolean = False
@@ -465,14 +465,15 @@ Public Partial Class MainForm
 			MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Include Durations") = MsgBoxResult.Yes)
 		Dim chaptercount As Integer = 0
 		For Each s1 In Me.cTimes
+			s4 = ChapterTimeOut(s1, Me.cOutputType)
 			chaptercount += 1
 			s2 = ""
-			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "{" & s1 & "} "
+			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "{" & s4 & "} "
 			If Me.cbAddChapterNumbers.Checked Then s2 = s2 & chaptercount.ToString.Trim & ". "
 			If chaptercount > (UBound(Me.cTitles) + 1) Then
 				Dim s2s As String = "Unknown Chapter Title"
 				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then s2s = "Chapter " & chaptercount.ToString.Trim
-				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime Then s2s = s1
+				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime Then s2s = s4
 				If AppConfig.NoTitle = Defaults.cmNoTitle.NA Then s2s = "n/a"
 				s2 &= s2s
 			Else
@@ -486,12 +487,12 @@ Public Partial Class MainForm
 				AppendArray(outlines, "        <ChapterString>" & s2 & "</ChapterString>")
 				AppendArray(outlines, "        <ChapterLanguage>" & Strings.Left(Me.cbLanguage.SelectedItem.ToString.ToLower & "und", 3) & "</ChapterLanguage>")
 				AppendArray(outlines, "      </ChapterDisplay>")
-				AppendArray(outlines, "      <ChapterTimeStart>" & s1 & "</ChapterTimeStart>")
+				AppendArray(outlines, "      <ChapterTimeStart>" & s4 & "</ChapterTimeStart>")
 				AppendArray(outlines, "      <ChapterFlagHidden>0</ChapterFlagHidden>")
 				AppendArray(outlines, "      <ChapterFlagEnabled>1</ChapterFlagEnabled>")
 				AppendArray(outlines, "    </ChapterAtom>")
 			ElseIf Me.cOutputType = FileType.OGM Then
-				AppendArray(outlines, "CHAPTER" & chaptercount.ToString.PadLeft(2, CChar("0")) & "=" & s1)
+				AppendArray(outlines, "CHAPTER" & chaptercount.ToString.PadLeft(2, CChar("0")) & "=" & s4)
 				AppendArray(outlines, "CHAPTER" & chaptercount.ToString.PadLeft(2, CChar("0")) & "NAME=" & s2)
 			Else
 				Try
@@ -532,6 +533,26 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
+	'	Propertly format time code for specified output file type
+	
+	Private Function ChapterTimeOut(sTime As String, sType As FileType) As String
+		Dim s1 As String = sTime
+		Dim retval As String = ""
+		s1 = Strings.Replace(s1, ",", ".")
+		If (Not s1.Contains(".")) Then s1 &= "."
+		s1 = s1.PadRight(18, CChar("0"))
+		retval = s1
+		If (sType = FileType.OGM) Then
+			retval = Strings.Left(s1, 12)
+		ElseIf (sType = FileType.XML) Then
+			retval = Strings.Left(s1, 18)
+		End If
+		Return retval
+	End Function
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
 	'	Convert time entry (e.g. "01:23:45.67890") to total seconds
 	
 	Private Function HMStoSEC(tm As String) As Double
@@ -569,7 +590,7 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Format partial or invalid time strings to standard format of "hh:mm:ss.sssss"
+	'	Format partial or invalid time strings to standard format of "hh:mm:ss.ssssss"
 	
 	Private Function FormatTimes(tm As String) As String
 		tm = Strings.Replace(tm, " ", "0")
@@ -594,7 +615,7 @@ Public Partial Class MainForm
 			seconds -= 60
 			mm += 1
 		End While
-		Return Format(hh, "00") & ":" & Format(mm, "00") & ":" & Format(seconds, "00.00000")
+		Return Format(hh, "00") & ":" & Format(mm, "00") & ":" & Format(seconds, "00.000000000").Replace(",", ".")
 	End Function
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1067,8 +1088,9 @@ Public Partial Class MainForm
 	'	Fix masked textbox value to replace spaces with zeros (bug in VB Net?)
 	
 	Private Function FixMaskedText(ByVal TextToFix As String) As String
-		Dim s1 As String = TextToFix.PadRight(14, CChar("0"))
+		Dim s1 As String = TextToFix.PadRight(15, CChar("0"))
 		Dim s2 As String = Strings.Replace(s1, " ", "0")
+		s2 = Strings.Replace(s2, ",", ".")
 		Return s2
 	End Function
 	

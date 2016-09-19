@@ -1,3 +1,13 @@
+Version 1.06 (Released 2016-09-19)
+
+ ! Corrected bug outputting chapter times with decimal point as a
+   comma rather than a period when some locales are selected.
+
+ ! Set OGM output times to 3 decimal points and XML output times  
+   to 6 decimal points to match standards.
+
+ ----------------------------------------------------------------------
+
 Version 1.05 (Released 2016-08-17)
 
  ! Corrected bug reading TXT files with durations less than one minute

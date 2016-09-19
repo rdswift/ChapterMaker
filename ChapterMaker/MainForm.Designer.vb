@@ -122,9 +122,6 @@ Partial Class MainForm
 		Me.tbTitleType = New System.Windows.Forms.TextBox()
 		Me.maskedTextBox1 = New System.Windows.Forms.MaskedTextBox()
 		Me.dataGridView1 = New System.Windows.Forms.DataGridView()
-		Me.dgNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-		Me.dgTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
-		Me.dgTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
 		Me.contextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
 		Me.moveUpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.moveDownToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -193,6 +190,9 @@ Partial Class MainForm
 		Me.toolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
 		Me.cbOutputType = New System.Windows.Forms.ComboBox()
 		Me.toolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+		Me.dgNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
+		Me.dgTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
+		Me.dgTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
 		Me.menuStrip1.SuspendLayout
 		CType(Me.dataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
 		Me.contextMenuStrip1.SuspendLayout
@@ -305,10 +305,10 @@ Partial Class MainForm
 		Me.tbScaleFrom.MaxLength = 20
 		Me.tbScaleFrom.Name = "tbScaleFrom"
 		Me.tbScaleFrom.ReadOnly = true
-		Me.tbScaleFrom.Size = New System.Drawing.Size(104, 23)
+		Me.tbScaleFrom.Size = New System.Drawing.Size(136, 23)
 		Me.tbScaleFrom.TabIndex = 18
 		Me.tbScaleFrom.TabStop = false
-		Me.tbScaleFrom.Text = "00:00:00.00000"
+		Me.tbScaleFrom.Text = "00:00:00.000000000"
 		Me.tbScaleFrom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		Me.toolTip1.SetToolTip(Me.tbScaleFrom, "Current chapter time for scaling.")
 		'
@@ -326,7 +326,7 @@ Partial Class MainForm
 		'
 		'bOutput
 		'
-		Me.bOutput.Location = New System.Drawing.Point(736, 680)
+		Me.bOutput.Location = New System.Drawing.Point(752, 680)
 		Me.bOutput.Name = "bOutput"
 		Me.bOutput.Size = New System.Drawing.Size(80, 31)
 		Me.bOutput.TabIndex = 24
@@ -395,7 +395,7 @@ Partial Class MainForm
 		Me.menuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.fileToolStripMenuItem1, Me.editToolStripMenuItem1, Me.toolsToolStripMenuItem, Me.helpToolStripMenuItem})
 		Me.menuStrip1.Location = New System.Drawing.Point(0, 0)
 		Me.menuStrip1.Name = "menuStrip1"
-		Me.menuStrip1.Size = New System.Drawing.Size(926, 24)
+		Me.menuStrip1.Size = New System.Drawing.Size(961, 24)
 		Me.menuStrip1.TabIndex = 25
 		Me.menuStrip1.Text = "menuStrip1"
 		'
@@ -736,13 +736,13 @@ Partial Class MainForm
 		'
 		Me.maskedTextBox1.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
 		Me.maskedTextBox1.Location = New System.Drawing.Point(8, 24)
-		Me.maskedTextBox1.Mask = "00:00:00.00000"
+		Me.maskedTextBox1.Mask = "00:00:00.000000000"
 		Me.maskedTextBox1.Name = "maskedTextBox1"
 		Me.maskedTextBox1.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
 		Me.maskedTextBox1.RejectInputOnFirstFailure = true
 		Me.maskedTextBox1.ResetOnPrompt = false
 		Me.maskedTextBox1.ResetOnSpace = false
-		Me.maskedTextBox1.Size = New System.Drawing.Size(120, 23)
+		Me.maskedTextBox1.Size = New System.Drawing.Size(152, 23)
 		Me.maskedTextBox1.TabIndex = 0
 		Me.maskedTextBox1.TabStop = false
 		Me.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -779,35 +779,6 @@ Partial Class MainForm
 		AddHandler Me.dataGridView1.DragOver, AddressOf Me.DataGridView1DragOver
 		AddHandler Me.dataGridView1.MouseDown, AddressOf Me.DataGridView1MouseDown
 		AddHandler Me.dataGridView1.MouseMove, AddressOf Me.DataGridView1MouseMove
-		'
-		'dgNumber
-		'
-		Me.dgNumber.DataPropertyName = "dgNumber"
-		dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-		Me.dgNumber.DefaultCellStyle = dataGridViewCellStyle2
-		Me.dgNumber.HeaderText = "No."
-		Me.dgNumber.Name = "dgNumber"
-		Me.dgNumber.ReadOnly = true
-		Me.dgNumber.Width = 50
-		'
-		'dgTime
-		'
-		Me.dgTime.DataPropertyName = "dgTime"
-		dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-		Me.dgTime.DefaultCellStyle = dataGridViewCellStyle3
-		Me.dgTime.HeaderText = "Time"
-		Me.dgTime.Name = "dgTime"
-		Me.dgTime.ReadOnly = true
-		Me.dgTime.Width = 150
-		'
-		'dgTitle
-		'
-		Me.dgTitle.DataPropertyName = "dgTitle"
-		dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-		Me.dgTitle.DefaultCellStyle = dataGridViewCellStyle4
-		Me.dgTitle.HeaderText = "Title"
-		Me.dgTitle.Name = "dgTitle"
-		Me.dgTitle.Width = 340
 		'
 		'contextMenuStrip1
 		'
@@ -873,7 +844,7 @@ Partial Class MainForm
 		'
 		'bTimeUpdate
 		'
-		Me.bTimeUpdate.Location = New System.Drawing.Point(104, 48)
+		Me.bTimeUpdate.Location = New System.Drawing.Point(120, 48)
 		Me.bTimeUpdate.Name = "bTimeUpdate"
 		Me.bTimeUpdate.Size = New System.Drawing.Size(80, 23)
 		Me.bTimeUpdate.TabIndex = 2
@@ -890,7 +861,7 @@ Partial Class MainForm
 		Me.tbChapterTitle.Location = New System.Drawing.Point(8, 24)
 		Me.tbChapterTitle.Margin = New System.Windows.Forms.Padding(4)
 		Me.tbChapterTitle.Name = "tbChapterTitle"
-		Me.tbChapterTitle.Size = New System.Drawing.Size(272, 23)
+		Me.tbChapterTitle.Size = New System.Drawing.Size(304, 23)
 		Me.tbChapterTitle.TabIndex = 0
 		Me.tbChapterTitle.TabStop = false
 		Me.toolTip1.SetToolTip(Me.tbChapterTitle, "The currently selected chapter title.  This can be"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"deleted, edited and saved, or"& _ 
@@ -899,7 +870,7 @@ Partial Class MainForm
 		'
 		'bTimeRemove
 		'
-		Me.bTimeRemove.Location = New System.Drawing.Point(200, 48)
+		Me.bTimeRemove.Location = New System.Drawing.Point(232, 48)
 		Me.bTimeRemove.Name = "bTimeRemove"
 		Me.bTimeRemove.Size = New System.Drawing.Size(80, 23)
 		Me.bTimeRemove.TabIndex = 3
@@ -917,7 +888,7 @@ Partial Class MainForm
 		Me.groupBox1.Controls.Add(Me.bTimeUpdate)
 		Me.groupBox1.Location = New System.Drawing.Point(632, 168)
 		Me.groupBox1.Name = "groupBox1"
-		Me.groupBox1.Size = New System.Drawing.Size(288, 80)
+		Me.groupBox1.Size = New System.Drawing.Size(320, 80)
 		Me.groupBox1.TabIndex = 20
 		Me.groupBox1.TabStop = false
 		Me.groupBox1.Text = "Chapter Time"
@@ -930,14 +901,14 @@ Partial Class MainForm
 		Me.groupBox2.Controls.Add(Me.tbChapterTitle)
 		Me.groupBox2.Location = New System.Drawing.Point(632, 256)
 		Me.groupBox2.Name = "groupBox2"
-		Me.groupBox2.Size = New System.Drawing.Size(288, 80)
+		Me.groupBox2.Size = New System.Drawing.Size(320, 80)
 		Me.groupBox2.TabIndex = 21
 		Me.groupBox2.TabStop = false
 		Me.groupBox2.Text = "Chapter Title"
 		'
 		'bTitleRemove
 		'
-		Me.bTitleRemove.Location = New System.Drawing.Point(200, 48)
+		Me.bTitleRemove.Location = New System.Drawing.Point(232, 48)
 		Me.bTitleRemove.Name = "bTitleRemove"
 		Me.bTitleRemove.Size = New System.Drawing.Size(80, 23)
 		Me.bTitleRemove.TabIndex = 3
@@ -950,7 +921,7 @@ Partial Class MainForm
 		'
 		'bTitleUpdate
 		'
-		Me.bTitleUpdate.Location = New System.Drawing.Point(104, 48)
+		Me.bTitleUpdate.Location = New System.Drawing.Point(120, 48)
 		Me.bTitleUpdate.Name = "bTitleUpdate"
 		Me.bTitleUpdate.Size = New System.Drawing.Size(80, 23)
 		Me.bTitleUpdate.TabIndex = 2
@@ -980,7 +951,7 @@ Partial Class MainForm
 		Me.groupBox3.Controls.Add(Me.label7)
 		Me.groupBox3.Location = New System.Drawing.Point(632, 56)
 		Me.groupBox3.Name = "groupBox3"
-		Me.groupBox3.Size = New System.Drawing.Size(288, 104)
+		Me.groupBox3.Size = New System.Drawing.Size(320, 104)
 		Me.groupBox3.TabIndex = 19
 		Me.groupBox3.TabStop = false
 		Me.groupBox3.Text = "Output Options"
@@ -1005,7 +976,7 @@ Partial Class MainForm
 		Me.cbLanguage.FormattingEnabled = true
 		Me.cbLanguage.Location = New System.Drawing.Point(88, 72)
 		Me.cbLanguage.Name = "cbLanguage"
-		Me.cbLanguage.Size = New System.Drawing.Size(192, 24)
+		Me.cbLanguage.Size = New System.Drawing.Size(224, 24)
 		Me.cbLanguage.TabIndex = 3
 		Me.cbLanguage.TabStop = false
 		Me.toolTip1.SetToolTip(Me.cbLanguage, "This is the language code to be written to the"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"output file when XML output is se"& _ 
@@ -1047,7 +1018,7 @@ Partial Class MainForm
 		Me.groupBox4.Controls.Add(Me.tbOffset)
 		Me.groupBox4.Location = New System.Drawing.Point(632, 344)
 		Me.groupBox4.Name = "groupBox4"
-		Me.groupBox4.Size = New System.Drawing.Size(288, 328)
+		Me.groupBox4.Size = New System.Drawing.Size(320, 328)
 		Me.groupBox4.TabIndex = 22
 		Me.groupBox4.TabStop = false
 		Me.groupBox4.Text = "Chapter List"
@@ -1117,54 +1088,54 @@ Partial Class MainForm
 		'label19
 		'
 		Me.label19.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		Me.label19.Location = New System.Drawing.Point(8, 264)
+		Me.label19.Location = New System.Drawing.Point(8, 256)
 		Me.label19.Name = "label19"
-		Me.label19.Size = New System.Drawing.Size(272, 2)
+		Me.label19.Size = New System.Drawing.Size(304, 2)
 		Me.label19.TabIndex = 21
 		'
 		'label18
 		'
 		Me.label18.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		Me.label18.Location = New System.Drawing.Point(8, 200)
+		Me.label18.Location = New System.Drawing.Point(8, 192)
 		Me.label18.Name = "label18"
-		Me.label18.Size = New System.Drawing.Size(272, 2)
+		Me.label18.Size = New System.Drawing.Size(304, 2)
 		Me.label18.TabIndex = 15
 		'
 		'label17
 		'
 		Me.label17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		Me.label17.Location = New System.Drawing.Point(8, 136)
+		Me.label17.Location = New System.Drawing.Point(8, 128)
 		Me.label17.Name = "label17"
-		Me.label17.Size = New System.Drawing.Size(272, 2)
+		Me.label17.Size = New System.Drawing.Size(304, 2)
 		Me.label17.TabIndex = 10
 		'
 		'label8
 		'
 		Me.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		Me.label8.Location = New System.Drawing.Point(8, 96)
+		Me.label8.Location = New System.Drawing.Point(8, 88)
 		Me.label8.Name = "label8"
-		Me.label8.Size = New System.Drawing.Size(272, 2)
+		Me.label8.Size = New System.Drawing.Size(304, 2)
 		Me.label8.TabIndex = 5
 		'
 		'label6
 		'
 		Me.label6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		Me.label6.Location = New System.Drawing.Point(8, 56)
+		Me.label6.Location = New System.Drawing.Point(8, 48)
 		Me.label6.Name = "label6"
-		Me.label6.Size = New System.Drawing.Size(272, 2)
+		Me.label6.Size = New System.Drawing.Size(304, 2)
 		Me.label6.TabIndex = 2
 		'
 		'maskedTextBox4
 		'
 		Me.maskedTextBox4.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
 		Me.maskedTextBox4.Location = New System.Drawing.Point(176, 296)
-		Me.maskedTextBox4.Mask = "00:00:00.00000"
+		Me.maskedTextBox4.Mask = "00:00:00.000000000"
 		Me.maskedTextBox4.Name = "maskedTextBox4"
 		Me.maskedTextBox4.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
 		Me.maskedTextBox4.RejectInputOnFirstFailure = true
 		Me.maskedTextBox4.ResetOnPrompt = false
 		Me.maskedTextBox4.ResetOnSpace = false
-		Me.maskedTextBox4.Size = New System.Drawing.Size(104, 23)
+		Me.maskedTextBox4.Size = New System.Drawing.Size(136, 23)
 		Me.maskedTextBox4.TabIndex = 26
 		Me.maskedTextBox4.TabStop = false
 		Me.maskedTextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1184,13 +1155,13 @@ Partial Class MainForm
 		'
 		Me.maskedTextBox3.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
 		Me.maskedTextBox3.Location = New System.Drawing.Point(176, 272)
-		Me.maskedTextBox3.Mask = "00:00:00.00000"
+		Me.maskedTextBox3.Mask = "00:00:00.000000000"
 		Me.maskedTextBox3.Name = "maskedTextBox3"
 		Me.maskedTextBox3.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
 		Me.maskedTextBox3.RejectInputOnFirstFailure = true
 		Me.maskedTextBox3.ResetOnPrompt = false
 		Me.maskedTextBox3.ResetOnSpace = false
-		Me.maskedTextBox3.Size = New System.Drawing.Size(104, 23)
+		Me.maskedTextBox3.Size = New System.Drawing.Size(136, 23)
 		Me.maskedTextBox3.TabIndex = 24
 		Me.maskedTextBox3.TabStop = false
 		Me.maskedTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1232,13 +1203,13 @@ Partial Class MainForm
 		'
 		Me.maskedTextBox2.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
 		Me.maskedTextBox2.Location = New System.Drawing.Point(176, 232)
-		Me.maskedTextBox2.Mask = "00:00:00.00000"
+		Me.maskedTextBox2.Mask = "00:00:00.000000000"
 		Me.maskedTextBox2.Name = "maskedTextBox2"
 		Me.maskedTextBox2.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
 		Me.maskedTextBox2.RejectInputOnFirstFailure = true
 		Me.maskedTextBox2.ResetOnPrompt = false
 		Me.maskedTextBox2.ResetOnSpace = false
-		Me.maskedTextBox2.Size = New System.Drawing.Size(104, 23)
+		Me.maskedTextBox2.Size = New System.Drawing.Size(136, 23)
 		Me.maskedTextBox2.TabIndex = 20
 		Me.maskedTextBox2.TabStop = false
 		Me.maskedTextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1374,7 +1345,7 @@ Partial Class MainForm
 		'
 		'bExit
 		'
-		Me.bExit.Location = New System.Drawing.Point(832, 680)
+		Me.bExit.Location = New System.Drawing.Point(864, 680)
 		Me.bExit.Name = "bExit"
 		Me.bExit.Size = New System.Drawing.Size(80, 31)
 		Me.bExit.TabIndex = 0
@@ -1418,7 +1389,7 @@ Partial Class MainForm
 		Me.toolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripButton, Me.openToolStripButton, Me.saveToolStripButton, Me.printToolStripButton, Me.toolStripSeparator6, Me.cutToolStripButton, Me.copyToolStripButton, Me.pasteToolStripButton, Me.toolStripSeparator7, Me.helpToolStripButton})
 		Me.toolStrip1.Location = New System.Drawing.Point(0, 24)
 		Me.toolStrip1.Name = "toolStrip1"
-		Me.toolStrip1.Size = New System.Drawing.Size(926, 25)
+		Me.toolStrip1.Size = New System.Drawing.Size(961, 25)
 		Me.toolStrip1.TabIndex = 26
 		Me.toolStrip1.Text = "toolStrip1"
 		'
@@ -1517,7 +1488,7 @@ Partial Class MainForm
 		Me.statusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripStatusLabel1})
 		Me.statusStrip1.Location = New System.Drawing.Point(0, 722)
 		Me.statusStrip1.Name = "statusStrip1"
-		Me.statusStrip1.Size = New System.Drawing.Size(926, 22)
+		Me.statusStrip1.Size = New System.Drawing.Size(961, 22)
 		Me.statusStrip1.TabIndex = 27
 		Me.statusStrip1.Text = "statusStrip1"
 		'
@@ -1540,12 +1511,41 @@ Partial Class MainForm
 		Me.toolTip1.SetToolTip(Me.cbOutputType, "The type of output file that you wish to write.")
 		AddHandler Me.cbOutputType.SelectedIndexChanged, AddressOf Me.CbOutputTypeSelectedIndexChanged
 		'
+		'dgNumber
+		'
+		Me.dgNumber.DataPropertyName = "dgNumber"
+		dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+		Me.dgNumber.DefaultCellStyle = dataGridViewCellStyle2
+		Me.dgNumber.HeaderText = "No."
+		Me.dgNumber.Name = "dgNumber"
+		Me.dgNumber.ReadOnly = true
+		Me.dgNumber.Width = 50
+		'
+		'dgTime
+		'
+		Me.dgTime.DataPropertyName = "dgTime"
+		dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+		Me.dgTime.DefaultCellStyle = dataGridViewCellStyle3
+		Me.dgTime.HeaderText = "Time"
+		Me.dgTime.Name = "dgTime"
+		Me.dgTime.ReadOnly = true
+		Me.dgTime.Width = 150
+		'
+		'dgTitle
+		'
+		Me.dgTitle.DataPropertyName = "dgTitle"
+		dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+		Me.dgTitle.DefaultCellStyle = dataGridViewCellStyle4
+		Me.dgTitle.HeaderText = "Title"
+		Me.dgTitle.Name = "dgTitle"
+		Me.dgTitle.Width = 340
+		'
 		'MainForm
 		'
 		Me.AllowDrop = true
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(7!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(926, 744)
+		Me.ClientSize = New System.Drawing.Size(961, 744)
 		Me.Controls.Add(Me.cbOutputType)
 		Me.Controls.Add(Me.statusStrip1)
 		Me.Controls.Add(Me.toolStrip1)
