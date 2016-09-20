@@ -1,3 +1,11 @@
+Version 1.07 (Released 2016-09-20)
+
+ ! Output text file times to 9 decimal places.
+
+ ! Set XML output times to 9 decimal places to match standards.
+
+ ----------------------------------------------------------------------
+
 Version 1.06 (Released 2016-09-19)
 
  ! Corrected bug outputting chapter times with decimal point as a

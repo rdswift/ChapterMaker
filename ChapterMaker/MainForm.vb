@@ -435,7 +435,7 @@ Public Partial Class MainForm
 	'
 	
 	Sub WriteChapterFile()
-		Dim s1, s2, s3, s4 As String
+		Dim s1, s2, s3, s4, s5 As String
 		Dim i1, i2, i3 As Integer
 		Dim d1, d2 As Double
 		Dim b1 As Boolean = False
@@ -466,14 +466,15 @@ Public Partial Class MainForm
 		Dim chaptercount As Integer = 0
 		For Each s1 In Me.cTimes
 			s4 = ChapterTimeOut(s1, Me.cOutputType)
+			s5 = ChapterTimeOut(s1, FileType.XML)
 			chaptercount += 1
 			s2 = ""
-			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "{" & s4 & "} "
+			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "{" & s5 & "} "
 			If Me.cbAddChapterNumbers.Checked Then s2 = s2 & chaptercount.ToString.Trim & ". "
 			If chaptercount > (UBound(Me.cTitles) + 1) Then
 				Dim s2s As String = "Unknown Chapter Title"
 				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then s2s = "Chapter " & chaptercount.ToString.Trim
-				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime Then s2s = s4
+				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime Then s2s = s5
 				If AppConfig.NoTitle = Defaults.cmNoTitle.NA Then s2s = "n/a"
 				s2 &= s2s
 			Else
@@ -544,7 +545,8 @@ Public Partial Class MainForm
 		retval = s1
 		If (sType = FileType.OGM) Then
 			retval = Strings.Left(s1, 12)
-		ElseIf (sType = FileType.XML) Then
+'		ElseIf (sType = FileType.XML) Then
+		Else
 			retval = Strings.Left(s1, 18)
 		End If
 		Return retval
