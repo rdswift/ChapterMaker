@@ -60,6 +60,9 @@ Public Partial Class MainForm
 		' TODO : Add constructor code after InitializeComponents
 		'
 		AddHandler Application.Idle, AddressOf UpdateEditButtons
+		
+		' Set culture to avoid problems reading / writing times with commas as decimals.
+		System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -640,6 +643,7 @@ Public Partial Class MainForm
 	
 	Private Function FormatTimes(tm As String) As String
 		tm = Strings.Replace(tm, " ", "0")
+		tm = Strings.Replace(tm, ",", ".")	'Change input comma decimal separator to period
 		Dim digits() As String = Split(tm, ":")
 		If UBound(digits) <> 2 Then Return tm
 		Dim seconds As Double = GetSeconds(digits(0), digits(1), digits(2))

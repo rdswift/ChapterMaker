@@ -1,3 +1,13 @@
+Version 1.09 (Released 2017-04-05)
+
+ ! Corrected bug inputting incorrect chapter times if the system
+   locale setting uses a comma as the decimal separator.
+
+ + Automatically convert comma decimal separator to period when
+   reading chapter times.
+
+ ----------------------------------------------------------------------
+
 Version 1.08 (Released 2017-04-04)
 
  - Updated display order of optional title elements.  Order is now:

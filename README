@@ -1,5 +1,5 @@
 ChapterMaker - Create and edit video chapter files.
-Copyright © 2016 Bob Swift
+Copyright © 2017 Bob Swift
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

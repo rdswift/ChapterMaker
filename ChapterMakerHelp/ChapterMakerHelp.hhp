@@ -16,32 +16,33 @@ ChapterMakerHelp03.htm
 ChapterMakerHelp03AA.htm
 ChapterMakerHelp03AB.htm
 ChapterMakerHelp04.htm
-ChapterMakerHelp04AA.htm
-ChapterMakerHelp04AB.htm
-ChapterMakerHelp04AC.htm
-ChapterMakerHelp04AD.htm
-ChapterMakerHelp04AE.htm
 ChapterMakerHelp05.htm
 ChapterMakerHelp05AA.htm
 ChapterMakerHelp05AB.htm
 ChapterMakerHelp05AC.htm
+ChapterMakerHelp05AD.htm
+ChapterMakerHelp05AE.htm
 ChapterMakerHelp06.htm
 ChapterMakerHelp06AA.htm
 ChapterMakerHelp06AB.htm
+ChapterMakerHelp06AC.htm
 ChapterMakerHelp07.htm
+ChapterMakerHelp07AA.htm
+ChapterMakerHelp07AB.htm
 ChapterMakerHelp08.htm
+ChapterMakerHelp09.htm
 
 
 [ALIAS]
-H_04AB=ChapterMakerHelp04AB.htm
-H_04AD=ChapterMakerHelp04AD.htm
-H_04AE=ChapterMakerHelp04AE.htm
+H_05AB=ChapterMakerHelp05AB.htm
+H_05AD=ChapterMakerHelp05AD.htm
+H_05AE=ChapterMakerHelp05AE.htm
 
 
 [MAP]
-#define H_04AB 9030
-#define H_04AD 9010
-#define H_04AE 9020
+#define H_05AB 9030
+#define H_05AD 9010
+#define H_05AE 9020
 
 
 [INFOTYPES]

@@ -1,6 +1,6 @@
 # ChapterMaker User Guide
 Create and edit video chapter files.   
-Copyright © 2016 Bob Swift
+Copyright © 2017 Bob Swift
 
 Permission is granted to copy, distribute and/or modify this document   
 under the terms of the GNU Free Documentation License, Version 1.3   

@@ -14,81 +14,83 @@ ChapterMakerHelp03AB.htm    Output Files           Output Files
                Link: ChapterMakerHelp03.htm        Chapter information input and output files
                Link: ChapterMakerHelp03AA.htm      Input Files
 
-ChapterMakerHelp04.htm      Chapter Times          Chapter times
-               Link: ChapterMakerHelp04AA.htm      Reading Times From a File
-               Link: ChapterMakerHelp04AB.htm      Adding Interval Times
-               Link: ChapterMakerHelp04AC.htm      Manual Time Entry / Editing
-               Link: ChapterMakerHelp04AD.htm      Scaling Times
-               Link: ChapterMakerHelp04AE.htm      Shifting Times
+ChapterMakerHelp04.htm      Internet Lookup        Internet Lookup
 
-ChapterMakerHelp04AA.htm    Reading Times From a File   Reading Times From a File
-               Link: ChapterMakerHelp04.htm        Chapter times
-               Link: ChapterMakerHelp04AB.htm      Adding Interval Times
-               Link: ChapterMakerHelp04AC.htm      Manual Time Entry / Editing
-               Link: ChapterMakerHelp04AD.htm      Scaling Times
-               Link: ChapterMakerHelp04AE.htm      Shifting Times
+ChapterMakerHelp05.htm      Chapter Times          Chapter times
+               Link: ChapterMakerHelp05AA.htm      Reading Times From a File
+               Link: ChapterMakerHelp05AB.htm      Adding Interval Times
+               Link: ChapterMakerHelp05AC.htm      Manual Time Entry / Editing
+               Link: ChapterMakerHelp05AD.htm      Scaling Times
+               Link: ChapterMakerHelp05AE.htm      Shifting Times
 
-ChapterMakerHelp04AB.htm    Adding Interval Times   Adding Interval Times
-               Link: ChapterMakerHelp04.htm        Chapter times
-               Link: ChapterMakerHelp04AA.htm      Reading Times From a File
-               Link: ChapterMakerHelp04AC.htm      Manual Time Entry / Editing
-               Link: ChapterMakerHelp04AD.htm      Scaling Times
-               Link: ChapterMakerHelp04AE.htm      Shifting Times
+ChapterMakerHelp05AA.htm    Reading Times From a File   Reading Times From a File
+               Link: ChapterMakerHelp05.htm        Chapter times
+               Link: ChapterMakerHelp05AB.htm      Adding Interval Times
+               Link: ChapterMakerHelp05AC.htm      Manual Time Entry / Editing
+               Link: ChapterMakerHelp05AD.htm      Scaling Times
+               Link: ChapterMakerHelp05AE.htm      Shifting Times
 
-ChapterMakerHelp04AC.htm    Manual Time Entry / Editing   Manual Time Entry / Editing
-               Link: ChapterMakerHelp04.htm        Chapter times
-               Link: ChapterMakerHelp04AA.htm      Reading Times From a File
-               Link: ChapterMakerHelp04AB.htm      Adding Interval Times
-               Link: ChapterMakerHelp04AD.htm      Scaling Times
-               Link: ChapterMakerHelp04AE.htm      Shifting Times
+ChapterMakerHelp05AB.htm    Adding Interval Times   Adding Interval Times
+               Link: ChapterMakerHelp05.htm        Chapter times
+               Link: ChapterMakerHelp05AA.htm      Reading Times From a File
+               Link: ChapterMakerHelp05AC.htm      Manual Time Entry / Editing
+               Link: ChapterMakerHelp05AD.htm      Scaling Times
+               Link: ChapterMakerHelp05AE.htm      Shifting Times
 
-ChapterMakerHelp04AD.htm    Scaling Times          Scaling Times
-               Link: ChapterMakerHelp04.htm        Chapter times
-               Link: ChapterMakerHelp04AA.htm      Reading Times From a File
-               Link: ChapterMakerHelp04AB.htm      Adding Interval Times
-               Link: ChapterMakerHelp04AC.htm      Manual Time Entry / Editing
-               Link: ChapterMakerHelp04AE.htm      Shifting Times
+ChapterMakerHelp05AC.htm    Manual Time Entry / Editing   Manual Time Entry / Editing
+               Link: ChapterMakerHelp05.htm        Chapter times
+               Link: ChapterMakerHelp05AA.htm      Reading Times From a File
+               Link: ChapterMakerHelp05AB.htm      Adding Interval Times
+               Link: ChapterMakerHelp05AD.htm      Scaling Times
+               Link: ChapterMakerHelp05AE.htm      Shifting Times
 
-ChapterMakerHelp04AE.htm    Shifting Times         Shifting Times
-               Link: ChapterMakerHelp04.htm        Chapter times
-               Link: ChapterMakerHelp04AA.htm      Reading Times From a File
-               Link: ChapterMakerHelp04AB.htm      Adding Interval Times
-               Link: ChapterMakerHelp04AC.htm      Manual Time Entry / Editing
-               Link: ChapterMakerHelp04AD.htm      Scaling Times
+ChapterMakerHelp05AD.htm    Scaling Times          Scaling Times
+               Link: ChapterMakerHelp05.htm        Chapter times
+               Link: ChapterMakerHelp05AA.htm      Reading Times From a File
+               Link: ChapterMakerHelp05AB.htm      Adding Interval Times
+               Link: ChapterMakerHelp05AC.htm      Manual Time Entry / Editing
+               Link: ChapterMakerHelp05AE.htm      Shifting Times
 
-ChapterMakerHelp05.htm      Chapter Titles         Chapter titles
-               Link: ChapterMakerHelp05AA.htm      Reading Titles From a File
-               Link: ChapterMakerHelp05AB.htm      Manual Title Entry / Editing
-               Link: ChapterMakerHelp05AC.htm      Rearranging Titles
+ChapterMakerHelp05AE.htm    Shifting Times         Shifting Times
+               Link: ChapterMakerHelp05.htm        Chapter times
+               Link: ChapterMakerHelp05AA.htm      Reading Times From a File
+               Link: ChapterMakerHelp05AB.htm      Adding Interval Times
+               Link: ChapterMakerHelp05AC.htm      Manual Time Entry / Editing
+               Link: ChapterMakerHelp05AD.htm      Scaling Times
 
-ChapterMakerHelp05AA.htm    Reading Titles From a File   Reading Titles From a File
-               Link: ChapterMakerHelp05.htm        Chapter titles
-               Link: ChapterMakerHelp05AB.htm      Manual Title Entry / Editing
-               Link: ChapterMakerHelp05AC.htm      Rearranging Titles
+ChapterMakerHelp06.htm      Chapter Titles         Chapter titles
+               Link: ChapterMakerHelp06AA.htm      Reading Titles From a File
+               Link: ChapterMakerHelp06AB.htm      Manual Title Entry / Editing
+               Link: ChapterMakerHelp06AC.htm      Rearranging Titles
 
-ChapterMakerHelp05AB.htm    Manual Title Entry / Editing   Manual Title Entry / Editing
-               Link: ChapterMakerHelp05.htm        Chapter titles
-               Link: ChapterMakerHelp05AA.htm      Reading Titles From a File
-               Link: ChapterMakerHelp05AC.htm      Rearranging Titles
+ChapterMakerHelp06AA.htm    Reading Titles From a File   Reading Titles From a File
+               Link: ChapterMakerHelp06.htm        Chapter titles
+               Link: ChapterMakerHelp06AB.htm      Manual Title Entry / Editing
+               Link: ChapterMakerHelp06AC.htm      Rearranging Titles
 
-ChapterMakerHelp05AC.htm    Rearranging Titles     Rearranging Titles
-               Link: ChapterMakerHelp05.htm        Chapter titles
-               Link: ChapterMakerHelp05AA.htm      Reading Titles From a File
-               Link: ChapterMakerHelp05AB.htm      Manual Title Entry / Editing
+ChapterMakerHelp06AB.htm    Manual Title Entry / Editing   Manual Title Entry / Editing
+               Link: ChapterMakerHelp06.htm        Chapter titles
+               Link: ChapterMakerHelp06AA.htm      Reading Titles From a File
+               Link: ChapterMakerHelp06AC.htm      Rearranging Titles
 
-ChapterMakerHelp06.htm      Title Case Utility     Title Case Utility
-               Link: ChapterMakerHelp06AA.htm      How Title Case Works
-               Link: ChapterMakerHelp06AB.htm      Words List Editor
+ChapterMakerHelp06AC.htm    Rearranging Titles     Rearranging Titles
+               Link: ChapterMakerHelp06.htm        Chapter titles
+               Link: ChapterMakerHelp06AA.htm      Reading Titles From a File
+               Link: ChapterMakerHelp06AB.htm      Manual Title Entry / Editing
 
-ChapterMakerHelp06AA.htm    How Title Case Works   How Title Case Works
-               Link: ChapterMakerHelp06.htm        Title Case Utility
-               Link: ChapterMakerHelp06AB.htm      Words List Editor
+ChapterMakerHelp07.htm      Title Case Utility     Title Case Utility
+               Link: ChapterMakerHelp07AA.htm      How Title Case Works
+               Link: ChapterMakerHelp07AB.htm      Words List Editor
 
-ChapterMakerHelp06AB.htm    Words List Editor      Words List Editor
-               Link: ChapterMakerHelp06.htm        Title Case Utility
-               Link: ChapterMakerHelp06AA.htm      How Title Case Works
+ChapterMakerHelp07AA.htm    How Title Case Works   How Title Case Works
+               Link: ChapterMakerHelp07.htm        Title Case Utility
+               Link: ChapterMakerHelp07AB.htm      Words List Editor
 
-ChapterMakerHelp07.htm      Preferences & Default Settings   Preferences & Default Settings
+ChapterMakerHelp07AB.htm    Words List Editor      Words List Editor
+               Link: ChapterMakerHelp07.htm        Title Case Utility
+               Link: ChapterMakerHelp07AA.htm      How Title Case Works
 
-ChapterMakerHelp08.htm      When Things Go Wrong   When Things Go Wrong
+ChapterMakerHelp08.htm      Preferences & Default Settings   Preferences & Default Settings
+
+ChapterMakerHelp09.htm      When Things Go Wrong   When Things Go Wrong
 

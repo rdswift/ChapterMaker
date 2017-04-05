@@ -1,6 +1,6 @@
 # ChapterMaker
 Create and edit video chapter files.   
-Copyright © 2016 Bob Swift
+Copyright © 2017 Bob Swift
 
 Source code and development work is maintained here on GitHub.
 

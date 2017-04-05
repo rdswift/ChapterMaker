@@ -64,10 +64,16 @@ Public Class Defaults
 	Private myChapterDBAPIKey As String
 	Private myChapterDBName As String
 	Private myMkvToolNixPath As String
+'	Private myUsesComma As Boolean
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	Public Sub New()
+'		Dim s1 As String
+'		s1 = (11 / 10).ToString(System.Globalization.CultureInfo.GetCultureInfo("it-IT"))
+'		s1 = (11 / 10).ToString(System.Globalization.CultureInfo.InvariantCulture)
+'		s1 = (11 / 10).ToString()
+'		myUsesComma = s1.Contains(",")
 		myOutputType = cmOutputType.XML
 		myFrameRate = 23.976
 		myOutFilePath = ""
@@ -96,6 +102,12 @@ Public Class Defaults
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	
+'	Public readonly Property UsesComma() As Boolean
+'		Get
+'			Return myUsesComma
+'		End Get
+'	End Property
 	
 	Public Property OutputType() As Integer
 		Get

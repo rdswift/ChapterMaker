@@ -164,7 +164,7 @@ Public Partial Class SearchChapterDB
 		es = ""
 		For Each dgr As DataGridViewRow In Me.dgvChapters.Rows
 			es &= dgr.Cells(0).Value.ToString.Trim & " ==> " & dgr.Cells(1).Value.ToString.Trim & Environment.NewLine
-			AppendArray(cTimes, dgr.Cells(0).Value.ToString.Trim) 
+			AppendArray(cTimes, dgr.Cells(0).Value.ToString.Trim.Replace(",", ".")) 
 			AppendArray(cTitles, dgr.Cells(1).Value.ToString.Trim) 
 		Next
 		
