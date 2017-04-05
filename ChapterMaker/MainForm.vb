@@ -27,6 +27,7 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Data
+Imports System.Security.Cryptography
 
 Public Partial Class MainForm
 	Enum FileType
@@ -34,6 +35,7 @@ Public Partial Class MainForm
 		TXT = 3
 		OGM = 2
 		XML = 1
+		MKV = 4
 	End Enum
 	
 	Const BLANKTIME = "00:00:00.000000000"
@@ -42,10 +44,12 @@ Public Partial Class MainForm
 	Private dragIndex As Integer = 0
 	Private dragRect As Rectangle
 	
-	Dim cTimes(), cTitles() As String
+	Public cTimes(), cTitles() As String
 	Dim cTimesType, cTitlesType As Integer
 	Dim ChaptersDS As DataSet
 	Dim cOutputType As FileType
+	Dim mkv As Matroska
+	Dim vTitle As String
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -71,6 +75,7 @@ Public Partial Class MainForm
 		Me.cbOutputType.Items.Add("XML (Extensible Markup)")
 		Me.cbOutputType.Items.Add("OGM (OGG Media)")
 		Me.cbOutputType.Items.Add("TXT (Plain Text)")
+		Me.cbOutputType.Items.Add("MKV (Matroska)")
 		AppConfig = New Defaults
 		AppConfig.Read()
 		ChaptersDS = New DataSet()
@@ -84,9 +89,11 @@ Public Partial Class MainForm
 		ChaptersDS.Tables.Add(DT)
 		Me.dataGridView1.DataSource = ChaptersDS.Tables(0)
 		Me.cOutputType = CType(AppConfig.OutputType, FileType)
+		Me.mkv = New Matroska()
 		ResetAll
 		AppFixCase = New FixCase
 		AppFixCase.Read()
+		EnableUploads()
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -175,8 +182,23 @@ Public Partial Class MainForm
 		End Try
 		If Len(myJunk.Trim) > 0 Then
 			Me.tbFileOutput.Text = myJunk
+			FixOutputType()
 		Else
 			ErrorBox("Not a valid file.")
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	Sub FixOutputType()
+		Dim s1, s2 As String
+		s1 = Me.tbFileOutput.Text.Trim
+		s2 = ""
+		If (s1.Length > 0) Then
+			s2 = System.IO.Path.GetExtension(s1).ToLower
+			If (s2 = ".mkv") Then
+				LoadMKV(s1, False)
+			End If
 		End If
 	End Sub
 	
@@ -276,7 +298,8 @@ Public Partial Class MainForm
         Me.SaveFileDialog1.Title = "Output File"
         myJunk = ""
         If Me.SaveFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            	Me.tbFileOutput.Text = Me.saveFileDialog1.FileName
+        	Me.tbFileOutput.Text = Me.saveFileDialog1.FileName
+        	FixOutputType()
         End If
         Return True
 	End Function
@@ -446,10 +469,14 @@ Public Partial Class MainForm
 '			eStr = "No chapter titles identified."
 		If (eStr.Trim.Length < 1) And (Me.tbFileOutput.Text.Trim.Length < 1) Then _
 			eStr = "No chapters output file identified."
+		If eStr.Trim.Length > 0 Then
+			ErrorBox(eStr)
+			Exit Sub
+		End If
 		
 		'Write the output file
 		Dim outlines() As String = { }
-		If Me.cOutputType = FileType.XML Then
+		If (Me.cOutputType = FileType.XML) Or (Me.cOutputType = FileType.MKV) Then
 			AppendArray(outlines, "<?xml version=""1.0"" encoding=""utf-8""?>")
 			AppendArray(outlines, "<!-- <!DOCTYPE Chapters SYSTEM ""matroskachapters.dtd""> -->")
 			AppendArray(outlines, "<Chapters>")
@@ -463,14 +490,17 @@ Public Partial Class MainForm
 		If (Me.cOutputType = FileType.TXT) Then b1 = (MsgBox("Do you want to include the chapter duration information with the chapter titles?" _
 			& vbCrLf & vbCrLf & "Note that the the duration of the final chapter will be set to [00:00].", MsgBoxStyle.ApplicationModal Or _
 			MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Include Durations") = MsgBoxResult.Yes)
+		
+		Working(True)
+		
 		Dim chaptercount As Integer = 0
 		For Each s1 In Me.cTimes
 			s4 = ChapterTimeOut(s1, Me.cOutputType)
 			s5 = ChapterTimeOut(s1, FileType.XML)
 			chaptercount += 1
 			s2 = ""
-			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "{" & s5 & "} "
 			If Me.cbAddChapterNumbers.Checked Then s2 = s2 & chaptercount.ToString.Trim & ". "
+			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "{" & s5 & "} "
 			If chaptercount > (UBound(Me.cTitles) + 1) Then
 				Dim s2s As String = "Unknown Chapter Title"
 				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then s2s = "Chapter " & chaptercount.ToString.Trim
@@ -480,7 +510,7 @@ Public Partial Class MainForm
 			Else
 				s2 &= Me.cTitles(chaptercount - 1)
 			End If
-			If Me.cOutputType = FileType.XML Then
+			If (Me.cOutputType = FileType.XML) Or (Me.cOutputType = FileType.MKV) Then
 				s2 = System.Net.WebUtility.HtmlEncode(s2)
 				AppendArray(outlines, "")
 				AppendArray(outlines, "    <ChapterAtom>")
@@ -510,7 +540,7 @@ Public Partial Class MainForm
 				AppendArray(outlines, s2 & s3)
 			End If
 		Next
-		If Me.cOutputType = FileType.XML Then
+		If (Me.cOutputType = FileType.XML) Or (Me.cOutputType = FileType.MKV) Then
 			AppendArray(outlines, "")
 			AppendArray(outlines, "  </EditionEntry>")
 			AppendArray(outlines, "</Chapters>")
@@ -518,23 +548,37 @@ Public Partial Class MainForm
 		
 		
 		Try
-			File.WriteAllLines(Me.tbFileOutput.Text.Trim, outlines)
+			Dim sFN As String = Me.tbFileOutput.Text.Trim
+			If Me.cOutputType = FileType.MKV Then sFN = mkv.ChaptersXML.Trim
+			File.WriteAllLines(sFN, outlines)
+			If Me.cOutputType = FileType.MKV Then
+				mkv.WriteChapters(Me.tbFileOutput.Text.Trim)
+'				If System.IO.File.Exists(mkv.ChaptersXML) Then System.IO.File.Delete(mkv.ChaptersXML)
+			End If
 		Catch
 			eStr = "Problem writing to the output file."
 		End Try
 		
+		Working(False)
 		
 		If (eStr.Trim.Length > 0) Then
 			Me.toolStripStatusLabel1.Text = eStr
 			ErrorBox(eStr)
 		Else
-			Me.toolStripStatusLabel1.Text = "Chapters file successfully created."
+			If Me.cOutputType = FileType.MKV Then
+'				If System.IO.File.Exists(mkv.ChaptersXML) Then
+					Me.toolStripStatusLabel1.Text = "MKV file successfully updated."
+'				End If
+			Else
+				Me.toolStripStatusLabel1.Text = "Chapters file successfully created."
+			End If
+			
 		End If
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
-	'	Propertly format time code for specified output file type
+	'	Properly format time code for specified output file type
 	
 	Private Function ChapterTimeOut(sTime As String, sType As FileType) As String
 		Dim s1 As String = sTime
@@ -636,13 +680,18 @@ Public Partial Class MainForm
 	
 	Private Sub ResetAll
 		Dim s1 As String
+		Me.mkv.ResetAll()
+		Me.vTitle = ""
 		Me.cbAddChapterNumbers.Checked = AppConfig.AddNumbers
 		Me.cbAddChapterTimes.Checked = AppConfig.AddTimes
 		Me.cbLanguage.SelectedIndex = cbLanguage.FindString(AppConfig.Language)
+		Me.uploadToChapterDBToolStripMenuItem.Enabled = AppConfig.ChapterDBEnabled
+		Me.uploadToolStripButton.Enabled = AppConfig.ChapterDBEnabled
 		If Me.cbLanguage.SelectedIndex < 0 Then Me.cbLanguage.SelectedIndex = 0
 		Me.tbOffset.Text = "0.0"
 		Me.tbScaleFrom.Text = BLANKTIME
 		Me.maskedTextBox2.Text = BLANKTIME
+		Me.mtbDuration.Text = BLANKTIME
 		Me.tbFrameRate.Text = AppConfig.FrameRate.ToString.Trim
 		Me.tbFileTitles.Text=""
 		Me.tbFileTimes.Text=""
@@ -708,6 +757,7 @@ Public Partial Class MainForm
 	
 	Private Function GetFileType(ByVal FilePath As String) As Integer
 		Dim s1, a1() As String
+		If FilePath.Trim.ToUpper.EndsWith(".MKV") Then Return FileType.MKV
 		Try
 			a1 = System.IO.File.ReadAllLines(FilePath)
 			s1 = a1(0)
@@ -728,6 +778,7 @@ Public Partial Class MainForm
 		If myFileType = FileType.XML Then Return "XML"
 		If myFileType = FileType.OGM Then Return "OGM"
 		If myFileType = FileType.TXT Then Return "TXT"
+		If myFileType = FileType.MKV Then Return "MKV"
 		Return "---"
 	End Function
 	
@@ -767,6 +818,8 @@ Public Partial Class MainForm
 			Exit Sub
 		End If
 		
+		Working(True)
+		
 		'Read the times
 		Dim RegEx3 As String = ""
 		If Me.cTimesType = FileType.OGM Then RegEx3 = "CHAPTER[0-9]+=(.*)$"
@@ -794,6 +847,7 @@ Public Partial Class MainForm
 		End Try
 		If (Me.cTimes.Length > 0) And (Me.cTimesType = FileType.TXT) Then AppendArray(Me.cTimes, FormatTimes(SECtoHMS(0)))
 		ShowList()
+		Working(False)
 		Me.toolStripStatusLabel1.Text = "Chapter times loaded from specified file."
 	End Sub
 	
@@ -816,7 +870,9 @@ Public Partial Class MainForm
 			End If
 			Exit Sub
 		End If
-			
+		
+		Working(True)
+		
 		'Read the titles
 		Dim RegEx1 As String = ""
 		If Me.cTitlesType = FileType.OGM Then RegEx1 = "CHAPTER[0-9]+NAME=(.*)$"
@@ -846,6 +902,7 @@ Public Partial Class MainForm
 			Me.cTitles = {}
 		End Try
 		ShowList()
+		Working(False)
 		Me.toolStripStatusLabel1.Text = "Chapter titles loaded from specified file."
 	End Sub
 	
@@ -903,10 +960,60 @@ Public Partial Class MainForm
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
+	'	Load MKV File Information
+	
+	Sub LoadMKV(FileName As String, optional ChangeInputs As Boolean = True)
+		Working(True)
+		mkv = New Matroska(FileName.Trim, AppConfig.MkvToolNixPath)
+		mkv.Read()
+		Working(False)
+		If Not String.IsNullOrEmpty(mkv.ChaptersXML.Trim) Then
+			If (mkv.FPS <> 0) Then Me.tbFrameRate.Text = Format(mkv.FPS, "0.000000000")
+			Me.mtbDuration.Text = mkv.Duration
+			Me.tbFileOutput.Text = mkv.FileName.Trim
+			If ChangeInputs Then
+				Me.tbFileTimes.Text = mkv.ChaptersXML.Trim
+				Me.tbFileTitles.Text = mkv.ChaptersXML.Trim
+'				LoadTimes()
+'				LoadTitles()
+			End If
+			Me.vTitle = mkv.Title.Trim
+			SetOutputType(FileType.MKV)
+		Else
+			ErrorBox("Unable to process the Matroska file.  Have you set the path to the MkvToolNix utilities in the program settings?")
+			Me.tbFileTimes.Text = ""
+		End If
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
 	'	Validate new times input file and load the times
 	
 	Sub TbFileTimesTextChanged(sender As Object, e As EventArgs)
 		Dim myJunk As String = ""
+		
+		If GetFileType(Me.tbFileTimes.Text.Trim) = FileType.MKV Then
+			LoadMKV(Me.tbFileTimes.Text.Trim)
+			Exit Sub
+'			Working(True)
+'			mkv = New Matroska(Me.tbFileTimes.Text.Trim, AppConfig.MkvToolNixPath)
+'			mkv.Read()
+'			Working(False)
+'			If Not String.IsNullOrEmpty(mkv.ChaptersXML.Trim) Then
+'				If (mkv.FPS <> 0) Then Me.tbFrameRate.Text = Format(mkv.FPS, "0.000000000")
+'				Me.mtbDuration.Text = mkv.Duration
+'				Me.tbFileOutput.Text = mkv.FileName.Trim
+'				Me.tbFileTimes.Text = mkv.ChaptersXML.Trim
+'				Me.vTitle = mkv.Title.Trim
+'				SetOutputType(FileType.MKV)
+'				Exit Sub
+'			Else
+'				ErrorBox("Unable to process the Matroska file.  Have you set the path to the MkvToolNix utilities in the program settings?")
+'				Me.tbFileTimes.Text = ""
+'				Exit Sub
+'			End If
+		End If
+		
 		Me.cTimesType = GetFileType(Me.tbFileTimes.Text.Trim)
 		Me.tbTimeType.Text = GetFileTypeString(Me.cTimesType)
 		If Me.tbFileTimes.Text.Trim.Length > 0 Then
@@ -935,6 +1042,29 @@ Public Partial Class MainForm
 	
 	Sub TbFileTitlesTextChanged(sender As Object, e As EventArgs)
 		Dim myJunk As String = ""
+		
+		If GetFileType(Me.tbFileTitles.Text.Trim) = FileType.MKV Then
+			LoadMKV(Me.tbFileTitles.Text.Trim)
+			Exit Sub
+'			Working(True)
+'			mkv = New Matroska(Me.tbFileTimes.Text.Trim, AppConfig.MkvToolNixPath)
+'			mkv.Read()
+'			Working(False)
+'			If Not String.IsNullOrEmpty(mkv.ChaptersXML.Trim) Then
+'				If (mkv.FPS <> 0) Then Me.tbFrameRate.Text = Format(mkv.FPS, "0.000000000")
+'				Me.mtbDuration.Text = mkv.Duration
+'				Me.tbFileOutput.Text = mkv.FileName.Trim
+'				Me.tbFileTitles.Text = mkv.ChaptersXML.Trim
+'				Me.vTitle = mkv.Title.Trim
+'				SetOutputType(FileType.MKV)
+'				Exit Sub
+'			Else
+'				ErrorBox("Unable to process the Matroska file.  Have you set the path to the MkvToolNix utilities in the program settings?")
+'				Me.tbFileTitles.Text = ""
+'				Exit Sub
+'			End If
+		End If
+		
 		Me.cTitlesType = GetFileType(Me.tbFileTitles.Text.Trim)
 		Me.tbTitleType.Text = GetFileTypeString(Me.cTitlesType)
 		If Me.tbFileTitles.Text.Trim.Length > 0 Then
@@ -1397,6 +1527,9 @@ Public Partial Class MainForm
 	Sub SettingsToolStripMenuItemClick(sender As Object, e As EventArgs)
 		Dim A As New Settings()
 		A.ShowDialog()
+		EnableUploads()
+'		Me.uploadToChapterDBToolStripMenuItem.Enabled = AppConfig.ChapterDBEnabled
+'		Me.uploadToolStripButton.Enabled = AppConfig.ChapterDBEnabled
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1794,7 +1927,27 @@ Public Partial Class MainForm
 	Sub SetOutputType(ByVal newType As FileType)
 		Dim s1, s2, s3, s4, s5 As String
 		Dim n1 As Integer
-		If Me.cOutputType = FileType.XML Then
+		
+		If newType = FileType.MKV Then
+			s1 = "XXX" & Me.tbFileOutput.Text.Trim
+			If (Not s1.ToUpper.EndsWith(".MKV")) Then Me.tbFileOutput.Text = ""
+		End If
+		
+		If Me.cOutputType = FileType.MKV Then
+			If newType <> FileType.MKV Then
+				s2 = ""
+				If Not String.IsNullOrEmpty(Me.tbFileTimes.Text.Trim) Then s2 = System.IO.Path.GetDirectoryName(Me.tbFileTimes.Text.Trim)
+				If String.IsNullOrEmpty(s2) And (Not String.IsNullOrEmpty(Me.tbFileTitles.Text.Trim)) Then s2 = System.IO.Path.GetDirectoryName(Me.tbFileTitles.Text.Trim)
+				If String.IsNullOrEmpty(s2) Then
+					Me.tbFileOutput.Text = ""
+				Else
+					If Not s2.Trim.EndsWith("\") Then s2 = s2.Trim & "\"
+					Me.tbFileOutput.Text = s2.Trim & "ChapterMakerChapters.mkv"
+				End If
+			End If
+			n1 = 3
+			s2 = "mkv"
+		ElseIf Me.cOutputType = FileType.XML Then
 			n1 = AppConfig.XMLExt.Trim.Length
 			s2 = AppConfig.XMLExt.Trim
 		ElseIf Me.cOutputType = FileType.OGM Then
@@ -1805,7 +1958,16 @@ Public Partial Class MainForm
 			s2 = AppConfig.TXTExt.Trim
 		End If
 		Me.cOutputType = newType
-		If newType = FileType.XML Then
+		If newType = FileType.MKV Then
+			s1 = "XXX" & Me.tbFileOutput.Text.Trim
+			If (Not s1.ToUpper.EndsWith(".MKV")) Then Me.tbFileOutput.Text = ""
+			s4 = "MKV"
+			s5 = "Matroska"
+			s1 = "mkv"
+			Me.xMLToolStripMenuItem.Checked = False
+			Me.oGGMediaToolStripMenuItem.Checked = False
+			Me.plainTextToolStripMenuItem.Checked = False
+		ElseIf newType = FileType.XML Then
 			s4 = "XML"
 			s5 = "Extensible Markup Language"
 			s1 = AppConfig.XMLExt.Trim
@@ -1875,6 +2037,8 @@ Public Partial Class MainForm
 			SetOutputType(FileType.XML)
 		ElseIf s1 = "OGM" Then
 			SetOutputType(FileType.OGM)
+		ElseIf s1 = "MKV" Then
+			SetOutputType(FileType.MKV)
 		Else
 			SetOutputType(FileType.TXT)
 		End If
@@ -1940,6 +2104,146 @@ Public Partial Class MainForm
 	End Sub
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Upload Chapter Information to ChapterDB website
+	
+	Sub UploadToChapterDBToolStripMenuItemClick(sender As Object, e As EventArgs)
+		UploadToChapterDB()
+	End Sub
 	
 	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Upload Chapter Information to ChapterDB website
+	
+	Sub UploadToolStripButtonClick(sender As Object, e As EventArgs)
+		UploadToChapterDB()
+	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Upload Chapter Information to ChapterDB website
+	
+	Sub UploadToChapterDB()
+		Dim es As String = ""
+		If (Me.cTimes.Length < 1) Then es = "No chapter times to upload."
+		If es.Trim.Equals("") And (Me.cTitles.Length < 1) Then es = "No chapter titles to upload."
+		If es.Trim.Equals("") And (Me.cTimes.Length <> Me.cTitles.Length) Then es = "Number of chapter titles is different from the number of chapter times."
+'		If es.Trim.Equals("") And () Then es = ""
+'		If es.Trim.Equals("") And () Then es = ""
+'		If es.Trim.Equals("") And () Then es = ""
+'		If es.Trim.Equals("") And () Then es = ""
+'		If es.Trim.Equals("") And () Then es = ""
+'		If es.Trim.Equals("") And () Then es = ""
+		If es.Trim.Equals("") And (AppConfig.ChapterDBKey.Trim.Length < 1) Then es = "No ChapterDB website API key defined.  Please check your settings."
+		If (Not es.Trim.Equals("")) Then
+			ErrorBox(es)
+			Exit Sub
+		End If
+		Dim s1, s2, s3, chapterstring, chapterhash As String
+		chapterstring = ""
+		chapterhash = ""
+		s3 = "|"
+		Dim chaptercount As Integer = 0
+		For Each s1 In Me.cTimes
+			s3 &= Strings.Left(s1.Trim, 11) & "|"
+			chaptercount += 1
+			s2 = ""
+			If Me.cbAddChapterTimes.Checked Then s2 = s2 & "{" & s1 & "} "
+			If Me.cbAddChapterNumbers.Checked Then s2 = s2 & chaptercount.ToString.Trim & ". "
+			If chaptercount > (UBound(Me.cTitles) + 1) Then
+				Dim s2s As String = "Unknown Chapter Title"
+				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterNum Then s2s = "Chapter " & chaptercount.ToString.Trim
+				If AppConfig.NoTitle = Defaults.cmNoTitle.ChapterTime Then s2s = s1
+				If AppConfig.NoTitle = Defaults.cmNoTitle.NA Then s2s = "n/a"
+				s2 &= s2s
+			Else
+				s2 &= Me.cTitles(chaptercount - 1)
+			End If
+			s2 = System.Net.WebUtility.HtmlEncode(s2)
+			chapterstring &= "    <chapter time=""" & s1 & """ name=""" & s2 & """ />" & vbCrLf
+		Next
+		Dim mcsp As MD5CryptoServiceProvider = New MD5CryptoServiceProvider()
+		chapterhash = BitConverter.ToString(mcsp.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s3))).Replace("-", "").ToLower
+		
+		Dim A As New Upload(chapterstring, chapterhash, vTitle)
+		A.ShowDialog()
+	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Clean up before closing main form
+	
+	Sub MainFormFormClosing(sender As Object, e As FormClosingEventArgs)
+		Me.mkv.CleanUp()
+	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Display or hide the "Working" notice.
+	
+	Sub Working(showTrue As Boolean)
+		Me.tbWorking.Visible = showTrue
+		Me.tbWorking.Refresh
+	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Force fixing of masked textbox value
+	
+	Sub MtbDurationLeave(sender As Object, e As EventArgs)
+		me.mtbDuration.Text = FixMaskedText(Me.mtbDuration.Text)
+	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Lookup and retrieve chapterinformation from ChapterDB website
+	
+	Sub LookupToolStripButtonClick(sender As Object, e As EventArgs)
+		LookupChapterDB()
+	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Lookup and retrieve chapterinformation from ChapterDB website
+	
+	Sub LookupChapterDB()
+		Dim A As New SearchChapterDB()
+		A.ShowDialog()
+		Working(True)
+		For I As Integer = LBound(cTimes) To UBound(cTimes) Step 1
+			cTimes(I) = FormatTimes(cTimes(I))
+		Next
+		Dim RegEx1 As String = "^[0-9]+\.\s+"
+		Dim RegEx2 As String = "\s+\[[0-9\:]+\]\s*$"
+		Dim s1 As String = ""
+		For I As Integer = LBound(cTitles) To UBound(cTitles) Step 1
+			s1 = cTitles(I)
+			s1 = Regex.Replace(s1, RegEx1, String.Empty)	'Remove leading chapter number from title
+			s1 = Regex.Replace(s1, RegEx2, String.Empty)	'Remove trailing chapter duration from title
+			cTitles(I) = s1
+		Next
+		ShowList()
+		Working(False)
+		Me.toolStripStatusLabel1.Text = "Chapter information loaded from specified ChapterDB file."
+	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Enable / Disable Uploads
+	
+	Sub EnableUploads()
+		Dim EnabledFlag As Boolean = ((AppConfig.ChapterDBEnabled) And (AppConfig.ChapterDBKey.Trim.Length > 0))
+		Me.uploadToChapterDBToolStripMenuItem.Enabled = EnabledFlag
+		Me.uploadToolStripButton.Enabled = EnabledFlag
+	End Sub
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 End Class

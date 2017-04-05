@@ -1,3 +1,25 @@
+Version 1.08 (Released 2017-04-04)
+
+ - Updated display order of optional title elements.  Order is now:
+     1) Chapter Number, followed by a period (optional)
+     2) Chapter Start Time, as {hh:mm:ss.nnnnnnnnn} (optional)
+     3) Chapter Title (mandatory)
+     4) Chapter Duration, as [mm:ss] (optional)
+
+ + Added ability to read and update Matroska files using MKVToolNix
+   utilities.  Updated settings to include path to MKVToolNix utility
+   files.
+
+ + Added "Working..." notice when processing input or output files. 
+
+ + Automatically update frames per second and video duration when
+   loading chapter times or titles from Matroska file.
+
+ + Added ability to lookup chapter information from the ChapterDB
+   website.
+
+ ----------------------------------------------------------------------
+
 Version 1.07 (Released 2016-09-20)
 
  ! Output text file times to 9 decimal places.
@@ -11,7 +33,7 @@ Version 1.06 (Released 2016-09-19)
  ! Corrected bug outputting chapter times with decimal point as a
    comma rather than a period when some locales are selected.
 
- ! Set OGM output times to 3 decimal points and XML output times  
+ ! Set OGM output times to 3 decimal points and XML output times
    to 6 decimal points to match standards.
 
  ----------------------------------------------------------------------

@@ -39,7 +39,7 @@ Imports System.Runtime.InteropServices
 <assembly: AssemblyConfiguration("")>
 <assembly: AssemblyCompany("Bob Swift")>
 <assembly: AssemblyProduct("ChapterMaker")>
-<assembly: AssemblyCopyright("Copyright © 2016")>
+<assembly: AssemblyCopyright("Copyright © 2017")>
 <assembly: AssemblyTrademark("")>
 <assembly: AssemblyCulture("")>
 
@@ -54,4 +54,4 @@ Imports System.Runtime.InteropServices
 ' You can specify all values by your own or you can build default build and revision
 ' numbers with the '*' character (the default):
 
-<assembly: AssemblyVersion("1.6.*")>
+<assembly: AssemblyVersion("1.8.*")>

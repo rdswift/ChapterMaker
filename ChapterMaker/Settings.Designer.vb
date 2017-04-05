@@ -64,7 +64,9 @@ Partial Class Settings
 		Dim treeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Chapter Titles")
 		Dim treeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Confirmations")
 		Dim treeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Preferred Defaults")
-		Dim treeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Program Settings", New System.Windows.Forms.TreeNode() {treeNode1, treeNode2, treeNode3, treeNode4, treeNode5, treeNode6})
+		Dim treeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("ChapterDB")
+		Dim treeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("External Tools")
+		Dim treeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Program Settings", New System.Windows.Forms.TreeNode() {treeNode1, treeNode2, treeNode3, treeNode4, treeNode5, treeNode6, treeNode7, treeNode8})
 		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Settings))
 		Me.bSave = New System.Windows.Forms.Button()
 		Me.bCancel = New System.Windows.Forms.Button()
@@ -88,9 +90,20 @@ Partial Class Settings
 		Me.label3 = New System.Windows.Forms.Label()
 		Me.folderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
 		Me.group5 = New System.Windows.Forms.GroupBox()
+		Me.cbUpload = New System.Windows.Forms.CheckBox()
 		Me.cbModify = New System.Windows.Forms.CheckBox()
 		Me.cbInsert = New System.Windows.Forms.CheckBox()
 		Me.cbDelete = New System.Windows.Forms.CheckBox()
+		Me.group1 = New System.Windows.Forms.GroupBox()
+		Me.bUpdateCheck = New System.Windows.Forms.Button()
+		Me.cbUpdates = New System.Windows.Forms.CheckBox()
+		Me.group7 = New System.Windows.Forms.GroupBox()
+		Me.label13 = New System.Windows.Forms.Label()
+		Me.tbUploader = New System.Windows.Forms.TextBox()
+		Me.label12 = New System.Windows.Forms.Label()
+		Me.tbApiKey = New System.Windows.Forms.TextBox()
+		Me.label11 = New System.Windows.Forms.Label()
+		Me.cbChapterDB = New System.Windows.Forms.CheckBox()
 		Me.group6 = New System.Windows.Forms.GroupBox()
 		Me.lbFRList = New System.Windows.Forms.ListBox()
 		Me.bFRDropDown = New System.Windows.Forms.Button()
@@ -107,9 +120,6 @@ Partial Class Settings
 		Me.treeView1 = New System.Windows.Forms.TreeView()
 		Me.label9 = New System.Windows.Forms.Label()
 		Me.group0 = New System.Windows.Forms.GroupBox()
-		Me.group1 = New System.Windows.Forms.GroupBox()
-		Me.bUpdateCheck = New System.Windows.Forms.Button()
-		Me.cbUpdates = New System.Windows.Forms.CheckBox()
 		Me.toolStrip1 = New System.Windows.Forms.ToolStrip()
 		Me.newToolStripButton = New System.Windows.Forms.ToolStripButton()
 		Me.openToolStripButton = New System.Windows.Forms.ToolStripButton()
@@ -123,15 +133,22 @@ Partial Class Settings
 		Me.helpToolStripButton = New System.Windows.Forms.ToolStripButton()
 		Me.statusStrip1 = New System.Windows.Forms.StatusStrip()
 		Me.toolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+		Me.group8 = New System.Windows.Forms.GroupBox()
+		Me.bMkvToolNix = New System.Windows.Forms.Button()
+		Me.tbMkvToolNix = New System.Windows.Forms.TextBox()
+		Me.label14 = New System.Windows.Forms.Label()
+		Me.label15 = New System.Windows.Forms.Label()
 		Me.group3.SuspendLayout
 		Me.group5.SuspendLayout
+		Me.group1.SuspendLayout
+		Me.group7.SuspendLayout
 		Me.group6.SuspendLayout
 		Me.group4.SuspendLayout
 		Me.group2.SuspendLayout
 		Me.group0.SuspendLayout
-		Me.group1.SuspendLayout
 		Me.toolStrip1.SuspendLayout
 		Me.statusStrip1.SuspendLayout
+		Me.group8.SuspendLayout
 		Me.SuspendLayout
 		'
 		'bSave
@@ -337,6 +354,7 @@ Partial Class Settings
 		'
 		'group5
 		'
+		Me.group5.Controls.Add(Me.cbUpload)
 		Me.group5.Controls.Add(Me.cbModify)
 		Me.group5.Controls.Add(Me.cbInsert)
 		Me.group5.Controls.Add(Me.cbDelete)
@@ -346,6 +364,15 @@ Partial Class Settings
 		Me.group5.TabIndex = 6
 		Me.group5.TabStop = false
 		Me.group5.Text = "Confirmations"
+		'
+		'cbUpload
+		'
+		Me.cbUpload.Location = New System.Drawing.Point(8, 96)
+		Me.cbUpload.Name = "cbUpload"
+		Me.cbUpload.Size = New System.Drawing.Size(448, 24)
+		Me.cbUpload.TabIndex = 3
+		Me.cbUpload.Text = "Uploading chapter information to the ChapterDB website"
+		Me.cbUpload.UseVisualStyleBackColor = true
 		'
 		'cbModify
 		'
@@ -373,6 +400,104 @@ Partial Class Settings
 		Me.cbDelete.TabIndex = 2
 		Me.cbDelete.Text = "Deleting chapter times, titles or chapter list lines"
 		Me.cbDelete.UseVisualStyleBackColor = true
+		'
+		'group1
+		'
+		Me.group1.Controls.Add(Me.bUpdateCheck)
+		Me.group1.Controls.Add(Me.cbUpdates)
+		Me.group1.Location = New System.Drawing.Point(232, 32)
+		Me.group1.Name = "group1"
+		Me.group1.Size = New System.Drawing.Size(464, 232)
+		Me.group1.TabIndex = 16
+		Me.group1.TabStop = false
+		Me.group1.Text = "Updates"
+		'
+		'bUpdateCheck
+		'
+		Me.bUpdateCheck.Location = New System.Drawing.Point(360, 48)
+		Me.bUpdateCheck.Margin = New System.Windows.Forms.Padding(4)
+		Me.bUpdateCheck.Name = "bUpdateCheck"
+		Me.bUpdateCheck.Size = New System.Drawing.Size(100, 28)
+		Me.bUpdateCheck.TabIndex = 1
+		Me.bUpdateCheck.Text = "Check Now"
+		Me.bUpdateCheck.UseVisualStyleBackColor = true
+		AddHandler Me.bUpdateCheck.Click, AddressOf Me.BUpdateCheckClick
+		'
+		'cbUpdates
+		'
+		Me.cbUpdates.Location = New System.Drawing.Point(8, 24)
+		Me.cbUpdates.Name = "cbUpdates"
+		Me.cbUpdates.Size = New System.Drawing.Size(448, 24)
+		Me.cbUpdates.TabIndex = 0
+		Me.cbUpdates.Text = "Check for updates during program start-up"
+		Me.cbUpdates.UseVisualStyleBackColor = true
+		'
+		'group7
+		'
+		Me.group7.Controls.Add(Me.label13)
+		Me.group7.Controls.Add(Me.tbUploader)
+		Me.group7.Controls.Add(Me.label12)
+		Me.group7.Controls.Add(Me.tbApiKey)
+		Me.group7.Controls.Add(Me.label11)
+		Me.group7.Controls.Add(Me.cbChapterDB)
+		Me.group7.Location = New System.Drawing.Point(232, 32)
+		Me.group7.Name = "group7"
+		Me.group7.Size = New System.Drawing.Size(464, 232)
+		Me.group7.TabIndex = 19
+		Me.group7.TabStop = false
+		Me.group7.Text = "ChapterDB"
+		'
+		'label13
+		'
+		Me.label13.Location = New System.Drawing.Point(280, 72)
+		Me.label13.Name = "label13"
+		Me.label13.Size = New System.Drawing.Size(176, 23)
+		Me.label13.TabIndex = 5
+		Me.label13.Text = "(Name or email address)"
+		Me.label13.Visible = false
+		'
+		'tbUploader
+		'
+		Me.tbUploader.Location = New System.Drawing.Point(88, 72)
+		Me.tbUploader.Name = "tbUploader"
+		Me.tbUploader.Size = New System.Drawing.Size(184, 22)
+		Me.tbUploader.TabIndex = 4
+		Me.tbUploader.Visible = false
+		'
+		'label12
+		'
+		Me.label12.Location = New System.Drawing.Point(8, 72)
+		Me.label12.Name = "label12"
+		Me.label12.Size = New System.Drawing.Size(80, 23)
+		Me.label12.TabIndex = 3
+		Me.label12.Text = "Uploader:"
+		Me.label12.Visible = false
+		'
+		'tbApiKey
+		'
+		Me.tbApiKey.Location = New System.Drawing.Point(88, 48)
+		Me.tbApiKey.Name = "tbApiKey"
+		Me.tbApiKey.Size = New System.Drawing.Size(184, 22)
+		Me.tbApiKey.TabIndex = 2
+		AddHandler Me.tbApiKey.TextChanged, AddressOf Me.TbApiKeyTextChanged
+		'
+		'label11
+		'
+		Me.label11.Location = New System.Drawing.Point(8, 48)
+		Me.label11.Name = "label11"
+		Me.label11.Size = New System.Drawing.Size(80, 23)
+		Me.label11.TabIndex = 1
+		Me.label11.Text = "API Key:"
+		'
+		'cbChapterDB
+		'
+		Me.cbChapterDB.Location = New System.Drawing.Point(8, 24)
+		Me.cbChapterDB.Name = "cbChapterDB"
+		Me.cbChapterDB.Size = New System.Drawing.Size(448, 24)
+		Me.cbChapterDB.TabIndex = 0
+		Me.cbChapterDB.Text = "Allow file uploads to ChapterDB web site"
+		Me.cbChapterDB.UseVisualStyleBackColor = true
+		Me.cbChapterDB.Visible = false
 		'
 		'group6
 		'
@@ -531,9 +656,13 @@ Partial Class Settings
 		treeNode5.Text = "Confirmations"
 		treeNode6.Name = "Node6"
 		treeNode6.Text = "Preferred Defaults"
-		treeNode7.Name = "Node0"
-		treeNode7.Text = "Program Settings"
-		Me.treeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {treeNode7})
+		treeNode7.Name = "Node7"
+		treeNode7.Text = "ChapterDB"
+		treeNode8.Name = "Node8"
+		treeNode8.Text = "External Tools"
+		treeNode9.Name = "Node0"
+		treeNode9.Text = "Program Settings"
+		Me.treeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {treeNode9})
 		Me.treeView1.Size = New System.Drawing.Size(216, 232)
 		Me.treeView1.TabIndex = 14
 		Me.treeView1.TabStop = false
@@ -558,37 +687,6 @@ Partial Class Settings
 		Me.group0.TabIndex = 15
 		Me.group0.TabStop = false
 		Me.group0.Text = "Program Settings"
-		'
-		'group1
-		'
-		Me.group1.Controls.Add(Me.bUpdateCheck)
-		Me.group1.Controls.Add(Me.cbUpdates)
-		Me.group1.Location = New System.Drawing.Point(232, 32)
-		Me.group1.Name = "group1"
-		Me.group1.Size = New System.Drawing.Size(464, 232)
-		Me.group1.TabIndex = 16
-		Me.group1.TabStop = false
-		Me.group1.Text = "Updates"
-		'
-		'bUpdateCheck
-		'
-		Me.bUpdateCheck.Location = New System.Drawing.Point(360, 48)
-		Me.bUpdateCheck.Margin = New System.Windows.Forms.Padding(4)
-		Me.bUpdateCheck.Name = "bUpdateCheck"
-		Me.bUpdateCheck.Size = New System.Drawing.Size(100, 28)
-		Me.bUpdateCheck.TabIndex = 1
-		Me.bUpdateCheck.Text = "Check Now"
-		Me.bUpdateCheck.UseVisualStyleBackColor = true
-		AddHandler Me.bUpdateCheck.Click, AddressOf Me.BUpdateCheckClick
-		'
-		'cbUpdates
-		'
-		Me.cbUpdates.Location = New System.Drawing.Point(8, 24)
-		Me.cbUpdates.Name = "cbUpdates"
-		Me.cbUpdates.Size = New System.Drawing.Size(448, 24)
-		Me.cbUpdates.TabIndex = 0
-		Me.cbUpdates.Text = "Check for updates during program start-up"
-		Me.cbUpdates.UseVisualStyleBackColor = true
 		'
 		'toolStrip1
 		'
@@ -692,7 +790,7 @@ Partial Class Settings
 		'statusStrip1
 		'
 		Me.statusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripStatusLabel1})
-		Me.statusStrip1.Location = New System.Drawing.Point(0, 312)
+		Me.statusStrip1.Location = New System.Drawing.Point(0, 307)
 		Me.statusStrip1.Name = "statusStrip1"
 		Me.statusStrip1.Size = New System.Drawing.Size(706, 22)
 		Me.statusStrip1.TabIndex = 18
@@ -704,14 +802,66 @@ Partial Class Settings
 		Me.toolStripStatusLabel1.Size = New System.Drawing.Size(118, 17)
 		Me.toolStripStatusLabel1.Text = "toolStripStatusLabel1"
 		'
+		'group8
+		'
+		Me.group8.Controls.Add(Me.bMkvToolNix)
+		Me.group8.Controls.Add(Me.tbMkvToolNix)
+		Me.group8.Controls.Add(Me.label14)
+		Me.group8.Controls.Add(Me.label15)
+		Me.group8.Location = New System.Drawing.Point(232, 32)
+		Me.group8.Name = "group8"
+		Me.group8.Size = New System.Drawing.Size(464, 232)
+		Me.group8.TabIndex = 19
+		Me.group8.TabStop = false
+		Me.group8.Text = "External Tools"
+		'
+		'bMkvToolNix
+		'
+		Me.bMkvToolNix.Location = New System.Drawing.Point(432, 48)
+		Me.bMkvToolNix.Name = "bMkvToolNix"
+		Me.bMkvToolNix.Size = New System.Drawing.Size(24, 24)
+		Me.bMkvToolNix.TabIndex = 6
+		Me.bMkvToolNix.TabStop = false
+		Me.bMkvToolNix.Text = "..."
+		Me.bMkvToolNix.UseVisualStyleBackColor = true
+		AddHandler Me.bMkvToolNix.Click, AddressOf Me.BMkvToolNixClick
+		'
+		'tbMkvToolNix
+		'
+		Me.tbMkvToolNix.Location = New System.Drawing.Point(104, 48)
+		Me.tbMkvToolNix.Name = "tbMkvToolNix"
+		Me.tbMkvToolNix.Size = New System.Drawing.Size(328, 22)
+		Me.tbMkvToolNix.TabIndex = 5
+		AddHandler Me.tbMkvToolNix.DoubleClick, AddressOf Me.TbMkvToolNixDoubleClick
+		'
+		'label14
+		'
+		Me.label14.Location = New System.Drawing.Point(8, 48)
+		Me.label14.Name = "label14"
+		Me.label14.Size = New System.Drawing.Size(88, 24)
+		Me.label14.TabIndex = 4
+		Me.label14.Text = "MkVToolNix:"
+		Me.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		'
+		'label15
+		'
+		Me.label15.Location = New System.Drawing.Point(8, 24)
+		Me.label15.Name = "label15"
+		Me.label15.Size = New System.Drawing.Size(280, 24)
+		Me.label15.TabIndex = 0
+		Me.label15.Text = "Path to External Tools:"
+		Me.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		'
 		'Settings
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(706, 334)
+		Me.ClientSize = New System.Drawing.Size(706, 329)
+		Me.Controls.Add(Me.group7)
+		Me.Controls.Add(Me.group8)
+		Me.Controls.Add(Me.group1)
 		Me.Controls.Add(Me.statusStrip1)
 		Me.Controls.Add(Me.toolStrip1)
-		Me.Controls.Add(Me.group1)
 		Me.Controls.Add(Me.group5)
 		Me.Controls.Add(Me.group0)
 		Me.Controls.Add(Me.group6)
@@ -733,19 +883,36 @@ Partial Class Settings
 		Me.group3.ResumeLayout(false)
 		Me.group3.PerformLayout
 		Me.group5.ResumeLayout(false)
+		Me.group1.ResumeLayout(false)
+		Me.group7.ResumeLayout(false)
+		Me.group7.PerformLayout
 		Me.group6.ResumeLayout(false)
 		Me.group6.PerformLayout
 		Me.group4.ResumeLayout(false)
 		Me.group2.ResumeLayout(false)
 		Me.group0.ResumeLayout(false)
-		Me.group1.ResumeLayout(false)
 		Me.toolStrip1.ResumeLayout(false)
 		Me.toolStrip1.PerformLayout
 		Me.statusStrip1.ResumeLayout(false)
 		Me.statusStrip1.PerformLayout
+		Me.group8.ResumeLayout(false)
+		Me.group8.PerformLayout
 		Me.ResumeLayout(false)
 		Me.PerformLayout
 	End Sub
+	Private cbUpload As System.Windows.Forms.CheckBox
+	Private label12 As System.Windows.Forms.Label
+	Private tbUploader As System.Windows.Forms.TextBox
+	Private label13 As System.Windows.Forms.Label
+	Private label11 As System.Windows.Forms.Label
+	Private tbApiKey As System.Windows.Forms.TextBox
+	Private cbChapterDB As System.Windows.Forms.CheckBox
+	Private label15 As System.Windows.Forms.Label
+	Private label14 As System.Windows.Forms.Label
+	Private tbMkvToolNix As System.Windows.Forms.TextBox
+	Private bMkvToolNix As System.Windows.Forms.Button
+	Private group7 As System.Windows.Forms.GroupBox
+	Private group8 As System.Windows.Forms.GroupBox
 	Private toolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
 	Private statusStrip1 As System.Windows.Forms.StatusStrip
 	Private helpToolStripButton As System.Windows.Forms.ToolStripButton

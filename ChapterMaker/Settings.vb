@@ -64,8 +64,13 @@ Public Partial Class Settings
 		Me.cbModify.Checked = AppConfig.ConfirmModify
 		Me.cbDelete.Checked = AppConfig.ConfirmDelete
 		Me.cbUpdates.Checked = AppConfig.UpdateCheck
+		Me.cbUpload.Checked = AppConfig.ConfirmUpload
 		Me.cbLoadAppend.Checked = AppConfig.LoadAppend
 		Me.tbFrameRate.Text = AppConfig.FrameRate.ToString.Trim
+		Me.tbApiKey.Text = AppConfig.ChapterDBKey.Trim
+		Me.cbChapterDB.Checked = AppConfig.ChapterDBEnabled
+		Me.tbUploader.Text = AppConfig.ChapterDBName.Trim
+		Me.tbMkvToolNix.Text = AppConfig.MkvToolNixPath.Trim
 		Me.treeView1.SelectedNode = Me.treeView1.Nodes(0)
 		Me.treeView1.SelectedNode.Expand()
 		Me.treeView1.Focus
@@ -91,6 +96,27 @@ Public Partial Class Settings
 		If (fdResult = DialogResult.OK) Or (fdResult = DialogResult.Yes) Then Me.tbOutputDir.Text = Me.folderBrowserDialog1.SelectedPath.Trim
 	End Sub
 	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Dialog box to get the path to the MkvToolNix utilities
+	
+	Private Sub GetMkvToolNixDirectory()
+		Dim s1 As String
+		Try
+			s1 = System.IO.Path.GetDirectoryName(Me.tbOutputDir.Text.Trim)
+		Catch
+			s1 = ""
+		End Try
+		If s1.Trim.Length() < 1 Then s1 = "C:\"
+		Me.folderBrowserDialog1.Description = "Path to MkvToolNix Utilities"
+		Me.folderBrowserDialog1.SelectedPath = s1
+		Me.folderBrowserDialog1.RootFolder = System.Environment.SpecialFolder.MyComputer
+		Dim fdResult As DialogResult = Me.folderBrowserDialog1.ShowDialog()
+		If (fdResult = DialogResult.OK) Or (fdResult = DialogResult.Yes) Then Me.tbMkvToolNix.Text = Me.folderBrowserDialog1.SelectedPath.Trim
+	End Sub
+	
+	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
 	'	Launches the default output directory dialog
@@ -106,6 +132,24 @@ Public Partial Class Settings
 	Sub BDirectoryLookupClick(sender As Object, e As EventArgs)
 		GetDefaultDirectory()
 	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launches the MkvToolNix directory dialog
+	
+	Sub BMkvToolNixClick(sender As Object, e As EventArgs)
+		GetMkvToolNixDirectory()
+	End Sub
+	
+	
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'
+	'	Launches the MkvToolNix directory dialog
+	Sub TbMkvToolNixDoubleClick(sender As Object, e As EventArgs)
+		GetMkvToolNixDirectory()
+	End Sub
+	
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	'
@@ -144,6 +188,7 @@ Public Partial Class Settings
 		AppConfig.ConfirmInsert = Me.cbInsert.Checked
 		AppConfig.ConfirmModify = Me.cbModify.Checked
 		AppConfig.ConfirmDelete = Me.cbDelete.Checked
+		AppConfig.ConfirmUpload = Me.cbUpload.Checked
 		AppConfig.UpdateCheck = Me.cbUpdates.Checked
 		AppConfig.LoadAppend = Me.cbLoadAppend.Checked
 		Try
@@ -159,6 +204,10 @@ Public Partial Class Settings
 		End Try
 		If (FR < 10) Or (FR > 100) Then FR = 23.976
 		AppConfig.FrameRate = FR
+		AppConfig.ChapterDBEnabled = Me.cbChapterDB.Checked
+		AppConfig.ChapterDBKey = Me.tbApiKey.Text.Trim
+		AppConfig.ChapterDBName = Me.tbUploader.Text.Trim
+		AppConfig.MkvToolNixPath = Me.tbMkvToolNix.Text.Trim
 		If AppConfig.Write() Then
 			Me.toolStripStatusLabel1.Text = "Settings saved to configuration file."
 		Else
@@ -204,7 +253,7 @@ End Sub
 	Sub DisplayPanel(ByVal pNum As Integer)
 		Dim s1 As String
 		Dim b1 As Boolean
-		For I As Integer = 0 To 6 Step 1
+		For I As Integer = 0 To 8 Step 1
 			s1 = "group" & I.ToString.Trim
 			b1 = False
 			If I = pNum Then b1 = True
@@ -224,6 +273,10 @@ End Sub
 				Me.toolStripStatusLabel1.Text = "Settings related to pre-action user confirmations."
 		    Case 6
 				Me.toolStripStatusLabel1.Text = "Settings related to preferred program setting defaults."
+		    Case 7
+				Me.toolStripStatusLabel1.Text = "Settings related to ChapterDB integration."
+		    Case 8
+				Me.toolStripStatusLabel1.Text = "Settings related to external tools."
 		    Case Else
 				Me.toolStripStatusLabel1.Text = "Select the group of settings to edit."
 		End Select
@@ -385,5 +438,19 @@ End Sub
     End Sub
     
     '-----------------------------------------------------------------------------------------------------------------------------------------------------
+    '
+    '	Check for invalid ChapterDB API Key
+    
+	Sub TbApiKeyTextChanged(sender As Object, e As EventArgs)
+		Dim tStr As String = Me.tbApiKey.Text.Trim
+		If (tStr.Length > 0) AndAlso (tStr.Contains(" ")) Then
+			ErrorBox("API key cannot contain spaces.")
+			Me.tbApiKey.Focus
+		End If
+	End Sub
+	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	'-----------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	
 End Class

@@ -69,6 +69,7 @@
       <DependentUpon>AboutBox.vb</DependentUpon>
     </Compile>
     <Compile Include="AboutBox.vb" />
+    <Compile Include="clsMatroska.vb" />
     <Compile Include="Defaults.vb" />
     <Compile Include="FixCase.vb" />
     <Compile Include="Globals.vb" />
@@ -80,10 +81,18 @@
     <Compile Include="mUpdater.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
+    <Compile Include="SearchChapterDB.Designer.vb">
+      <DependentUpon>SearchChapterDB.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SearchChapterDB.vb" />
     <Compile Include="Settings.Designer.vb">
       <DependentUpon>Settings.vb</DependentUpon>
     </Compile>
     <Compile Include="Settings.vb" />
+    <Compile Include="Upload.Designer.vb">
+      <DependentUpon>Upload.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Upload.vb" />
     <Compile Include="WordsList.Designer.vb">
       <DependentUpon>WordsList.vb</DependentUpon>
     </Compile>
@@ -120,8 +129,14 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SearchChapterDB.resx">
+      <DependentUpon>SearchChapterDB.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Upload.resx">
+      <DependentUpon>Upload.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WordsList.resx">
       <DependentUpon>WordsList.vb</DependentUpon>
@@ -135,6 +150,9 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
     <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ChapterMaker.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

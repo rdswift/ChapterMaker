@@ -92,6 +92,7 @@ Partial Class MainForm
 		Me.oGGMediaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.plainTextToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+		Me.toolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
 		Me.printToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.printPreviewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.toolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
@@ -106,9 +107,13 @@ Partial Class MainForm
 		Me.toolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
 		Me.selectAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.toolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.checkForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.toolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
 		Me.wordsListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.settingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-		Me.checkForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.toolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
+		Me.searchChapterDBToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.uploadToChapterDBToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.helpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.contentsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.indexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -122,6 +127,9 @@ Partial Class MainForm
 		Me.tbTitleType = New System.Windows.Forms.TextBox()
 		Me.maskedTextBox1 = New System.Windows.Forms.MaskedTextBox()
 		Me.dataGridView1 = New System.Windows.Forms.DataGridView()
+		Me.dgNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
+		Me.dgTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
+		Me.dgTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
 		Me.contextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
 		Me.moveUpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.moveDownToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -180,6 +188,9 @@ Partial Class MainForm
 		Me.openToolStripButton = New System.Windows.Forms.ToolStripButton()
 		Me.saveToolStripButton = New System.Windows.Forms.ToolStripButton()
 		Me.printToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.toolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
+		Me.lookupToolStripButton = New System.Windows.Forms.ToolStripButton()
+		Me.uploadToolStripButton = New System.Windows.Forms.ToolStripButton()
 		Me.toolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
 		Me.cutToolStripButton = New System.Windows.Forms.ToolStripButton()
 		Me.copyToolStripButton = New System.Windows.Forms.ToolStripButton()
@@ -190,9 +201,9 @@ Partial Class MainForm
 		Me.toolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
 		Me.cbOutputType = New System.Windows.Forms.ComboBox()
 		Me.toolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-		Me.dgNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-		Me.dgTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
-		Me.dgTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+		Me.mtbDuration = New System.Windows.Forms.MaskedTextBox()
+		Me.label21 = New System.Windows.Forms.Label()
+		Me.tbWorking = New System.Windows.Forms.TextBox()
 		Me.menuStrip1.SuspendLayout
 		CType(Me.dataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
 		Me.contextMenuStrip1.SuspendLayout
@@ -214,9 +225,7 @@ Partial Class MainForm
 		Me.tbFileTitles.Size = New System.Drawing.Size(320, 23)
 		Me.tbFileTitles.TabIndex = 8
 		Me.tbFileTitles.TabStop = false
-		Me.toolTip1.SetToolTip(Me.tbFileTitles, "The file to read the chapter titles.  This can be either an XLM file,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"an OGM-for"& _ 
-				"mat Chapters file, or a plain text file.  The program"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"will try to automatically"& _ 
-				" detect the file type."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
+		Me.toolTip1.SetToolTip(Me.tbFileTitles, resources.GetString("tbFileTitles.ToolTip"))
 		AddHandler Me.tbFileTitles.TextChanged, AddressOf Me.TbFileTitlesTextChanged
 		AddHandler Me.tbFileTitles.DragDrop, AddressOf Me.TextBox1DragDrop
 		AddHandler Me.tbFileTitles.DragEnter, AddressOf Me.TextBox1DragEnter
@@ -232,9 +241,7 @@ Partial Class MainForm
 		Me.tbFileTimes.Size = New System.Drawing.Size(320, 23)
 		Me.tbFileTimes.TabIndex = 2
 		Me.tbFileTimes.TabStop = false
-		Me.toolTip1.SetToolTip(Me.tbFileTimes, "The file to read the chapter times.  This can be either an XLM file,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"an OGM-form"& _ 
-				"at Chapters file, or a plain text file.  The program"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"will try to automatically "& _ 
-				"detect the file type."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
+		Me.toolTip1.SetToolTip(Me.tbFileTimes, resources.GetString("tbFileTimes.ToolTip"))
 		AddHandler Me.tbFileTimes.TextChanged, AddressOf Me.TbFileTimesTextChanged
 		AddHandler Me.tbFileTimes.DragDrop, AddressOf Me.TextBox2DragDrop
 		AddHandler Me.tbFileTimes.DragEnter, AddressOf Me.TextBox2DragEnter
@@ -250,7 +257,9 @@ Partial Class MainForm
 		Me.tbFileOutput.Size = New System.Drawing.Size(320, 23)
 		Me.tbFileOutput.TabIndex = 14
 		Me.tbFileOutput.TabStop = false
-		Me.toolTip1.SetToolTip(Me.tbFileOutput, "The path and name of the output file that you wish to write."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
+		Me.toolTip1.SetToolTip(Me.tbFileOutput, "The path and name of the output file that you wish to write."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"If a Matroska (MKV)"& _ 
+				" file is selected, the chapter information"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"in the MKV file will be replaced wit"& _ 
+				"h the information from"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"ChapterMaker.")
 		AddHandler Me.tbFileOutput.DragDrop, AddressOf Me.TextBox3DragDrop
 		AddHandler Me.tbFileOutput.DragEnter, AddressOf Me.TextBox3DragEnter
 		AddHandler Me.tbFileOutput.DoubleClick, AddressOf Me.TextBox3DoubleClick
@@ -345,7 +354,7 @@ Partial Class MainForm
 		Me.tbOffset.Location = New System.Drawing.Point(152, 144)
 		Me.tbOffset.MaxLength = 20
 		Me.tbOffset.Name = "tbOffset"
-		Me.tbOffset.Size = New System.Drawing.Size(48, 23)
+		Me.tbOffset.Size = New System.Drawing.Size(96, 23)
 		Me.tbOffset.TabIndex = 13
 		Me.tbOffset.TabStop = false
 		Me.tbOffset.Text = "0.0"
@@ -401,7 +410,7 @@ Partial Class MainForm
 		'
 		'fileToolStripMenuItem1
 		'
-		Me.fileToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripMenuItem, Me.openToolStripMenuItem, Me.toolStripSeparator, Me.saveToolStripMenuItem, Me.saveAsToolStripMenuItem, Me.outputTypeToolStripMenuItem, Me.toolStripSeparator1, Me.printToolStripMenuItem, Me.printPreviewToolStripMenuItem, Me.toolStripSeparator2, Me.exitToolStripMenuItem1})
+		Me.fileToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripMenuItem, Me.openToolStripMenuItem, Me.toolStripSeparator, Me.saveToolStripMenuItem, Me.saveAsToolStripMenuItem, Me.outputTypeToolStripMenuItem, Me.toolStripSeparator1, Me.toolStripSeparator8, Me.printToolStripMenuItem, Me.printPreviewToolStripMenuItem, Me.toolStripSeparator2, Me.exitToolStripMenuItem1})
 		Me.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1"
 		Me.fileToolStripMenuItem1.Size = New System.Drawing.Size(37, 20)
 		Me.fileToolStripMenuItem1.Text = "&File"
@@ -412,7 +421,7 @@ Partial Class MainForm
 		Me.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.newToolStripMenuItem.Name = "newToolStripMenuItem"
 		Me.newToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N),System.Windows.Forms.Keys)
-		Me.newToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+		Me.newToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.newToolStripMenuItem.Text = "&New"
 		AddHandler Me.newToolStripMenuItem.Click, AddressOf Me.NewToolStripMenuItemClick
 		'
@@ -423,7 +432,7 @@ Partial Class MainForm
 		Me.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.openToolStripMenuItem.Name = "openToolStripMenuItem"
 		Me.openToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O),System.Windows.Forms.Keys)
-		Me.openToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+		Me.openToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.openToolStripMenuItem.Text = "&Open"
 		'
 		'timesToolStripMenuItem
@@ -443,7 +452,7 @@ Partial Class MainForm
 		'toolStripSeparator
 		'
 		Me.toolStripSeparator.Name = "toolStripSeparator"
-		Me.toolStripSeparator.Size = New System.Drawing.Size(143, 6)
+		Me.toolStripSeparator.Size = New System.Drawing.Size(149, 6)
 		'
 		'saveToolStripMenuItem
 		'
@@ -451,14 +460,14 @@ Partial Class MainForm
 		Me.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.saveToolStripMenuItem.Name = "saveToolStripMenuItem"
 		Me.saveToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S),System.Windows.Forms.Keys)
-		Me.saveToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+		Me.saveToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.saveToolStripMenuItem.Text = "&Save"
 		AddHandler Me.saveToolStripMenuItem.Click, AddressOf Me.SaveToolStripMenuItemClick
 		'
 		'saveAsToolStripMenuItem
 		'
 		Me.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem"
-		Me.saveAsToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+		Me.saveAsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.saveAsToolStripMenuItem.Text = "Save &As"
 		AddHandler Me.saveAsToolStripMenuItem.Click, AddressOf Me.SaveAsToolStripMenuItemClick
 		'
@@ -466,7 +475,7 @@ Partial Class MainForm
 		'
 		Me.outputTypeToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.xMLToolStripMenuItem, Me.oGGMediaToolStripMenuItem, Me.plainTextToolStripMenuItem})
 		Me.outputTypeToolStripMenuItem.Name = "outputTypeToolStripMenuItem"
-		Me.outputTypeToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+		Me.outputTypeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.outputTypeToolStripMenuItem.Text = "Output &Type"
 		'
 		'xMLToolStripMenuItem
@@ -493,7 +502,12 @@ Partial Class MainForm
 		'toolStripSeparator1
 		'
 		Me.toolStripSeparator1.Name = "toolStripSeparator1"
-		Me.toolStripSeparator1.Size = New System.Drawing.Size(143, 6)
+		Me.toolStripSeparator1.Size = New System.Drawing.Size(149, 6)
+		'
+		'toolStripSeparator8
+		'
+		Me.toolStripSeparator8.Name = "toolStripSeparator8"
+		Me.toolStripSeparator8.Size = New System.Drawing.Size(149, 6)
 		'
 		'printToolStripMenuItem
 		'
@@ -502,7 +516,7 @@ Partial Class MainForm
 		Me.printToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.printToolStripMenuItem.Name = "printToolStripMenuItem"
 		Me.printToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.P),System.Windows.Forms.Keys)
-		Me.printToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+		Me.printToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.printToolStripMenuItem.Text = "&Print"
 		Me.printToolStripMenuItem.Visible = false
 		'
@@ -512,20 +526,20 @@ Partial Class MainForm
 		Me.printPreviewToolStripMenuItem.Image = CType(resources.GetObject("printPreviewToolStripMenuItem.Image"),System.Drawing.Image)
 		Me.printPreviewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem"
-		Me.printPreviewToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+		Me.printPreviewToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.printPreviewToolStripMenuItem.Text = "Print Pre&view"
 		Me.printPreviewToolStripMenuItem.Visible = false
 		'
 		'toolStripSeparator2
 		'
 		Me.toolStripSeparator2.Name = "toolStripSeparator2"
-		Me.toolStripSeparator2.Size = New System.Drawing.Size(143, 6)
+		Me.toolStripSeparator2.Size = New System.Drawing.Size(149, 6)
 		Me.toolStripSeparator2.Visible = false
 		'
 		'exitToolStripMenuItem1
 		'
 		Me.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1"
-		Me.exitToolStripMenuItem1.Size = New System.Drawing.Size(146, 22)
+		Me.exitToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
 		Me.exitToolStripMenuItem1.Text = "E&xit"
 		AddHandler Me.exitToolStripMenuItem1.Click, AddressOf Me.ExitToolStripMenuItem1Click
 		'
@@ -602,31 +616,59 @@ Partial Class MainForm
 		'
 		'toolsToolStripMenuItem
 		'
-		Me.toolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.wordsListToolStripMenuItem, Me.settingsToolStripMenuItem, Me.checkForUpdatesToolStripMenuItem})
+		Me.toolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.checkForUpdatesToolStripMenuItem, Me.toolStripSeparator11, Me.wordsListToolStripMenuItem, Me.settingsToolStripMenuItem, Me.toolStripSeparator10, Me.searchChapterDBToolStripMenuItem, Me.uploadToChapterDBToolStripMenuItem})
 		Me.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem"
 		Me.toolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
 		Me.toolsToolStripMenuItem.Text = "&Tools"
 		'
+		'checkForUpdatesToolStripMenuItem
+		'
+		Me.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem"
+		Me.checkForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
+		Me.checkForUpdatesToolStripMenuItem.Text = "&Check for Updates"
+		AddHandler Me.checkForUpdatesToolStripMenuItem.Click, AddressOf Me.CheckForUpdatesToolStripMenuItemClick
+		'
+		'toolStripSeparator11
+		'
+		Me.toolStripSeparator11.Name = "toolStripSeparator11"
+		Me.toolStripSeparator11.Size = New System.Drawing.Size(225, 6)
+		'
 		'wordsListToolStripMenuItem
 		'
 		Me.wordsListToolStripMenuItem.Name = "wordsListToolStripMenuItem"
-		Me.wordsListToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+		Me.wordsListToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
 		Me.wordsListToolStripMenuItem.Text = "&Words List"
 		AddHandler Me.wordsListToolStripMenuItem.Click, AddressOf Me.WordsListToolStripMenuItemClick
 		'
 		'settingsToolStripMenuItem
 		'
 		Me.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem"
-		Me.settingsToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+		Me.settingsToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
 		Me.settingsToolStripMenuItem.Text = "&Settings"
 		AddHandler Me.settingsToolStripMenuItem.Click, AddressOf Me.SettingsToolStripMenuItemClick
 		'
-		'checkForUpdatesToolStripMenuItem
+		'toolStripSeparator10
 		'
-		Me.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem"
-		Me.checkForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
-		Me.checkForUpdatesToolStripMenuItem.Text = "&Check for Updates"
-		AddHandler Me.checkForUpdatesToolStripMenuItem.Click, AddressOf Me.CheckForUpdatesToolStripMenuItemClick
+		Me.toolStripSeparator10.Name = "toolStripSeparator10"
+		Me.toolStripSeparator10.Size = New System.Drawing.Size(225, 6)
+		'
+		'searchChapterDBToolStripMenuItem
+		'
+		Me.searchChapterDBToolStripMenuItem.Name = "searchChapterDBToolStripMenuItem"
+		Me.searchChapterDBToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D),System.Windows.Forms.Keys)
+		Me.searchChapterDBToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
+		Me.searchChapterDBToolStripMenuItem.Text = "Search Chapter&DB"
+		AddHandler Me.searchChapterDBToolStripMenuItem.Click, AddressOf Me.LookupToolStripButtonClick
+		'
+		'uploadToChapterDBToolStripMenuItem
+		'
+		Me.uploadToChapterDBToolStripMenuItem.Enabled = false
+		Me.uploadToChapterDBToolStripMenuItem.Name = "uploadToChapterDBToolStripMenuItem"
+		Me.uploadToChapterDBToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.U),System.Windows.Forms.Keys)
+		Me.uploadToChapterDBToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
+		Me.uploadToChapterDBToolStripMenuItem.Text = "&Upload to ChapterDB"
+		Me.uploadToChapterDBToolStripMenuItem.Visible = false
+		AddHandler Me.uploadToChapterDBToolStripMenuItem.Click, AddressOf Me.UploadToChapterDBToolStripMenuItemClick
 		'
 		'helpToolStripMenuItem
 		'
@@ -638,33 +680,33 @@ Partial Class MainForm
 		'contentsToolStripMenuItem
 		'
 		Me.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem"
-		Me.contentsToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
+		Me.contentsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.contentsToolStripMenuItem.Text = "&Contents"
 		AddHandler Me.contentsToolStripMenuItem.Click, AddressOf Me.ContentsToolStripMenuItemClick
 		'
 		'indexToolStripMenuItem
 		'
 		Me.indexToolStripMenuItem.Name = "indexToolStripMenuItem"
-		Me.indexToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
+		Me.indexToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.indexToolStripMenuItem.Text = "&Index"
 		AddHandler Me.indexToolStripMenuItem.Click, AddressOf Me.IndexToolStripMenuItemClick
 		'
 		'searchToolStripMenuItem
 		'
 		Me.searchToolStripMenuItem.Name = "searchToolStripMenuItem"
-		Me.searchToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
+		Me.searchToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.searchToolStripMenuItem.Text = "&Search"
 		AddHandler Me.searchToolStripMenuItem.Click, AddressOf Me.SearchToolStripMenuItemClick
 		'
 		'toolStripSeparator5
 		'
 		Me.toolStripSeparator5.Name = "toolStripSeparator5"
-		Me.toolStripSeparator5.Size = New System.Drawing.Size(119, 6)
+		Me.toolStripSeparator5.Size = New System.Drawing.Size(149, 6)
 		'
 		'aboutToolStripMenuItem
 		'
 		Me.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem"
-		Me.aboutToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
+		Me.aboutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
 		Me.aboutToolStripMenuItem.Text = "&About..."
 		AddHandler Me.aboutToolStripMenuItem.Click, AddressOf Me.AboutToolStripMenuItemClick
 		'
@@ -673,7 +715,7 @@ Partial Class MainForm
 		Me.tbFrameRate.Location = New System.Drawing.Point(104, 104)
 		Me.tbFrameRate.MaxLength = 20
 		Me.tbFrameRate.Name = "tbFrameRate"
-		Me.tbFrameRate.Size = New System.Drawing.Size(72, 23)
+		Me.tbFrameRate.Size = New System.Drawing.Size(128, 23)
 		Me.tbFrameRate.TabIndex = 8
 		Me.tbFrameRate.TabStop = false
 		Me.tbFrameRate.Text = "23.976"
@@ -766,10 +808,10 @@ Partial Class MainForm
 		Me.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
 		Me.dataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dgNumber, Me.dgTime, Me.dgTitle})
 		Me.dataGridView1.ContextMenuStrip = Me.contextMenuStrip1
-		Me.dataGridView1.Location = New System.Drawing.Point(8, 136)
+		Me.dataGridView1.Location = New System.Drawing.Point(8, 160)
 		Me.dataGridView1.MultiSelect = false
 		Me.dataGridView1.Name = "dataGridView1"
-		Me.dataGridView1.Size = New System.Drawing.Size(616, 576)
+		Me.dataGridView1.Size = New System.Drawing.Size(616, 552)
 		Me.dataGridView1.TabIndex = 18
 		Me.dataGridView1.TabStop = false
 		AddHandler Me.dataGridView1.CellMouseDown, AddressOf Me.DataGridView1CellMouseDown
@@ -779,6 +821,35 @@ Partial Class MainForm
 		AddHandler Me.dataGridView1.DragOver, AddressOf Me.DataGridView1DragOver
 		AddHandler Me.dataGridView1.MouseDown, AddressOf Me.DataGridView1MouseDown
 		AddHandler Me.dataGridView1.MouseMove, AddressOf Me.DataGridView1MouseMove
+		'
+		'dgNumber
+		'
+		Me.dgNumber.DataPropertyName = "dgNumber"
+		dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+		Me.dgNumber.DefaultCellStyle = dataGridViewCellStyle2
+		Me.dgNumber.HeaderText = "No."
+		Me.dgNumber.Name = "dgNumber"
+		Me.dgNumber.ReadOnly = true
+		Me.dgNumber.Width = 50
+		'
+		'dgTime
+		'
+		Me.dgTime.DataPropertyName = "dgTime"
+		dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+		Me.dgTime.DefaultCellStyle = dataGridViewCellStyle3
+		Me.dgTime.HeaderText = "Time"
+		Me.dgTime.Name = "dgTime"
+		Me.dgTime.ReadOnly = true
+		Me.dgTime.Width = 150
+		'
+		'dgTitle
+		'
+		Me.dgTitle.DataPropertyName = "dgTitle"
+		dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+		Me.dgTitle.DefaultCellStyle = dataGridViewCellStyle4
+		Me.dgTitle.HeaderText = "Title"
+		Me.dgTitle.Name = "dgTitle"
+		Me.dgTitle.Width = 340
 		'
 		'contextMenuStrip1
 		'
@@ -976,6 +1047,7 @@ Partial Class MainForm
 		Me.cbLanguage.FormattingEnabled = true
 		Me.cbLanguage.Location = New System.Drawing.Point(88, 72)
 		Me.cbLanguage.Name = "cbLanguage"
+		Me.helpProvider1.SetShowHelp(Me.cbLanguage, true)
 		Me.cbLanguage.Size = New System.Drawing.Size(224, 24)
 		Me.cbLanguage.TabIndex = 3
 		Me.cbLanguage.TabStop = false
@@ -1066,7 +1138,7 @@ Partial Class MainForm
 		Me.lbFRList.Items.AddRange(New Object() {"23.976", "24.0", "25.0", "29.97", "30.0", "50.0", "59.94", "60", "Custom"})
 		Me.lbFRList.Location = New System.Drawing.Point(104, 104)
 		Me.lbFRList.Name = "lbFRList"
-		Me.lbFRList.Size = New System.Drawing.Size(72, 148)
+		Me.lbFRList.Size = New System.Drawing.Size(128, 148)
 		Me.lbFRList.TabIndex = 26
 		Me.toolTip1.SetToolTip(Me.lbFRList, "Frame rate to use for chapter time adjustments.")
 		Me.lbFRList.Visible = false
@@ -1075,7 +1147,7 @@ Partial Class MainForm
 		'
 		'bFRDropDown
 		'
-		Me.bFRDropDown.Location = New System.Drawing.Point(176, 104)
+		Me.bFRDropDown.Location = New System.Drawing.Point(232, 104)
 		Me.bFRDropDown.Name = "bFRDropDown"
 		Me.bFRDropDown.Size = New System.Drawing.Size(24, 23)
 		Me.bFRDropDown.TabIndex = 27
@@ -1227,7 +1299,7 @@ Partial Class MainForm
 		'
 		'label14
 		'
-		Me.label14.Location = New System.Drawing.Point(200, 144)
+		Me.label14.Location = New System.Drawing.Point(248, 144)
 		Me.label14.Name = "label14"
 		Me.label14.Size = New System.Drawing.Size(64, 24)
 		Me.label14.TabIndex = 14
@@ -1271,7 +1343,7 @@ Partial Class MainForm
 		'
 		'label12
 		'
-		Me.label12.Location = New System.Drawing.Point(200, 104)
+		Me.label12.Location = New System.Drawing.Point(256, 104)
 		Me.label12.Name = "label12"
 		Me.label12.Size = New System.Drawing.Size(56, 24)
 		Me.label12.TabIndex = 9
@@ -1386,7 +1458,7 @@ Partial Class MainForm
 		'
 		'toolStrip1
 		'
-		Me.toolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripButton, Me.openToolStripButton, Me.saveToolStripButton, Me.printToolStripButton, Me.toolStripSeparator6, Me.cutToolStripButton, Me.copyToolStripButton, Me.pasteToolStripButton, Me.toolStripSeparator7, Me.helpToolStripButton})
+		Me.toolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.newToolStripButton, Me.openToolStripButton, Me.saveToolStripButton, Me.printToolStripButton, Me.toolStripSeparator9, Me.lookupToolStripButton, Me.uploadToolStripButton, Me.toolStripSeparator6, Me.cutToolStripButton, Me.copyToolStripButton, Me.pasteToolStripButton, Me.toolStripSeparator7, Me.helpToolStripButton})
 		Me.toolStrip1.Location = New System.Drawing.Point(0, 24)
 		Me.toolStrip1.Name = "toolStrip1"
 		Me.toolStrip1.Size = New System.Drawing.Size(961, 25)
@@ -1432,6 +1504,35 @@ Partial Class MainForm
 		Me.printToolStripButton.Size = New System.Drawing.Size(23, 22)
 		Me.printToolStripButton.Text = "&Print"
 		Me.printToolStripButton.Visible = false
+		'
+		'toolStripSeparator9
+		'
+		Me.toolStripSeparator9.Name = "toolStripSeparator9"
+		Me.toolStripSeparator9.Size = New System.Drawing.Size(6, 25)
+		'
+		'lookupToolStripButton
+		'
+		Me.lookupToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.lookupToolStripButton.Image = CType(resources.GetObject("lookupToolStripButton.Image"),System.Drawing.Image)
+		Me.lookupToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.lookupToolStripButton.Name = "lookupToolStripButton"
+		Me.lookupToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.lookupToolStripButton.Text = "Lookup"
+		Me.lookupToolStripButton.ToolTipText = "Lookup Chapters on ChapterDB"
+		AddHandler Me.lookupToolStripButton.Click, AddressOf Me.LookupToolStripButtonClick
+		'
+		'uploadToolStripButton
+		'
+		Me.uploadToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+		Me.uploadToolStripButton.Enabled = false
+		Me.uploadToolStripButton.Image = CType(resources.GetObject("uploadToolStripButton.Image"),System.Drawing.Image)
+		Me.uploadToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.uploadToolStripButton.Name = "uploadToolStripButton"
+		Me.uploadToolStripButton.Size = New System.Drawing.Size(23, 22)
+		Me.uploadToolStripButton.Text = "&Upload"
+		Me.uploadToolStripButton.ToolTipText = "Upload to ChapterDB"
+		Me.uploadToolStripButton.Visible = false
+		AddHandler Me.uploadToolStripButton.Click, AddressOf Me.UploadToolStripButtonClick
 		'
 		'toolStripSeparator6
 		'
@@ -1511,34 +1612,47 @@ Partial Class MainForm
 		Me.toolTip1.SetToolTip(Me.cbOutputType, "The type of output file that you wish to write.")
 		AddHandler Me.cbOutputType.SelectedIndexChanged, AddressOf Me.CbOutputTypeSelectedIndexChanged
 		'
-		'dgNumber
+		'mtbDuration
 		'
-		Me.dgNumber.DataPropertyName = "dgNumber"
-		dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-		Me.dgNumber.DefaultCellStyle = dataGridViewCellStyle2
-		Me.dgNumber.HeaderText = "No."
-		Me.dgNumber.Name = "dgNumber"
-		Me.dgNumber.ReadOnly = true
-		Me.dgNumber.Width = 50
+		Me.mtbDuration.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
+		Me.mtbDuration.Location = New System.Drawing.Point(488, 128)
+		Me.mtbDuration.Mask = "00:00:00.000000000"
+		Me.mtbDuration.Name = "mtbDuration"
+		Me.mtbDuration.PromptChar = Global.Microsoft.VisualBasic.ChrW(48)
+		Me.mtbDuration.RejectInputOnFirstFailure = true
+		Me.mtbDuration.ResetOnPrompt = false
+		Me.mtbDuration.ResetOnSpace = false
+		Me.mtbDuration.Size = New System.Drawing.Size(136, 23)
+		Me.mtbDuration.TabIndex = 32
+		Me.mtbDuration.TabStop = false
+		Me.mtbDuration.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.toolTip1.SetToolTip(Me.mtbDuration, "The duration of the movie / video.  This is only"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"used when uploading the chapter"& _ 
+				" information"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"to the ChapterDB website."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
+		AddHandler Me.mtbDuration.Leave, AddressOf Me.MtbDurationLeave
 		'
-		'dgTime
+		'label21
 		'
-		Me.dgTime.DataPropertyName = "dgTime"
-		dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-		Me.dgTime.DefaultCellStyle = dataGridViewCellStyle3
-		Me.dgTime.HeaderText = "Time"
-		Me.dgTime.Name = "dgTime"
-		Me.dgTime.ReadOnly = true
-		Me.dgTime.Width = 150
+		Me.label21.Location = New System.Drawing.Point(424, 128)
+		Me.label21.Name = "label21"
+		Me.label21.Size = New System.Drawing.Size(72, 24)
+		Me.label21.TabIndex = 33
+		Me.label21.Text = "Duration:"
+		Me.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		Me.toolTip1.SetToolTip(Me.label21, "The file to read the chapter times.  This can be either an XLM file,"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"an OGM-form"& _ 
+				"at Chapters file, or a plain text file.  The program"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"will try to automatically "& _ 
+				"detect the file type."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
 		'
-		'dgTitle
+		'tbWorking
 		'
-		Me.dgTitle.DataPropertyName = "dgTitle"
-		dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-		Me.dgTitle.DefaultCellStyle = dataGridViewCellStyle4
-		Me.dgTitle.HeaderText = "Title"
-		Me.dgTitle.Name = "dgTitle"
-		Me.dgTitle.Width = 340
+		Me.tbWorking.BackColor = System.Drawing.Color.FromArgb(CType(CType(128,Byte),Integer), CType(CType(255,Byte),Integer), CType(CType(255,Byte),Integer))
+		Me.tbWorking.Font = New System.Drawing.Font("Arial", 36!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+		Me.tbWorking.Location = New System.Drawing.Point(304, 272)
+		Me.tbWorking.Name = "tbWorking"
+		Me.tbWorking.Size = New System.Drawing.Size(296, 63)
+		Me.tbWorking.TabIndex = 29
+		Me.tbWorking.Text = "Working..."
+		Me.tbWorking.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		Me.tbWorking.Visible = false
 		'
 		'MainForm
 		'
@@ -1546,6 +1660,9 @@ Partial Class MainForm
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(7!, 16!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.ClientSize = New System.Drawing.Size(961, 744)
+		Me.Controls.Add(Me.mtbDuration)
+		Me.Controls.Add(Me.label21)
+		Me.Controls.Add(Me.tbWorking)
 		Me.Controls.Add(Me.cbOutputType)
 		Me.Controls.Add(Me.statusStrip1)
 		Me.Controls.Add(Me.toolStrip1)
@@ -1581,6 +1698,7 @@ Partial Class MainForm
 		Me.MaximizeBox = false
 		Me.Name = "MainForm"
 		Me.Text = "ChapterMaker"
+		AddHandler FormClosing, AddressOf Me.MainFormFormClosing
 		AddHandler Load, AddressOf Me.MainFormLoad
 		AddHandler Shown, AddressOf Me.MainFormShown
 		Me.menuStrip1.ResumeLayout(false)
@@ -1601,6 +1719,17 @@ Partial Class MainForm
 		Me.ResumeLayout(false)
 		Me.PerformLayout
 	End Sub
+	Private searchChapterDBToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private toolStripSeparator10 As System.Windows.Forms.ToolStripSeparator
+	Private toolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
+	Private lookupToolStripButton As System.Windows.Forms.ToolStripButton
+	Private toolStripSeparator9 As System.Windows.Forms.ToolStripSeparator
+	Private label21 As System.Windows.Forms.Label
+	Public mtbDuration As System.Windows.Forms.MaskedTextBox
+	Private uploadToolStripButton As System.Windows.Forms.ToolStripButton
+	Private toolStripSeparator8 As System.Windows.Forms.ToolStripSeparator
+	Private uploadToChapterDBToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private tbWorking As System.Windows.Forms.TextBox
 	Private bShiftTimesHelp As System.Windows.Forms.Button
 	Private bScaleHelp As System.Windows.Forms.Button
 	Private bAddTimesHelp As System.Windows.Forms.Button
@@ -1675,7 +1804,7 @@ Partial Class MainForm
 	Private bTitleUpdate As System.Windows.Forms.Button
 	Private bTitleRemove As System.Windows.Forms.Button
 	Private groupBox4 As System.Windows.Forms.GroupBox
-	Private cbLanguage As System.Windows.Forms.ComboBox
+	Public cbLanguage As System.Windows.Forms.ComboBox
 	Private groupBox3 As System.Windows.Forms.GroupBox
 	Private groupBox2 As System.Windows.Forms.GroupBox
 	Private groupBox1 As System.Windows.Forms.GroupBox
@@ -1692,7 +1821,7 @@ Partial Class MainForm
 	Private tbTitleType As System.Windows.Forms.TextBox
 	Private tbTimeType As System.Windows.Forms.TextBox
 	Private wordsListToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-	Private tbFrameRate As System.Windows.Forms.TextBox
+	Public tbFrameRate As System.Windows.Forms.TextBox
 	Private aboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Private toolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
 	Private searchToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

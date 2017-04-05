@@ -53,12 +53,17 @@ Public Class Defaults
 	Private myConfirmDelete As Boolean
 	Private myConfirmInsert As Boolean
 	Private myConfirmModify As Boolean
+	Private myConfirmUpload As Boolean
 	Private myNoTitle As Integer
 	Private myXMLExt As String
 	Private myOGMExt As String
 	Private myTXTExt As String
 	Private myUpdateCheck As Boolean
 	Private myLoadAppend As Boolean
+	Private myEnableChapterDB As Boolean
+	Private myChapterDBAPIKey As String
+	Private myChapterDBName As String
+	Private myMkvToolNixPath As String
 	
 	'-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -72,12 +77,17 @@ Public Class Defaults
 		myConfirmDelete = True
 		myConfirmInsert = True
 		myConfirmModify = True
+		myConfirmUpload = True
 		myUpdateCheck = True
 		myLoadAppend = True
 		myNoTitle = cmNoTitle.ChapterNum
 		myXMLExt = DefXML
 		myOGMExt = DefOGM
 		myTXTExt = DefTXT
+		myEnableChapterDB = False
+		myChapterDBAPIKey = ""
+		myChapterDBName = ""
+		myMkvToolNixPath = ""
 		myCfgFileName = GetFileName()
 		If myCfgFileName.Trim.Length < 1 Then
 			MsgBox("Error accessing the application configuration file.", MsgBoxStyle.ApplicationModal Or MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
@@ -160,6 +170,15 @@ Public Class Defaults
 		End Set
 	End Property
 	
+	Public Property ConfirmUpload() As Boolean
+		Get
+			Return myConfirmUpload
+		End Get
+		Set(ByVal value As Boolean)
+			myConfirmUpload = value
+		End Set
+	End Property
+	
 	Public Property UpdateCheck() As Boolean
 		Get
 			Return myUpdateCheck
@@ -221,6 +240,44 @@ Public Class Defaults
 		End Get
 		Set(ByVal value As String)
 			myTXTExt = FixExt(value,"")
+		End Set
+	End Property
+		
+	Public Property MkvToolNixPath() As String
+		Get
+			If (Not String.IsNullOrEmpty(myMkvToolNixPath.Trim)) And (Not myMkvToolNixPath.Trim.EndsWith("\")) Then myMkvToolNixPath = myMkvToolNixPath.Trim & "\"
+			Return myMkvToolNixPath.Trim
+		End Get
+		Set(ByVal value As String)
+			myMkvToolNixPath = value.Trim
+			If (Not String.IsNullOrEmpty(myMkvToolNixPath)) And (Not myMkvToolNixPath.EndsWith("\")) Then myMkvToolNixPath = myMkvToolNixPath.Trim & "\"
+		End Set
+	End Property
+	
+	Public Property ChapterDBEnabled() As Boolean
+		Get
+			Return myEnableChapterDB
+		End Get
+		Set(ByVal value As Boolean)
+			myEnableChapterDB = value
+		End Set
+	End Property
+		
+	Public Property ChapterDBKey() As String
+		Get
+			Return myChapterDBAPIKey.Trim
+		End Get
+		Set(ByVal value As String)
+			myChapterDBAPIKey = value.Trim
+		End Set
+	End Property
+		
+	Public Property ChapterDBName() As String
+		Get
+			Return myChapterDBName.Trim
+		End Get
+		Set(ByVal value As String)
+			myChapterDBName = value.Trim
 		End Set
 	End Property
 	
@@ -327,6 +384,11 @@ Public Class Defaults
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
             If s4 <> "" Then myConfirmModify = s4.Trim.ToUpper.StartsWith("Y")
             
+            'Confirm Upload
+            s3 = "ConfirmUpload"
+            s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
+            If s4 <> "" Then myConfirmUpload = s4.Trim.ToUpper.StartsWith("Y")
+            
             'Check for Updates
             s3 = "UpdateCheck"
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
@@ -347,6 +409,41 @@ Public Class Defaults
             s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
             d1 = Convert.ToDouble(s4)
             If d1 > 0 Then myFrameRate = d1
+			
+			'Path to MkvToolNix Utilities
+            s2 = "Tools"
+            s3 = "MkVToolNix"
+            s4 = ReadIni(s1, s2, s3, "").Trim
+            If (Not String.IsNullOrEmpty(s4)) And (Not s4.EndsWith("\")) Then s4 = s4.Trim & "\"
+            myMkvToolNixPath = s4.Trim
+            
+            'Enable ChapterDB Uploads
+            s2 = "ChapterDB"
+            s3 = "Enabled"
+            s4 = ReadIni(s1, s2, s3, "").Trim.ToUpper
+            If s4 <> "" Then myEnableChapterDB = s4.Trim.ToUpper.StartsWith("Y")
+            
+            'ChapterDB API Key
+            s3 = "ApiKey"
+            s4 = ReadIni(s1, s2, s3, "").Trim
+            myChapterDBAPIKey = s4.Trim
+            
+            'ChapterDB API Key
+            s3 = "CreatedBy"
+            s4 = ReadIni(s1, s2, s3, "").Trim
+            myChapterDBName = s4.Trim
+            
+            'Check for MkvToolNix path if empty
+            If (myMkvToolNixPath.Trim.Length < 1) Then
+            	Dim sPath As String = "C:\Program Files\MKVToolNix\"
+            	If (System.IO.File.Exists(sPath & "mkvextract.exe")) Then
+            		myMkvToolNixPath = sPath
+            	Else
+            		sPath = "C:\Program Files (x86)\MKVToolNix\"
+            		If (System.IO.File.Exists(sPath & "mkvextract.exe")) Then myMkvToolNixPath = sPath
+            	End If
+            	If (myMkvToolNixPath.Trim.Length > 0) Then Write()
+            End If
             
 		End If
 	End Sub
@@ -437,6 +534,8 @@ Public Class Defaults
 		If Not myConfirmInsert Then sCI = "No"
 		Dim sCM As String = "Yes"
 		If Not myConfirmModify Then sCM = "No"
+		Dim sCU As String = "Yes"
+		If Not myConfirmUpload Then sCU = "No"
 		Dim sUC As String = "Yes"
 		If Not myUpdateCheck Then sUC = "No"
 		Dim sAL As String = "Yes"
@@ -448,6 +547,8 @@ Public Class Defaults
 		If myAddNumbers Then dCN = "Yes"
 		Dim dCT As String = "No"
 		If myAddTimes Then dCT = "Yes"
+		Dim dChapterDB As String = "No"
+		If myEnableChapterDB Then dChapterDB = "Yes"
 		
 		Dim filecontents As String = ";=================================================================" & Environment.NewLine _
 			& ";" & Environment.NewLine _
@@ -483,11 +584,13 @@ Public Class Defaults
 			& "; ConfirmInsert: Confirm before inserting times or titles (Yes|No)" & Environment.NewLine _
 			& "; ConfirmModify: Confirm before modifying times or titles (Yes|No)" & Environment.NewLine _
 			& "; ConfirmDelete: Confirm before deleting times or titles (Yes|No)" & Environment.NewLine _
+			& "; ConfirmUpload: Confirm before uploading to ChapterDB (Yes|No)" & Environment.NewLine _
 			& "; UpdateCheck: Check for program updates at start-up (Yes|No)" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "ConfirmInsert=" & sCI & Environment.NewLine _
 			& "ConfirmModify=" & sCM & Environment.NewLine _
 			& "ConfirmDelete=" & sCD & Environment.NewLine _
+			& "ConfirmUpload=" & sCU & Environment.NewLine _
 			& "UpdateCheck=" & sUC & Environment.NewLine _
 			& Environment.NewLine & Environment.NewLine & "[Defaults]" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
@@ -495,7 +598,21 @@ Public Class Defaults
 			& "; FrameRate: Used for time adjustments. Typically 23.976 or 29.970" & Environment.NewLine _
 			& ";-----------------------------------------------------------------" & Environment.NewLine _
 			& "Language=" & dLan & Environment.NewLine _
-			& "FrameRate=" & dFR & Environment.NewLine
+			& "FrameRate=" & dFR & Environment.NewLine _
+			& Environment.NewLine & Environment.NewLine & "[ChapterDB]" & Environment.NewLine _
+			& ";-----------------------------------------------------------------" & Environment.NewLine _
+			& "; Enabled: Allow uploading file to ChapterDB (Yes|No)" & Environment.NewLine _
+			& "; ApiKey: Your ChapterDB site assigned api key." & Environment.NewLine _
+			& "; CreatedBy: Name or email address of uploader." & Environment.NewLine _
+			& ";-----------------------------------------------------------------" & Environment.NewLine _
+			& "Enabled=" & dChapterDB & Environment.NewLine _
+			& "ApiKey=" & myChapterDBAPIKey.Trim & Environment.NewLine _
+			& "CreatedBy=" & myChapterDBName.Trim & Environment.NewLine _
+			& Environment.NewLine & Environment.NewLine & "[Tools]" & Environment.NewLine _
+			& ";-----------------------------------------------------------------" & Environment.NewLine _
+			& "; MkvToolNix: Path to MkvToolNix utilities" & Environment.NewLine _
+			& ";-----------------------------------------------------------------" & Environment.NewLine _
+			& "MkvToolNix=" & myMkvToolNixPath.Trim & Environment.NewLine
 		Return filecontents
 	End Function
 	
